@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nome Azienda — Home</title>
+  <title>LuccAlfa</title>
+  <meta name="description" content="Breve descrizione della tua azienda" />
+  <!-- Inserisci qui eventuale script analytics (vedi istruzioni sotto) -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <h1 class="logo">LuccAlfa</h1>
+      <h1 class="logo">Nome Azienda</h1>
       <nav>
         <a href="#about">Chi siamo</a>
         <a href="#services">Servizi</a>
@@ -41,7 +43,7 @@
 
     <section id="booking">
       <h3>Prenota un appuntamento</h3>
-      <p>Usa Calendly (o servizio simile) per gestire prenotazioni: copia il tuo link e sostituiscilo nell'iframe qui sotto.</p>
+      <p>Usa Calendly (o servizio simile) per gestire prenotazioni: copia il tuo link e sostituiscilo nell'iframe qui sotto se vuoi.</p>
 
       <!-- Sostituisci YOUR_CALENDLY_LINK con il tuo Calendly (es. calendly.com/tuonome) -->
       <div class="calendly-embed">
@@ -53,28 +55,48 @@
     <section id="contact">
       <h3>Contatti</h3>
 
-      <!-- Esempio con Formspree: sostituisci /f/YOUR_FORM_ID con il tuo endpoint Formspree -->
+      <!-- Sostituisci YOUR_FORM_ID con il tuo endpoint Formspree: https://formspree.io/f/YOUR_FORM_ID -->
       <form id="contact-form" action="https://formspree.io/f/xjknrvqv" method="POST">
         <label>Nome
           <input type="text" name="name" required />
         </label>
+
+        <!-- _replyto aiuta Formspree a impostare l'email di risposta corretta -->
         <label>Email
-          <input type="email" name="email" required />
+          <input type="email" name="_replyto" required />
         </label>
+
         <label>Messaggio
           <textarea name="message" required></textarea>
         </label>
+
+        <!-- Honeypot anti-spam: lascia il campo nascosto e senza valore se è un utente reale -->
+        <div style="display:none">
+          <label>Lascia vuoto
+            <input type="text" name="_gotcha" />
+          </label>
+        </div>
+
+        <!-- Reindirizza dopo l'invio alla pagina thanks.html -->
+        <input type="hidden" name="_next" value="https://KIkoSwaggg.github.io/LuccAlfa/thanks.html" />
+
+        <!-- Oggetto mail -->
+        <input type="hidden" name="_subject" value="Messaggio dal sito" />
+
         <button type="submit">Invia</button>
       </form>
 
-      <p class="small">In alternativa: telefono +39 329 429 1402 — Via Delle Vie, Lucca</p>
+      <p class="small">In alternativa: telefono +39 012 345 6789 — Via Esempio 1, Città</p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">© <span id="year"></span> LuccAlfa srls — Tutti i diritti riservati</div>
+    <div class="container">© <span id="year"></span> Nome Azienda — Tutti i diritti riservati</div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // Nota: non bloccare il submit del form; lasciamo Formspree gestire l'invio
+  </script>
 </body>
 </html>
