@@ -1,4 +1,4 @@
-// script.js - rimuove _next dal DOM, invia via fetch (senza credentials), manda evento GA e redirect
+// script.js - send via fetch (Accept: application/json), remove _next, send GA event, redirect to local thanks
 (function(){
   console.log('[script.js] script caricato');
 
@@ -19,21 +19,22 @@
   }
   console.log('[script.js] contact-form trovato, attacco submit listener');
 
-  const endpoint = form.getAttribute('action');
+  // usa data-endpoint se presente (fail-safe), altrimenti action
+  const endpoint = form.getAttribute('data-endpoint') || form.getAttribute('action');
 
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     const f = this;
 
     try {
-      // se per qualche motivo c'è ancora un _next nel DOM, rimuovilo ora (prima di costruire FormData)
+      // rimuovi eventuale _next dal DOM prima di costruire i dati
       const domNext = f.querySelector('input[name="_next"]');
       if (domNext) {
         domNext.remove();
         console.log('[script.js] _next rimosso dal DOM (on submit)');
       }
 
-      // costruisci FormData senza _next
+      // costruisci FormData e assicurati che _next non ci sia
       const fm = new FormData(f);
       if (fm.has('_next')) {
         fm.delete('_next');
@@ -45,52 +46,46 @@
 
       const body = new URLSearchParams(entries).toString();
 
-      // invia a Formspree senza credentials (evita problemi CORS con Access-Control-Allow-Credentials)
+      // invia a Formspree richiedendo JSON: questo impedisce redirect HTML /thanks
       const res = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         body: body,
         mode: 'cors'
-        // non impostare credentials: 'include' -> evitiamo il requisito Access-Control-Allow-Credentials:true
       });
 
       if (res.ok) {
-        console.log('[script.js] Formspree OK, invio evento GA');
+        // prova a leggere JSON (se presente)
+        let resJson = null;
+        try { resJson = await res.json(); } catch(e){ /* non critico */ }
+        console.log('[script.js] Formspree risposta OK', res.status, resJson);
+
+        // invia evento GA4 alla TUA proprietà
         if (typeof gtag === 'function') {
+          console.log('[script.js] invio evento GA');
           gtag('event', 'contact_form_submit', {
             'send_to': 'G-0WRW6ZJJ88',
             'event_category': 'engagement',
             'event_label': 'Contact form',
             'event_callback': function(){ window.location = '/LuccAlfa/thanks.html'; }
           });
-          // fallback redirect
+          // fallback redirect dopo 1.5s
           setTimeout(()=>{ window.location = '/LuccAlfa/thanks.html'; }, 1500);
         } else {
           window.location = '/LuccAlfa/thanks.html';
         }
       } else {
         console.error('[script.js] Formspree errore', res.status, await res.text());
-        alert('Errore invio, riprova più tardi. Se il problema persiste contattami.');
-        // non forzare submit classico: evitiamo il redirect verso formspree che esegue tag esterni
+        alert('Si è verificato un errore nell\'invio. Riprova più tardi.');
       }
     } catch (err) {
       console.error('[script.js] Errore invio form', err);
-
-      // Tentativo difensivo: rimuoviamo eventuale _next nel DOM prima di qualsiasi fallback submit
-      const domNextFallback = f.querySelector('input[name="_next"]');
-      if (domNextFallback) {
-        domNextFallback.remove();
-        console.log('[script.js] _next rimosso dal DOM (fallback)');
-      }
-
-      // come ultima risorsa: submit tradizionale per garantire consegna (attenzione: potrebbe ancora navigare)
-      try {
-        console.log('[script.js] fallback: submit tradizionale');
-        f.submit();
-      } catch (e) {
-        console.error('[script.js] fallback submit fallito', e);
-        alert('Invio fallito. Riprova più tardi.');
-      }
+      alert('Invio fallito a causa di un problema di rete. Riprova.');
+      // Non eseguiamo f.submit() per evitare redirect esterni
     }
   });
 })();
