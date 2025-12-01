@@ -1,22 +1,19 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <!-- Google Analytics (GA4) - sostituisci G-XXXXXXX con il tuo Measurement ID -->
+  <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WRW6ZJJ88"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    // anonymize IP per maggiore privacy
     gtag('config', 'G-0WRW6ZJJ88', { 'anonymize_ip': true });
-    // Se vuoi testare in debug usa: gtag('set', {'debug_mode': true});
   </script>
-  <!-- /Google Analytics -->
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LuccAlfa</title>
   <meta name="description" content="Breve descrizione della tua azienda" />
-  <!-- Inserisci qui eventuale script analytics (vedi istruzioni sotto) -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -54,7 +51,6 @@
 
     <section id="booking">
       <h3>Prenota un appuntamento</h3>
-      <!-- Sostituisci YOUR_CALENDLY_LINK con il tuo Calendly (es. calendly.com/tuonome) -->
       <div class="calendly-embed">
         <iframe src="https://calendly.com/luccalfa-srl"
                 frameborder="0" scrolling="no" width="100%" height="700" title="Prenota"></iframe>
@@ -64,13 +60,12 @@
     <section id="contact">
       <h3>Contatti</h3>
 
-      <!-- Sostituisci YOUR_FORM_ID con il tuo endpoint Formspree: https://formspree.io/f/YOUR_FORM_ID -->
+      <!-- NOTA: non c'è più _next nell'HTML -->
       <form id="contact-form" action="https://formspree.io/f/xjknrvqv" method="POST">
         <label>Nome
           <input type="text" name="name" required />
         </label>
 
-        <!-- _replyto aiuta Formspree a impostare l'email di risposta corretta -->
         <label>Email
           <input type="email" name="_replyto" required />
         </label>
@@ -79,17 +74,12 @@
           <textarea name="message" required></textarea>
         </label>
 
-        <!-- Honeypot anti-spam: lascia il campo nascosto e senza valore se è un utente reale -->
         <div style="display:none">
           <label>Lascia vuoto
             <input type="text" name="_gotcha" />
           </label>
         </div>
 
-        <!-- Reindirizza dopo l'invio alla pagina thanks.html -->
-        <input type="hidden" name="_next" value="https://LuccAlfa.github.io/LuccAlfa/thanks.html" />
-
-        <!-- Oggetto mail -->
         <input type="hidden" name="_subject" value="Messaggio dal sito" />
 
         <button type="submit">Invia</button>
