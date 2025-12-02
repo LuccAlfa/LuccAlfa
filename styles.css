@@ -21,7 +21,7 @@ html,body{height:100%;margin:0;background:var(--bg);font-family:var(--font-sans)
 .logo { display:inline-block; line-height:0; /* avoid extra inline gap */ }
 .logo img{
   display:block;
-  max-height:56px;   /* adjust this value to change logo height */
+  max-height:100px;   /* adjust this value to change logo height */
   height:auto;
   width:auto;
   max-width:100%;
