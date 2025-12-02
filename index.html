@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <!-- Google Analytics (GA4) -->
+  <!-- Google Analytics (GA4) - mantieni se vuoi -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WRW6ZJJ88"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,21 +25,24 @@
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- inline favicon per evitare 404 -->
-  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b72ff"/><text x="50" y="58" font-size="50" text-anchor="middle" fill="%23fff" font-family="Arial,Helvetica,sans-serif">L</text></svg>'>
+  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b72ff"/><text x="50" y="58" font-size="50" text-anchor="middle" fill="white">L</text></svg>' />
 
-  <!-- POINTS HERE: refer to styles.css (existing) -->
+  <!-- Stili -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Header / Navbar -->
   <header class="site-nav" id="siteNav">
     <div class="container">
       <div class="brand">
-        <img src="/assets/logo.png" alt="logo" class="brand__symbol">
+        <!-- percorso relativo: importante per GitHub Pages project sites -->
+        <img src="assets/logo.png" alt="Logo LuccAlfa" class="brand__symbol">
         <div class="brand__texts">
           <div class="brand__title">LUCCA</div>
           <div class="brand__subtitle">estate & beyond</div>
         </div>
       </div>
+
       <nav class="nav-menu" aria-label="Main menu">
         <a href="#servizi">Servizi</a>
         <a href="#about">Chi siamo</a>
@@ -48,35 +51,33 @@
     </div>
   </header>
 
-  <section class="hero">
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero__content">
-        <h1>Giardinaggio e pulizie a Firenze e dintorni</h1>
+        <h1 id="hero-title">Giardinaggio e pulizie a Firenze e dintorni</h1>
         <p>Interventi professionali per privati e condomìni: manutenzione ordinaria, potature, pulizie post-cantiere e interventi su chiamata.</p>
         <a href="#contatti" class="btn">Richiedi un preventivo</a>
       </div>
-      <div class="hero__media">
-        <!-- Inserisci qui l'immagine hero o lascia vuoto -->
+      <div class="hero__media" aria-hidden="true">
+        <!-- opzionale: <img src="assets/hero.jpg" alt=""> -->
       </div>
     </div>
   </section>
 
+  <!-- Main content (sezioni con id coerenti) -->
   <main class="container" role="main">
-    <section id="hero" class="hero" aria-labelledby="hero-title">
-      <h2 id="hero-title">Benvenuto</h2>
-      <p>Benvenuti in LuccAlfa S.R.L.s.
-Operiamo nel settore del giardinaggio e dei servizi di pulizia offrendo soluzioni su misura per privati, aziende e condomìni. Ci distinguiamo per l’attenzione al dettaglio, la cura nella gestione degli spazi verdi e la precisione negli interventi di pulizia, garantendo ambienti ordinati, sicuri e piacevoli da vivere.
-La nostra realtà nasce con un obiettivo chiaro: fornire un servizio serio, affidabile e continuativo. Ogni intervento è pianificato con professionalità, utilizzando attrezzature adeguate e adottando procedure che assicurano risultati costanti nel tempo.
-Scegliere LuccAlfa S.R.L.s significa affidarsi a un team che lavora con dedizione, rispetto per gli spazi e massima attenzione alle esigenze del cliente.
-</p>
+    <section id="intro" aria-labelledby="intro-title" class="section">
+      <h2 id="intro-title">Benvenuto</h2>
+      <p>Benvenuti in LuccAlfa S.R.L.s. Operiamo nel settore del giardinaggio e dei servizi di pulizia offrendo soluzioni su misura per privati, aziende e condomìni. Ci distinguiamo per l’attenzione al dettaglio e la professionalità.</p>
     </section>
 
-    <section id="about" aria-labelledby="about-title">
+    <section id="about" aria-labelledby="about-title" class="section section--alt">
       <h3 id="about-title">Chi siamo</h3>
       <p>Indirizzo, orari, una frase su di voi.</p>
     </section>
 
-    <section id="services" aria-labelledby="services-title">
+    <section id="servizi" aria-labelledby="services-title" class="section">
       <h3 id="services-title">Servizi</h3>
       <ul>
         <li>Giardinaggio</li>
@@ -84,43 +85,18 @@ Scegliere LuccAlfa S.R.L.s significa affidarsi a un team che lavora con dedizion
       </ul>
     </section>
 
-    <section id="booking" aria-labelledby="booking-title">
+    <section id="booking" aria-labelledby="booking-title" class="section">
       <h3 id="booking-title">Prenota un appuntamento</h3>
       <div class="calendly-embed">
-        <!-- Popup button (apre overlay Calendly) -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <a href="#" id="bookBtn" class="btn" aria-haspopup="dialog">Prenota un appuntamento con Marco Modena</a>
-        <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-        <script>
-          (function(){
-            const url = 'https://calendly.com/luccalfa-srl/incontro-telefonico';
-            function openCalendly(e){
-              e.preventDefault();
-              if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
-                Calendly.initPopupWidget({ url: url });
-              } else {
-                setTimeout(()=>{ if(window.Calendly && Calendly.initPopupWidget) Calendly.initPopupWidget({ url: url }); }, 200);
-              }
-              return false;
-            }
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', function(){
-                const btn = document.getElementById('bookBtn');
-                if(btn) btn.addEventListener('click', openCalendly);
-              });
-            } else {
-              const btn = document.getElementById('bookBtn');
-              if(btn) btn.addEventListener('click', openCalendly);
-            }
-          })();
-        </script>
       </div>
     </section>
 
-    <section id="contact" aria-labelledby="contact-title">
+    <section id="contatti" aria-labelledby="contact-title" class="section section--alt">
       <h3 id="contact-title">Contatti</h3>
 
-      <!-- FAIL-SAFE: action="#" e data-endpoint reale (Formspree) -->
+      <!-- Form: usa data-endpoint per l'endpoint Formspree (fallback action="#") -->
       <form id="contact-form" action="#" data-endpoint="https://formspree.io/f/xjknrvqv" method="POST" aria-label="Modulo di contatto">
         <label for="name">Nome
           <input id="name" type="text" name="name" required aria-required="true" />
@@ -142,17 +118,21 @@ Scegliere LuccAlfa S.R.L.s significa affidarsi a un team che lavora con dedizion
 
         <input type="hidden" name="_subject" value="Messaggio dal sito" />
 
-        <button type="submit">Invia</button>
+        <button type="submit" class="btn-primary">Invia</button>
       </form>
 
-      <p class="small">In alternativa: telefono +39 329 429 1402 — Via Celso 14R, Firenze</p>
+      <p class="small">In alternativa: telefono <a href="tel:+393294291402">+39 329 429 1402</a> — Via Celso 14R, Firenze</p>
     </section>
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <div class="container">© <span id="year" aria-hidden="true"></span> LuccAlfa srls — Tutti i diritti riservati</div>
+    <div class="container footer-inner">
+      <div>© <span id="year" aria-hidden="true"></span> LuccAlfa srls — Tutti i diritti riservati</div>
+      <div class="center"><a href="tel:+393294291402">Chiama ora</a></div>
+    </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Script: defer per performance -->
+  <script src="script.js" defer></script>
 </body>
 </html>
