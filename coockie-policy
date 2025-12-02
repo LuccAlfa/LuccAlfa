@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cookie policy — LuccAlfa</title>
+  <meta name="description" content="Cookie policy — LuccAlfa" />
+  <link rel="stylesheet" href="styles.min.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Cookie policy</h1>
+    <p>Questo sito utilizza cookie tecnici necessari per il corretto funzionamento (es. sessioni) e cookie di terze parti per analytics (Google Analytics). Non utilizziamo cookie pubblicitari.</p>
+
+    <h2>Tipologie</h2>
+    <ul>
+      <li>Cookie tecnici: necessari per la navigazione e le funzionalità del sito.</li>
+      <li>Cookie analytics: Google Analytics (GA4) per raccogliere dati anonimi di traffico.</li>
+    </ul>
+
+    <h2>Scelta dell'utente</h2>
+    <p>Puoi disabilitare i cookie tramite le impostazioni del tuo browser. La disattivazione dei cookie analytics ridurrà la quantità di dati statistici raccolti.</p>
+
+    <h2>Contatti</h2>
+    <p>Per informazioni: privacy@luccalfa.example</p>
+  </main>
+</body>
+</html>
