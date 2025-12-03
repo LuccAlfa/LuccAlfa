@@ -1,16 +1,9 @@
 // script.js
-// - smooth scroll for anchor links
-// - toggle navbar background on scroll
-// - inject current year into footer
-// - Calendly popup init for booking button
-// - optional Formspree submit handler (uses data-endpoint attribute on the form)
-
 document.addEventListener('DOMContentLoaded', function() {
   // Smooth scroll for internal anchors
   document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
       var href = this.getAttribute('href');
-      // ignore links that only reference '#'
       if (!href || href === '#') return;
       var target = document.querySelector(href);
       if (target) {
@@ -23,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Navbar background toggle on scroll
   var nav = document.getElementById('siteNav');
   function onScroll() {
+    if (!nav) return;
     if (window.scrollY > 40) {
       nav.classList.add('scrolled');
     } else {
@@ -45,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
         Calendly.initPopupWidget({ url: calendlyUrl });
       } else {
-        // If Calendly script hasn't loaded yet, try loading and retry after a short delay
         var script = document.createElement('script');
         script.src = 'https://assets.calendly.com/assets/external/widget.js';
         script.async = true;
@@ -69,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       e.preventDefault();
       var formData = new FormData(contactForm);
-      // Basic UX: disable submit button if present
       var submitBtn = contactForm.querySelector('button[type="submit"]');
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -84,33 +76,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }).then(function(response) {
         if (response.ok) {
-          // successo
-          if (submitBtn) submitBtn.textContent = 'Inviato';
-          contactForm.reset();
-          setTimeout(function() {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Invia';
-            }
-          }, 2000);
+          // Redirect to thanks page (relative)
+          window.location.href = './thanks.html';
         } else {
-          // errore
+          // error handling
           response.json().then(function(data) {
             console.warn('Formspree error', data);
             alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-            if (submitBtn) submitBtn.disabled = false;
-            if (submitBtn) submitBtn.textContent = 'Invia';
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia'; }
           }).catch(function() {
             alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-            if (submitBtn) submitBtn.disabled = false;
-            if (submitBtn) submitBtn.textContent = 'Invia';
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia'; }
           });
         }
       }).catch(function(err) {
         console.error('Network error', err);
         alert('Errore di rete. Controlla la connessione.');
-        if (submitBtn) submitBtn.disabled = false;
-        if (submitBtn) submitBtn.textContent = 'Invia';
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia'; }
       });
     });
   }
