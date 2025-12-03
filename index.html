@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <!-- GA4 (opzionale) -->
+  <!-- Google Analytics (opzionale) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WRW6ZJJ88"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -24,7 +24,7 @@
   <meta property="og:image" content="https://luccalfa.github.io/LuccAlfa/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- favicon inline (keeps 404 away) -->
+  <!-- inline favicon -->
   <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b72ff"/><text x="50" y="58" font-size="50" text-anchor="middle" fill="white">L</text></svg>' />
 
   <!-- Styles -->
@@ -35,27 +35,20 @@
   <header class="site-nav" id="siteNav">
     <div class="container">
       <div class="brand">
-        <!-- Inline SVG logo (keeps it crisp and controllabile). If you also upload assets/logo.svg you can use <img>. -->
+        <!-- Logo: use the SVG file saved in assets/logo.svg (relative path) -->
         <a href="./" aria-label="Vai alla home" class="brand__link">
-          <!-- inline SVG: replace contents with your real logo.svg if you have it -->
-          <svg id="logo-svg" width="1" height="1" viewBox="0 0 1349 1095" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="brand__symbol" role="img">
-            <!-- Placeholder symbol: replace path data with your actual SVG content -->
-            <g fill="#111111" transform="translate(0,0)">
-              <path d="M110 900c0-150 0-600 500-600s500 450 500 600-200 150-500 150S110 1050 110 900z"/>
-            </g>
-          </svg>
+          <img src="assets/logo.svg" alt="Logo LuccAlfa" class="brand__symbol" />
         </a>
       </div>
 
       <!-- Mobile toggle -->
       <button id="navToggle" class="nav-toggle" aria-controls="primary-navigation" aria-expanded="false" aria-label="Apri menu">
-        <span class="hamburger"></span>
+        <span class="hamburger" aria-hidden="true"></span>
       </button>
 
       <nav id="primary-navigation" class="nav-menu" aria-label="Main menu">
         <a href="#servizi">Servizi</a>
         <a href="#about">Chi siamo</a>
-        <!-- nav-cta in versione bianca con testo nero -->
         <a href="#contatti" class="nav-cta nav-cta--white">Richiedi un preventivo</a>
       </nav>
     </div>
@@ -67,10 +60,11 @@
       <div class="hero__content">
         <h1 id="hero-title">Giardinaggio e pulizie a Firenze e dintorni</h1>
         <p>Interventi professionali per privati e condomìni: manutenzione ordinaria, potature, pulizie post-cantiere e interventi su chiamata.</p>
+        <!-- Hero CTA: bianco con testo nero per leggibilità -->
         <a href="#contatti" class="btn">Richiedi un preventivo</a>
       </div>
       <div class="hero__media" aria-hidden="true">
-        <!-- opzionale: <img src="assets/hero.jpg" alt="Giardino curato" class="about-img"> -->
+        <!-- opzionale: inserisci qui <img src="assets/hero.jpg" alt="..."> -->
       </div>
     </div>
   </section>
@@ -95,7 +89,7 @@
           </ul>
         </div>
         <div>
-          <!-- aggiungi la tua immagine in assets/about.jpg o cambia il path -->
+          <!-- Inserisci qui la tua immagine (es. assets/about.jpg). Se non la hai, carica un'immagine nella cartella assets. -->
           <img src="assets/about.jpg" alt="Team LuccAlfa al lavoro" class="about-img" />
         </div>
       </div>
@@ -107,7 +101,6 @@
       <div class="services-grid">
         <article class="card" aria-labelledby="s1-title">
           <div class="card-icon" aria-hidden="true">
-            <!-- leaf icon -->
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21s4-5 10-5 8 2 8 2" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 10c2-4 6-8 12-9" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s1-title">Giardinaggio</h4>
@@ -116,7 +109,6 @@
 
         <article class="card" aria-labelledby="s2-title">
           <div class="card-icon" aria-hidden="true">
-            <!-- broom icon -->
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21l6-6" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 17L21 3" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s2-title">Pulizie</h4>
@@ -125,7 +117,6 @@
 
         <article class="card" aria-labelledby="s3-title">
           <div class="card-icon" aria-hidden="true">
-            <!-- building icon -->
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="18" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/><rect x="13" y="7" width="8" height="14" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s3-title">Condomini & Aziende</h4>
