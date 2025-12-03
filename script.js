@@ -1,6 +1,6 @@
-// script.js
+// script.js - updated
 document.addEventListener('DOMContentLoaded', function() {
-  // Smooth scroll for internal anchors
+  // Smooth scroll for internal anchors (also closes mobile nav when used)
   document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
       var href = this.getAttribute('href');
@@ -8,19 +8,28 @@ document.addEventListener('DOMContentLoaded', function() {
       var target = document.querySelector(href);
       if (target) {
         e.preventDefault();
+
+        // close mobile nav if open
+        var nav = document.getElementById('primary-navigation');
+        if (nav && nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          var t = document.getElementById('navToggle');
+          if (t) t.setAttribute('aria-expanded','false');
+        }
+
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
 
   // Navbar background toggle on scroll
-  var nav = document.getElementById('siteNav');
+  var navBar = document.getElementById('siteNav');
   function onScroll() {
-    if (!nav) return;
+    if (!navBar) return;
     if (window.scrollY > 40) {
-      nav.classList.add('scrolled');
+      navBar.classList.add('scrolled');
     } else {
-      nav.classList.remove('scrolled');
+      navBar.classList.remove('scrolled');
     }
   }
   window.addEventListener('scroll', onScroll);
@@ -29,6 +38,17 @@ document.addEventListener('DOMContentLoaded', function() {
   // Inject current year
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Mobile nav toggle
+  var navToggle = document.getElementById('navToggle');
+  var primaryNav = document.getElementById('primary-navigation');
+  if (navToggle && primaryNav) {
+    navToggle.addEventListener('click', function() {
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', String(!expanded));
+      primaryNav.classList.toggle('open');
+    });
+  }
 
   // Calendly popup (booking)
   var bookBtn = document.getElementById('bookBtn');
@@ -50,49 +70,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Formspree submit handler (progressive enhancement)
+  // Formspree submit handler with status messages and aria-live updates
   var contactForm = document.getElementById('contact-form');
+  var formStatus = document.getElementById('form-status');
   if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
       var endpoint = contactForm.getAttribute('data-endpoint');
       if (!endpoint || endpoint === '#') {
-        // allow default submit (or no-op)
+        // allow default submit if no endpoint
         return;
       }
 
       e.preventDefault();
+      if (formStatus) { formStatus.textContent = 'Invio in corso...'; }
+
       var formData = new FormData(contactForm);
       var submitBtn = contactForm.querySelector('button[type="submit"]');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Invio...';
-      }
+      if (submitBtn) { submitBtn.disabled = true; }
 
       fetch(endpoint, {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       }).then(function(response) {
         if (response.ok) {
-          // Redirect to thanks page (relative)
-          window.location.href = './thanks.html';
+          if (formStatus) { formStatus.textContent = 'Messaggio inviato, reindirizzamento...'; }
+          // small delay so user sees status, then redirect
+          setTimeout(function(){ window.location.href = './thanks.html'; }, 600);
         } else {
-          // error handling
           response.json().then(function(data) {
-            console.warn('Formspree error', data);
+            if (formStatus) formStatus.textContent = 'Errore durante l\'invio. Riprova.';
             alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia'; }
+            if (submitBtn) { submitBtn.disabled = false; }
           }).catch(function() {
-            alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia'; }
+            if (formStatus) formStatus.textContent = 'Errore durante l\'invio. Riprova.';
+            if (submitBtn) { submitBtn.disabled = false; }
           });
         }
       }).catch(function(err) {
         console.error('Network error', err);
-        alert('Errore di rete. Controlla la connessione.');
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia'; }
+        if (formStatus) formStatus.textContent = 'Errore di rete. Controlla la connessione.';
+        if (submitBtn) { submitBtn.disabled = false; }
       });
     });
   }
