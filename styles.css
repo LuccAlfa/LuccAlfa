@@ -220,26 +220,38 @@ a:focus{outline:2px dashed var(--color-primary);outline-offset:3px}
   .services-grid{grid-template-columns:1fr;}
   :root{--gap-section:48px}
 
-  .nav-menu.open .nav-cta.nav-cta--orange {
-  background: transparent !important;
-  color: var(--color-primary) !important; /* testo arancione */
-  box-shadow: none !important;
-  border: 0 !important;
-  padding: 6px 0 !important;       /* meno ingombro: solo verticale */
-  border-radius: 0 !important;
-  font-family: "Montserrat", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-align: left;                /* allinea come gli altri link del menu */
-}
+  /* allineamento e comportamento dei link nel menu mobile */
+  .nav-menu a,
+  .nav-menu .nav-cta {
+    display:block;
+    padding:8px 0;
+    width:100%;
+    text-align:left;
+  }
 
-/* hover/focus per rendere evidente che è un link */
-.nav-menu.open .nav-cta.nav-cta--orange:hover,
-.nav-menu.open .nav-cta.nav-cta--orange:focus {
-  text-decoration: underline;
-  color: darken(var(--color-primary), 5%); /* fallback estetico se il preprocessore non c'è, altrimenti lascia solo color */
-}
+  /* Quando il menu mobile è aperto, mostra la CTA come semplice link arancione */
+  .nav-menu.open .nav-cta.nav-cta--orange {
+    background: transparent !important;
+    color: var(--color-primary) !important; /* testo arancione */
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 8px 0 !important;       /* allineamento con gli altri link */
+    border-radius: 0 !important;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;                /* allinea come gli altri link del menu */
+    transition: color .18s ease, background .12s ease;
+    cursor: pointer;
+  }
+
+  /* hover/focus: colore leggermente più scuro (esadecimale compatibile) */
+  .nav-menu.open .nav-cta.nav-cta--orange:hover,
+  .nav-menu.open .nav-cta.nav-cta--orange:focus {
+    text-decoration: underline;
+    color: #EE8E2F; /* circa 5% più scuro rispetto a #FB9531 */
+  }
   
 }
