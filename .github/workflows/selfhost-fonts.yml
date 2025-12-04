@@ -9,21 +9,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fetch Google Fonts CSS and download font files
+      - name: Prepare directories
+        run: |
+          mkdir -p assets/fonts
+
+      - name: Fetch Google Fonts CSS
         env:
           GOOGLE_FONTS_CSS: "https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap"
         run: |
           set -euo pipefail
-          mkdir -p assets/fonts
-          # fetch the CSS as served to browsers (use a normal browser UA so Google returns font URLs)
           curl -s -A "Mozilla/5.0 (compatible;)" "$GOOGLE_FONTS_CSS" -o /tmp/gf.css
+          echo "Saved /tmp/gf.css (size: $(stat -c%s /tmp/gf.css) bytes)"
 
-          # extract unique URLs and download them (robust to different awk/grep versions)
+      - name: Extract and download font files
+        run: |
+          set -euo pipefail
           grep -oE "url\([^)]+\)" /tmp/gf.css | sed -E "s/url\((https?:[^)]*)\)/\1/" | sed 's/^"//' | sed "s/^'//" | sed 's/"$//' | sed "s/'$//" | sort -u > /tmp/font-urls.txt || true
-
+          echo "Font URLs:"
+          sed -n '1,200p' /tmp/font-urls.txt || true
           while IFS= read -r url; do
             [ -z "$url" ] && continue
-            # strip query string if any
             fname=$(basename "${url%%\?*}")
             if [ ! -f "assets/fonts/$fname" ]; then
               echo "Downloading $url -> assets/fonts/$fname"
@@ -33,30 +38,10 @@ jobs:
             fi
           done < /tmp/font-urls.txt || true
 
-          # run inline Python to rewrite the CSS: replace remote urls with local paths and add font-display if missing
-          python3 - <<'PY'
-import re, sys, pathlib
-src = pathlib.Path('/tmp/gf.css')
-out = pathlib.Path('assets/fonts/fonts.css')
-if not src.exists():
-    print("Input /tmp/gf.css not found", file=sys.stderr)
-    sys.exit(1)
-txt = src.read_text(encoding='utf-8')
-def repl_url(m):
-    url = m.group(1).strip()
-    fname = url.split('/')[-1].split('?')[0]
-    return "url('./assets/fonts/" + fname + "')"
-txt = re.sub(r"url\((https?:[^)]+)\)", repl_url, txt)
-def ensure_fd(block):
-    if 'font-display' in block:
-        return block
-    return re.sub(r'\}\s*$', '  font-display: swap;\n}', block, flags=re.S)
-txt = re.sub(r'@font-face\s*\{[^}]*\}', lambda m: ensure_fd(m.group(0)), txt, flags=re.S)
-out.parent.mkdir(parents=True, exist_ok=True)
-out.write_text(txt, encoding='utf-8')
-print("Wrote", out)
-PY
-
+      - name: Generate fonts.css (local references + font-display)
+        run: |
+          python3 scripts/selfhost_fonts.py /tmp/gf.css assets/fonts/fonts.css
+          echo "=== fonts.css head ==="
           sed -n '1,140p' assets/fonts/fonts.css || true
 
       - name: Commit downloaded fonts and generated CSS
@@ -68,4 +53,4 @@ PY
           git config user.email "$GIT_AUTHOR_EMAIL"
           git add assets/fonts || true
           git commit -m "chore: add self-hosted fonts (Montserrat, Roboto)" || echo "nothing to commit"
-          git push
+          git push || echo "git push failed (possibly branch protection). If so, consider creating a branch + PR instead."
