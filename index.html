@@ -15,7 +15,7 @@
   <meta property="og:image" content="https://luccalfa.github.io/LuccAlfa/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Favicon: uso URL assoluto su GitHub Pages per ridurre problemi di path -->
+  <!-- Favicon -->
 <link rel="shortcut icon" href="https://luccalfa.github.io/LuccAlfa/assets/favicon.ico" type="image/x-icon" />  
 <link rel="icon" type="image/png" sizes="16x16" href="https://luccalfa.github.io/LuccAlfa/assets/favicon-16.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="https://luccalfa.github.io/LuccAlfa/assets/favicon-32.png" />
@@ -33,7 +33,6 @@
     <div class="container">
       <div class="brand" id="brand">
         <a href="./" aria-label="Vai alla home" class="brand__link">
-          <!-- Uso il PNG (più affidabile se lo SVG dava problemi) -->
           <img src="assets/logo.png" alt="Logo LuccAlfa" class="brand__symbol" />
         </a>
       </div>
@@ -46,7 +45,6 @@
       <nav id="primary-navigation" class="nav-menu" aria-label="Main menu">
         <a href="#servizi">Servizi</a>
         <a href="#about">Chi siamo</a>
-        <!-- Header CTA: riquadro arancione con testo NERO -->
         <a href="#contatti" class="nav-cta nav-cta--orange">Richiedi un preventivo</a>
       </nav>
     </div>
@@ -59,7 +57,6 @@
         <h1 id="hero-title">Giardinaggio e pulizie a Lucca e dintorni</h1>
         <p>Interventi professionali per privati, condomini e aziende: manutenzione ordinaria, potature, pulizie e interventi su chiamata.</p>
 
-        <!-- Hero CTA: uguale al pulsante in header (riquadro arancione, testo nero; stesso font/dimensione) -->
         <a href="#contatti" class="nav-cta nav-cta--orange hero-cta">Richiedi un preventivo</a>
       </div>
       <div class="hero__media" aria-hidden="true"></div>
@@ -70,16 +67,14 @@
     <!-- Intro -->
     <section id="intro" aria-labelledby="intro-title" class="section">
       <h2 id="intro-title">Benvenuto</h2>
-      <p>Benvenuti in LuccAlfa srls. Operiamo nel settore del giardinaggio e dei servizi di pulizia offrendo soluzioni su misura per privati, aziende e condomini. Ci distinguiamo per l’attenzione al dettaglio, la cura nella gestione degli spazi verdi e la precisione negli interventi di pulizia, garantendo ambienti ordinati, sicuri e piacevoli da vivere.
-        La nostra realtà nasce con un obiettivo chiaro: fornire un servizio serio, affidabile e continuativo. Ogni intervento è pianificato con professionalità, utilizzando attrezzature adeguate e adottando procedure che assicurano risultati costanti nel tempo.
-        Scegliere LuccAlfa significa affidarsi a un team che lavora con dedizione, rispetto per gli spazi e massima attenzione alle esigenze del cliente.</p>
+      <p>Benvenuti in LuccAlfa srls. Operiamo nel settore del giardinaggio e dei servizi di pulizia offrendo soluzioni su misura per privati, aziende e condomini. Ci distinguiamo per l’attenzione al dettaglio e la professionalità.</p>
     </section>
 
-    <!-- Chi siamo -->
+    <!-- Chi siamo (nuovo layout con immagini stacked) -->
     <section id="about" aria-labelledby="about-title" class="section section--alt">
       <h3 id="about-title">Chi siamo</h3>
-      <div class="grid-2">
-        <div>
+      <div class="about-grid">
+        <div class="about-text">
           <p>LuccAlfa è un team esperto di giardinieri e addetti alle pulizie che opera a Lucca e dintorni. Offriamo interventi programmati, manutenzione verde, pulizie civili e per privati con attenzione alle esigenze del cliente.</p>
           <ul>
             <li>Interventi programmati</li>
@@ -87,8 +82,11 @@
             <li>Interventi su chiamata ed emergenze</li>
           </ul>
         </div>
-        <div>
-          <img src="assets/about.png" alt="Team LuccAlfa al lavoro" class="about-img" />
+        <div class="about-media" aria-hidden="true">
+          <div class="about-stack" aria-hidden="true">
+            <img src="assets/about.png" alt="Staff LuccAlfa" class="about-stack__img about-stack__img--main" />
+            <img src="assets/about2.png" alt="Intervento LuccAlfa" class="about-stack__img about-stack__img--small" />
+          </div>
         </div>
       </div>
     </section>
@@ -99,15 +97,15 @@
       <div class="services-grid">
         <article class="card" aria-labelledby="s1-title">
           <div class="card-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 21s4-5 10-5 8 2 8 2" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 10c2-4 6-8 12-9" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 21s4-5 10-5 8 2 8 2" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s1-title">Giardinaggio</h4>
-          <p>Manutenzione prati, potature, cure dell'aiuole e gestione stagionale. Interventi su appuntamento e contratti di manutenzione.</p>
+          <p>Manutenzione prati, potature, progettazione aiuole e gestione stagionale. Interventi su appuntamento e contratti di manutenzione.</p>
         </article>
 
         <article class="card" aria-labelledby="s2-title">
           <div class="card-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 21l6-6" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 17L21 3" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 21l6-6" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s2-title">Pulizie</h4>
           <p>Pulizie civili e per privati, sanificazione di spazi comuni e straordinari. Forniamo servizi su richiesta o in abbonamento.</p>
@@ -115,7 +113,7 @@
 
         <article class="card" aria-labelledby="s3-title">
           <div class="card-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="18" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/><rect x="13" y="7" width="8" height="14" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="18" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s3-title">Condomini & Aziende</h4>
           <p>Contratti personalizzati per condomini e aziende: gestione verde condominiale, pulizie periodiche e interventi dedicati.</p>
@@ -132,41 +130,57 @@
       </div>
     </section>
 
-    <!-- Contatti -->
-    <section id="contatti" aria-labelledby="contact-title" class="section">
-      <h3 id="contact-title">Contatti</h3>
+    <!-- Contatti (nuovo layout a due colonne) -->
+    <section id="contatti" aria-labelledby="contact-title" class="section contact-section">
+      <div class="contact-grid container--narrow">
+        <div class="contact-form-wrap">
+          <h2 id="contact-title">Contatti</h2>
+          <form id="contact-form" action="#" data-endpoint="https://formspree.io/f/xjknrvqv" method="POST" aria-label="Modulo di contatto" novalidate>
+            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
 
-      <form id="contact-form" action="#" data-endpoint="https://formspree.io/f/xjknrvqv" method="POST" aria-label="Modulo di contatto" novalidate>
-        <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+            <label for="name">Nome
+              <input id="name" type="text" name="name" autocomplete="name" aria-describedby="name-help" required />
+              <small id="name-help" class="sr-only">Inserisci il tuo nome</small>
+            </label>
 
-        <label for="name">Nome
-          <input id="name" type="text" name="name" autocomplete="name" aria-describedby="name-help" required />
-          <small id="name-help" class="sr-only">Inserisci il tuo nome</small>
-        </label>
+            <label for="email">Email
+              <input id="email" type="email" name="_replyto" autocomplete="email" aria-describedby="email-help" required />
+              <small id="email-help" class="sr-only">Inserisci la tua email</small>
+            </label>
 
-        <label for="email">Email
-          <input id="email" type="email" name="_replyto" autocomplete="email" aria-describedby="email-help" required />
-          <small id="email-help" class="sr-only">Inserisci la tua email</small>
-        </label>
+            <label for="message">Messaggio
+              <textarea id="message" name="message" autocomplete="off" aria-describedby="message-help" required></textarea>
+              <small id="message-help" class="sr-only">Scrivi il messaggio</small>
+            </label>
 
-        <label for="message">Messaggio
-          <textarea id="message" name="message" autocomplete="off" aria-describedby="message-help" required></textarea>
-          <small id="message-help" class="sr-only">Scrivi il messaggio</small>
-        </label>
+            <div style="display:none" aria-hidden="true">
+              <label>Lascia vuoto
+                <input type="text" name="_gotcha" autocomplete="off" />
+              </label>
+            </div>
 
-        <div style="display:none" aria-hidden="true">
-          <label>Lascia vuoto
-            <input type="text" name="_gotcha" autocomplete="off" />
-          </label>
+            <input type="hidden" name="_subject" value="Messaggio dal sito" />
+
+            <button type="submit" class="btn-primary btn-primary--large">Invia</button>
+          </form>
         </div>
 
-        <input type="hidden" name="_subject" value="Messaggio dal sito" />
+        <aside class="contact-info">
+          <h2 class="contact-info__title">LuccAlfa S.R.L.s</h2>
+          <p class="contact-info__subtitle">Via Celso 14R, Lucca</p>
 
-        <button type="submit" class="btn-primary">Invia</button>
-      </form>
+          <ul class="contact-info__list">
+            <li><svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72c.12 1.05.37 2.07.74 3.03a2 2 0 0 1-.45 2.11L8.91 10.91a16 16 0 0 0 6 6l1.05-1.05a2 2 0 0 1 2.11-.45c.96.37 1.98.62 3.03.74A2 2 0 0 1 22 16.92z" fill="#111"/></svg> <a href="tel:+393294291402">+39 329 429 1402</a></li>
+            <li><svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 4h16v16H4z" fill="none"/><path d="M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6m2-2h16a2 2 0 0 1 2 2v12" stroke="#111" fill="none"/></svg> <a href="mailto:info@luccalfa.example">info@luccalfa.example</a></li>
+            <li><svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z" fill="#111"/></svg> Via Celso 14R, Lucca</li>
+          </ul>
 
-      <div class="contact-box mt-24">
-        <p>In alternativa al telefono: <a href="tel:+393294291402">+39 329 429 1402</a></p>
+          <div class="contact-cta">
+            <h3>Preferisci parlare subito?</h3>
+            <p class="contact-cta__sub">Parliamo ora con un operatore</p>
+            <a href="tel:+393294291402" class="btn-secondary">Chiama ora</a>
+          </div>
+        </aside>
       </div>
     </section>
   </main>
