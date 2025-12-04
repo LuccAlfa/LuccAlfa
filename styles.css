@@ -223,12 +223,13 @@ body{
 /* About layout (two columns) */
 /* Further reduced text column and centered block */
 .about-grid{
-  display:grid;
-  grid-template-columns: 320px 520px; /* text column reduced to 320px (smaller than before) */
-  gap:32px;
-  justify-content: center; /* center the two-column block in the container */
-  align-items:center;
-  margin-top: 12px; /* reduced spacing from title */
+  display: grid;
+  grid-template-columns: 320px 520px; /* larghezza colonne (testo | immagine) */
+  gap: 32px;
+  width: calc(320px + 520px + 32px); /* somma colonne + gap per larghezza totale */
+  margin: 0 auto; /* centra il blocco orizzontalmente nella pagina */
+  align-items: center;
+  margin-top: 12px;
 }
 /* center the section title horizontally over the text column only */
 .section--alt{
@@ -239,10 +240,10 @@ body{
   margin-bottom: 0; /* keep tight with about-grid */
 }
 .section--alt h3 {
-  grid-column: 1 / 2;     /* mantiene il titolo nella colonna testo */
-  justify-self: center;    /* centra orizzontalmente dentro la colonna */
-  margin-bottom: 0.5rem;
-  transform: translateX(10px); /* sposta leggermente a destra; modifica il valore se vuoi regolare */
+  width: 320px;           /* stessa larghezza della colonna testo */
+  margin: 0 auto 0.5rem;  /* centra il riquadro del titolo orizzontalmente */
+  text-align: center;     /* centra il testo dentro quel riquadro (titolo centrato rispetto alla colonna) */
+  transform: translateX(8px); /* sposta leggermente il titolo verso destra; regola il valore se necessario */
 }
 
 /* keep text left-aligned within the smaller column */
