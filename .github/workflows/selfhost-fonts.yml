@@ -1,0 +1,66 @@
+# Self-host Google Fonts: fetcha la CSS remota, scarica i file woff2 e crea assets/fonts/fonts.css
+# Run manualmente (workflow_dispatch) oppure esegui su push/PR se preferisci.
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch-fonts:
+    runs-on: ubuntu-latest
+    name: Fetch and self-host Google Fonts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Google Fonts CSS and download woff2 files
+        env:
+          GOOGLE_FONTS_CSS: "https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap"
+        run: |
+          set -euo pipefail
+          mkdir -p assets/fonts
+          # fetch the CSS as served to browsers (use a normal browser UA so Google returns woff2)
+          curl -s -A "Mozilla/5.0 (compatible;)" "$GOOGLE_FONTS_CSS" -o /tmp/gf.css
+
+          # extract unique URLs (fonts.gstatic) and download them
+          grep -oP 'url\((https:[^)]*?)\)' /tmp/gf.css | sed -E "s/url\((https:[^)]*?)\)/\1/" | sort -u > /tmp/font-urls.txt
+
+          while read -r url; do
+            fname=$(basename "$url" | sed 's/\?.*$//')
+            # avoid re-downloading identical file names
+            if [ ! -f "assets/fonts/$fname" ]; then
+              echo "Downloading $url -> assets/fonts/$fname"
+              curl -fL "$url" -o "assets/fonts/$fname"
+            else
+              echo "Already exists: assets/fonts/$fname"
+            fi
+          done < /tmp/font-urls.txt
+
+          # Replace remote urls with local relative ones and add font-display:swap
+          # Take gf.css, replace fonts.gstatic URLs with ./assets/fonts/<basename> and ensure font-display
+          awk '
+            BEGIN{FS="\n"; RS=""; ORS="\n\n"}
+            {
+              s=$0;
+              # replace urls
+              gsub(/https:\/\/fonts.gstatic.com\/[^\)]+/, function(x) {
+                n = x;
+                sub(/^.*\//, "", n);
+                return "./assets/fonts/" n;
+              });
+              # ensure font-display exists; if not add it before closing }
+              if (s !~ /font-display:/) {
+                gsub(/}/, "  font-display: swap;\n}", s);
+              }
+              print s;
+            }
+          ' /tmp/gf.css > assets/fonts/fonts.css
+
+      - name: Commit downloaded fonts and generated CSS
+        env:
+          GIT_AUTHOR_NAME: "github-actions[bot]"
+          GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+        run: |
+          git config user.name "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
+          git add assets/fonts || true
+          git commit -m "chore: add self-hosted fonts (Montserrat, Roboto)" || echo "nothing to commit"
+          git push
