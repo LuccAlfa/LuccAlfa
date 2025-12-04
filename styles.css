@@ -63,7 +63,7 @@ body{
 .brand__symbol{
   display:block;
   width:auto;
-  max-height:100px; /* INCREMENTATO: prima 48px, ora 85px */
+  max-height:120px; /* INCREMENTATO: prima 48px, ora 85px */
   height:auto;
   object-fit:contain;
   vertical-align:middle;
