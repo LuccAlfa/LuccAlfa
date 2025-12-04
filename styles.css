@@ -184,10 +184,9 @@ body{
 .section p, .section li { font-size:1.05rem; }
 .section h2, .section h3, .section h4 { margin-bottom: .9rem; }
 
-/* --- NEW: Intro (Benvenuto) text justification --- */
+/* Intro (Benvenuto) - left aligned as requested */
 #intro p {
-  text-align: justify;
-  text-justify: inter-word;
+  text-align: left;
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
@@ -222,23 +221,28 @@ body{
 .card p{margin:0;color:var(--color-muted);font-size:0.98rem;}
 
 /* About layout (two columns) */
-/* Adjusted: narrow text column (420px) + fixed media column (520px), centered in container */
+/* Further reduced text column and centered block */
 .about-grid{
   display:grid;
-  grid-template-columns: 420px 520px; /* text column reduced to 420px */
+  grid-template-columns: 360px 520px; /* text column reduced to 360px */
   gap:32px;
   justify-content: center; /* center the two-column block in the container */
   align-items:center;
-  margin-top: 16px; /* slightly reduced spacing from title */
+  margin-top: 12px; /* reduced spacing from title */
 }
-/* keep text justified within the smaller column */
-.about-text{ }
-.about-text p{ margin-bottom: 12px; text-align: justify; text-justify: inter-word; }
-
-/* reduce distance under section titles for section--alt (so title is closer to content) */
+/* center the section title horizontally relative to the text column */
+.section--alt {
+  display: grid;
+  grid-template-columns: 1fr;
+}
 .section--alt h3 {
+  justify-self: center;
   margin-bottom: 0.5rem;
 }
+
+/* keep text left-aligned (as requested) within the smaller column */
+.about-text{ }
+.about-text p{ margin-bottom: 12px; text-align: left; }
 
 /* about single image container */
 .about-media{ position:relative; overflow:hidden; }
