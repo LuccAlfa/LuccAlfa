@@ -16,6 +16,11 @@
   --logo-desktop: 105px;
   --logo-tablet: 52px;
   --logo-mobile: 40px;
+
+  /* Chi siamo widths (usate per centrare e allineare il titolo) */
+  --chi-testocol-width: 320px;
+  --chi-media-width: 520px;
+  --chi-gap: 32px;
 }
 
 /* Enable smooth scrolling globally (applies desktop like mobile) */
@@ -222,73 +227,42 @@ body{
 
 /* About layout (two columns) */
 /* container del titolo e del blocco "Chi siamo" */
-/* container del titolo e del blocco "Chi siamo" - titolo centrato esattamente sulla colonna testo */
 .section--alt {
-  display: block;
+  display: block; /* evita che il contenuto venga gestito come una grid a livello di sezione */
   padding: 0;
 }
 
-/* larghezze usate nel layout */
-:root {
-  --chi-testocol-width: 320px;
-  --chi-media-width: 520px;
-  --chi-gap: 32px;
-}
-
 /* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
-.about-grid {
+/* mantiene le colonne 320px | 520px e centra l'intero blocco */
+.about-grid{
   display: grid;
   grid-template-columns: var(--chi-testocol-width) var(--chi-media-width);
   gap: var(--chi-gap);
   width: calc(var(--chi-testocol-width) + var(--chi-media-width) + var(--chi-gap));
   margin: 0 auto;
-  align-items: center;
+  align-items: start; /* allinea in alto le due colonne */
   margin-top: 12px;
+}
+
+/* keep text left-aligned within the smaller column */
+.about-text{ }
+.about-text p{ margin-bottom: 12px; text-align: left; }
+
+/* compensa il padding interno della about-stack spostando leggermente il contenuto testuale verso l'alto
+   (se la foto ha padding:20px, questo porta il testo ad allinearsi con l'inizio visibile della foto) */
+.about-text {
+  margin-top: -20px !important;
 }
 
 /* titolo: posizionato esattamente sopra la colonna testo (centrato su quella colonna) */
 .section--alt h3 {
   width: var(--chi-testocol-width);
   position: relative;
-  /* left = distanza dal bordo sinistro della pagina fino al bordo sinistro dell'about-grid
-     (cioè (100% - width(about-grid)) / 2 ). Con questa left, il titolo (larghezza 320px)
-     risulterà centrato rispetto alla colonna testo (la sua center coincide con il centro della colonna). */
   left: calc((100% - (var(--chi-testocol-width) + var(--chi-media-width) + var(--chi-gap))) / 2);
   margin: 0 0 0.5rem 0;
   text-align: center;
-  transform: none; /* rimuove eventuali transform residui */
+  transform: none;
 }
-
-/* reset su schermi piccoli: lascia il flusso normale (mobile-friendly) */
-@media (max-width:1000px) {
-  .about-grid {
-    grid-template-columns: 1fr;
-    width: auto;
-    gap: 16px;
-    margin-top: 14px;
-  }
-  .section--alt h3 {
-    position: static;
-    left: auto;
-    width: auto;
-    margin: 0 0 0.5rem 0;
-    text-align: center;
-  }
-}
-
-/* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
-/* allinea in alto testo e immagine nella grid "Chi siamo" */
-/* allinea in alto testo e immagine nella grid "Chi siamo" e compensa il padding interno dell'immagine */
-.about-grid {
-  align-items: start;
-}
-.about-text {
-  margin-top: 20px; /* regola questo valore se la foto ha padding diverso */
-}
-
-/* keep text left-aligned within the smaller column */
-.about-text{ }
-.about-text p{ margin-bottom: 12px; text-align: left; }
 
 /* about single image container */
 .about-media{ position:relative; overflow:hidden; }
@@ -363,7 +337,7 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 }
 
 .contact-info__title{ font-size:1.8rem; font-weight:700; margin:0 0 8px 0; }
-.contact-info__subtitle{ font-size:1.1rem; margin:0 0 24px 0; color:var(--color-muted); }
+contact-info__subtitle{ font-size:1.1rem; margin:0 0 24px 0; color:var(--color-muted); } /* nota: mantiene il typo se presente nell'originale */
 .contact-info__list{ list-style:none; padding:0; margin:0 0 20px 0; }
 .contact-info__list li{ display:flex; gap:10px; align-items:center; margin-bottom:12px; color:var(--color-text); font-size:1rem; }
 .contact-info__list li .icon{ opacity:0.9; }
@@ -401,7 +375,8 @@ h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
 
 @media (max-width:1000px){
   .services-grid{grid-template-columns:repeat(2,1fr);}  
-  .about-grid{ grid-template-columns: 1fr; justify-content:stretch; margin-top: 14px; } /* mobile: single column, full width */
+  .about-grid{ grid-template-columns: 1fr; justify-content:stretch; margin-top: 14px; width: auto; } /* mobile: single column, full width */
+  .about-text { margin-top: 0 !important; } /* reset margin-top on mobile */
   .grid-2{grid-template-columns:1fr;}
   .brand__symbol{max-height:var(--logo-tablet);}
   .hero h1{font-size:2.4rem;}
@@ -428,7 +403,8 @@ h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
   }
   .nav-menu.open{ transform:translateX(0); visibility:visible; }
   .nav-toggle{display:flex}
-  .brand__symbol{max-height:var(--logo-mobile);}n  .hero{padding-top:calc(var(--nav-height) + 24px);padding-bottom:60px;}
+  .brand__symbol{max-height:var(--logo-mobile);}
+  .hero{padding-top:calc(var(--nav-height) + 24px);padding-bottom:60px;}
   .services-grid{grid-template-columns:1fr;}
   :root{--gap-section:48px}
 
