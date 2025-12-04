@@ -85,11 +85,10 @@
         <div class="about-media" aria-hidden="true">
           <!-- containment e overflow:hidden per evitare che le immagini escano dalla sezione -->
           <div class="about-stack" aria-hidden="true" role="presentation">
-            <!-- assets/about.png è la base (posizionata a destra-basso del container) -->
+            <!-- base -->
             <img src="assets/about.png" alt="Staff LuccAlfa" class="about-stack__img about-stack__img--base" />
-            <!-- assets/about2.png è sovrapposta in alto-sinistra rispetto al base -->
+            <!-- overlay -->
             <img src="assets/about2.png" alt="Intervento LuccAlfa" class="about-stack__img about-stack__img--overlay" />
-            <!-- opzionale elemento di fusione: un pseudo-gradient via overlay -->
             <div class="about-stack__blend" aria-hidden="true"></div>
           </div>
         </div>
@@ -126,7 +125,7 @@
 
         <article class="card" aria-labelledby="s3-title">
           <div class="card-icon" aria-hidden="true">
-            <!-- Due palazzi stilizzati: grande a sinistra, piccolo a destra (aggiornato come richiesto) -->
+            <!-- Due palazzi stilizzati: grande a sinistra, piccolo a destra (aggiornato) -->
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <!-- palazzo grande (sinistra) -->
               <rect x="2" y="3" width="9" height="16" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
@@ -191,9 +190,23 @@
           <p class="contact-info__subtitle">Via Celso 14R, Lucca</p>
 
           <ul class="contact-info__list">
-            <li><svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72c.12 1.05.37 2.07.74 3.03a2 2 0 0 1-.45 2.11L8.91 10.91a16 16 0 0 0 6 6l1.05-1.05a2 2 0 0 1 2.11-.45c.96.37 1.98.62 3.03.74A2 2 0 0 1 22 16.92z" fill="#111"/></svg> <a href="tel:+393294291402">+39 329 429 1402</a></li>
-            <li><svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 4h16v16H4z" fill="none"/><path d="M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6m2-2h16a2 2 0 0 1 2 2v12" stroke="#111" fill="none"/></svg> <a href="mailto:info@luccalfa.example">info@luccalfa.example</a></li>
-            <li><svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z" fill="#111"/></svg> Via Celso 14R, Lucca</li>
+            <li>
+              <!-- phone icon unchanged -->
+              <svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72c.12 1.05.37 2.07.74 3.03a2 2 0 0 1-.45 2.11L8.91 10.91a16 16 0 0 0 6 6l1.05-1.05a2 2 0 0 1 2.11-.45c.96.37 1.98.62 3.03.74A2 2 0 0 1 22 16.92z" fill="#111"/></svg>
+              <a href="tel:+393294291402">+39 329 429 1402</a>
+            </li>
+            <li>
+              <!-- envelope icon for email -->
+              <svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M3 7.5v9A2.5 2.5 0 0 0 5.5 19h13A2.5 2.5 0 0 0 21 16.5v-9A2.5 2.5 0 0 0 18.5 5h-13A2.5 2.5 0 0 0 3 7.5z" fill="none" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                <path d="M21 7.5l-9 6-9-6" fill="none" stroke="#111" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <a href="mailto:info@luccalfa.example">info@luccalfa.example</a>
+            </li>
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z" fill="#111"/></svg>
+              Via Celso 14R, Lucca
+            </li>
           </ul>
 
           <div class="contact-cta">
@@ -209,7 +222,7 @@
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-inner">
       <div class="footer-copy">© <span id="year" aria-hidden="true"></span> LuccAlfa srls — Tutti i diritti riservati</div>
-      <div class="center"><!-- footer call removed per richiesta --></div>
+      <div class="center"><!-- footer call removed --></div>
     </div>
   </footer>
 
