@@ -495,3 +495,17 @@ a{ transition: color .18s ease; }
   .contact-section { padding: 70px 0 !important; }
 }
 /* --- fine snippet --- */
+
+/* --- Snippet: Hero spacing ottimizzato --- */
+.hero {
+  padding-top: 130px !important;   /* Compensa navbar fixed e dà aria */
+  padding-bottom: 90px !important;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    padding-top: 110px !important;
+    padding-bottom: 70px !important;
+  }
+}
+/* --- fine snippet --- */
