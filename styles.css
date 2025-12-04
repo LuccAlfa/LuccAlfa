@@ -58,12 +58,12 @@ body{
 .brand{display:flex;align-items:center;gap:12px;margin-right:18px;height:var(--nav-height);overflow:hidden;}
 
 /* Logo: usare logo.png e forzare dimensioni contenute nell'header */
-/* Aumentato leggermente il logo: max-height desktop = 85px */
+/* Aumentato leggermente il logo: max-height desktop = 105px */
 .brand__link{display:flex;align-items:center;height:100%;padding:6px 8px;}
 .brand__symbol{
   display:block;
   width:auto;
-  max-height:105px; /* INCREMENTATO: prima 48px, ora 85px */
+  max-height:105px; /* INCREMENTATO: prima 48px, ora 105px */
   height:auto;
   object-fit:contain;
   vertical-align:middle;
