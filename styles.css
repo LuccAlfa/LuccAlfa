@@ -197,23 +197,26 @@ body{
 .card p{margin:0;color:var(--color-muted);font-size:0.98rem;}
 
 /* About stacked images */
+/* garantiamo che lo stack stia solo nella sezione about (non sovrapponga il paragrafo precedente) */
 .about-grid{
   display:grid;
   grid-template-columns: 1fr 520px;
   gap:32px;
   align-items:center;
+  margin-top: 12px; /* spingiamo il block un po' giù rispetto al titolo/intro */
 }
 .about-text p{ margin-bottom: 12px; }
-.about-stack{ position:relative; width:100%; max-width:520px; height:auto; min-height:320px; }
+.about-stack{ position:relative; width:100%; max-width:520px; height:auto; min-height:320px; overflow:visible; padding-top: 12px; }
 
-/* main image positioned and slightly larger; small image moved to bottom-right and overlays corner */
+/* main image slightly larger; small image moved to bottom-right and overlays corner
+   ho evitato valori negativi che potessero sporgere sopra la sezione precedente */
 .about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; width:100%; }
 .about-stack__img--main{
   position: absolute;
   z-index:2;
-  width:74%;               /* INGROSSATE leggermente */
-  left: -2%;
-  bottom: -4%;
+  width:78%;               /* leggermente più grande */
+  left: 6%;                /* dentro il container */
+  top: 28px;               /* spostiamo verso il basso (non sopra la sezione precedente) */
   border-radius:12px;
   box-shadow: 0 10px 28px rgba(15,15,15,0.09);
   transform: scale(1.03);
@@ -221,17 +224,20 @@ body{
 .about-stack__img--small{
   position:absolute;
   z-index:3;
-  width:44%;               /* small leggermente più grande */
-  right: -8%;
-  bottom: -10%;            /* ora in basso a destra rispetto al main */
-  border-radius:10px;
+  width:48%;               /* small leggermente più grande */
+  right: -6%;              /* esce parzialmente a destra per sovrapporsi */
+  bottom: -8%;             /* posizionato in basso a destra rispetto al main */
+  border-radius:12px;      /* stesso raggio per sembrare unico */
   box-shadow: 0 10px 30px rgba(15,15,15,0.10);
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
+/* Rendiamo i bordi visivamente più morbidi: se vuoi un effetto ancora più "fuso"
+   puoi ridurre il box-shadow o usare clip-path per fondere i contorni. */
 @media (max-width:1000px){
   /* fallback: stack verticale sui tablet/smaller */
+  .about-grid{ margin-top: 6px; }
   .about-stack__img--main,
-  .about-stack__img--small { position:relative; width:100%; bottom:0; right:0; top:0; left:0; margin-bottom:12px; transform:none; }
+  .about-stack__img--small { position:relative; width:100%; top:0; right:0; bottom:0; left:0; margin-bottom:12px; transform:none; }
 }
 
 /* Contact (new layout) */
@@ -247,7 +253,7 @@ body{
 @media (max-width:1000px) {
   .contact-grid{ align-items:start; } /* mobile: torna start */
 }
-contact-form-wrap h2{ margin-top:0; font-size:1.8rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; }
+.contact-form-wrap h2{ margin-top:0; font-size:1.8rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; }
 form#contact-form{
   display:flex;flex-direction:column;gap:18px;
   width:100%;
@@ -279,11 +285,21 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 .contact-info__list li{ display:flex; gap:10px; align-items:center; margin-bottom:12px; color:var(--color-text); font-size:1rem; }
 .contact-info__list li .icon{ opacity:0.9; }
 
-/* contact CTA */
+/* contact CTA: rendiamo la box "Chiama ora" arancione come gli altri pulsanti */
 .contact-cta{ margin-top:12px; padding-top:12px; border-top:1px dashed #eee; }
 .contact-cta h3{ margin:12px 0 8px 0; font-size:1.2rem; font-weight:700; }
 .contact-cta__sub{ margin:0 0 20px 0; font-size:1.05rem; color:var(--color-muted); }
-.btn-secondary{ display:inline-block; padding:12px 18px; border-radius:999px; background:#111; color:#fff; text-decoration:none; }
+.btn-secondary{
+  display:inline-block;
+  padding:12px 18px;
+  border-radius:999px;
+  background: var(--color-primary); /* ora arancione */
+  color: #111; /* testo nero */
+  text-decoration:none;
+  border:0;
+  transition: background .18s ease, box-shadow .18s ease, transform .12s ease;
+}
+.btn-secondary:hover{ background: var(--color-primary-dark); box-shadow: 0 8px 22px rgba(15,15,15,0.08); transform: translateY(-2px); }
 
 /* Footer */
 .site-footer{ background:#1E1E1E; padding:50px 0; color:#EDEDED; }
