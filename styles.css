@@ -277,14 +277,9 @@ body{
 }
 
 /* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
-.about-grid{
-  display: grid;
-  grid-template-columns: 320px 520px; /* larghezza colonne (testo | immagine) */
-  gap: 32px;
-  width: calc(320px + 520px + 32px); /* somma colonne + gap per larghezza totale */
-  margin: 0 auto; /* centra il blocco orizzontalmente nella pagina */
-  align-items: center;
-  margin-top: 12px;
+/* allinea in alto testo e immagine nella grid "Chi siamo" */
+.about-grid {
+  align-items: start;
 }
 
 /* keep text left-aligned within the smaller column */
