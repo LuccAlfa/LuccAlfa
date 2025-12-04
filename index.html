@@ -83,11 +83,14 @@
           </ul>
         </div>
         <div class="about-media" aria-hidden="true">
-          <div class="about-stack" aria-hidden="true">
-            <!-- main = assets/about.png (più grande, pos. in basso-sinistra) -->
-            <img src="assets/about.png" alt="Staff LuccAlfa" class="about-stack__img about-stack__img--main" />
-            <!-- small = assets/about2.png (sovrapposta in basso a destra, sopra il main) -->
-            <img src="assets/about2.png" alt="Intervento LuccAlfa" class="about-stack__img about-stack__img--small" />
+          <!-- containment e overflow:hidden per evitare che le immagini escano dalla sezione -->
+          <div class="about-stack" aria-hidden="true" role="presentation">
+            <!-- assets/about.png è la base (posizionata a destra-basso del container) -->
+            <img src="assets/about.png" alt="Staff LuccAlfa" class="about-stack__img about-stack__img--base" />
+            <!-- assets/about2.png è sovrapposta in alto-sinistra rispetto al base -->
+            <img src="assets/about2.png" alt="Intervento LuccAlfa" class="about-stack__img about-stack__img--overlay" />
+            <!-- opzionale elemento di fusione: un pseudo-gradient via overlay -->
+            <div class="about-stack__blend" aria-hidden="true"></div>
           </div>
         </div>
       </div>
@@ -123,14 +126,14 @@
 
         <article class="card" aria-labelledby="s3-title">
           <div class="card-icon" aria-hidden="true">
-            <!-- Due palazzi stilizzati: piccolo a sinistra, grande a destra -->
+            <!-- Due palazzi stilizzati: grande a sinistra, piccolo a destra (aggiornato come richiesto) -->
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <!-- palazzo piccolo (sinistra) -->
-              <rect x="2.5" y="6" width="6" height="12" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
-              <path d="M4 9h2M4 13h2M4 17h2" stroke="#2b6fa3" stroke-width="1.2" stroke-linecap="round"/>
-              <!-- palazzo grande (destra) -->
-              <rect x="14" y="3" width="8" height="16" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
-              <path d="M16 7h4M16 11h4M16 15h4" stroke="#2b6fa3" stroke-width="1.2" stroke-linecap="round"/>
+              <!-- palazzo grande (sinistra) -->
+              <rect x="2" y="3" width="9" height="16" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+              <path d="M4 6h3M4 10h3M4 14h3M4 18h3" stroke="#2b6fa3" stroke-width="1.2" stroke-linecap="round"/>
+              <!-- palazzo piccolo (destra) -->
+              <rect x="14" y="7" width="6" height="12" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+              <path d="M16 10h2M16 14h2M16 18h2" stroke="#2b6fa3" stroke-width="1.2" stroke-linecap="round"/>
             </svg>
           </div>
           <h4 id="s3-title">Condomini & Aziende</h4>
@@ -205,7 +208,7 @@
 
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-inner">
-      <div>© <span id="year" aria-hidden="true"></span> LuccAlfa srls — Tutti i diritti riservati</div>
+      <div class="footer-copy">© <span id="year" aria-hidden="true"></span> LuccAlfa srls — Tutti i diritti riservati</div>
       <div class="center"><!-- footer call removed per richiesta --></div>
     </div>
   </footer>
