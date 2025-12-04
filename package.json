@@ -1,0 +1,13 @@
+{
+  "name": "luccalfa-assets",
+  "version": "1.0.0",
+  "description": "Image optimization scripts for LuccAlfa (used by GH Actions)",
+  "private": true,
+  "scripts": {
+    "generate-images": "node scripts/generate-images.js"
+  },
+  "dependencies": {
+    "sharp": "^0.32.0",
+    "fast-glob": "^3.2.12"
+  }
+}
