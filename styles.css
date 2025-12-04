@@ -278,8 +278,12 @@ body{
 
 /* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
 /* allinea in alto testo e immagine nella grid "Chi siamo" */
+/* allinea in alto testo e immagine nella grid "Chi siamo" e compensa il padding interno dell'immagine */
 .about-grid {
   align-items: start;
+}
+.about-text {
+  margin-top: 20px; /* regola questo valore se la foto ha padding diverso */
 }
 
 /* keep text left-aligned within the smaller column */
