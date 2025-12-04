@@ -239,9 +239,10 @@ body{
   margin-bottom: 0; /* keep tight with about-grid */
 }
 .section--alt h3 {
-  grid-column: 1 / 2;     /* place the title in the first column */
-  justify-self: center;    /* center the title within the first column */
+  grid-column: 1 / 2;     /* mantiene il titolo nella colonna testo */
+  justify-self: center;    /* centra orizzontalmente dentro la colonna */
   margin-bottom: 0.5rem;
+  transform: translateX(10px); /* sposta leggermente a destra; modifica il valore se vuoi regolare */
 }
 
 /* keep text left-aligned within the smaller column */
