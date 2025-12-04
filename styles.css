@@ -199,37 +199,39 @@ body{
 /* About stacked images */
 .about-grid{
   display:grid;
-  grid-template-columns: 1fr 460px;
+  grid-template-columns: 1fr 520px;
   gap:32px;
   align-items:center;
 }
 .about-text p{ margin-bottom: 12px; }
-.about-stack{ position:relative; width:100%; max-width:460px; height:auto; min-height:300px; }
+.about-stack{ position:relative; width:100%; max-width:520px; height:auto; min-height:320px; }
 
-/* main image positioned bottom-left (partial overlap), small image top-right */
+/* main image positioned and slightly larger; small image moved to bottom-right and overlays corner */
 .about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; width:100%; }
 .about-stack__img--main{
   position: absolute;
   z-index:2;
-  width:58%;
-  left: -6%;
-  bottom: -6%;
+  width:74%;               /* INGROSSATE leggermente */
+  left: -2%;
+  bottom: -4%;
   border-radius:12px;
-  box-shadow: 0 8px 24px rgba(15,15,15,0.08);
+  box-shadow: 0 10px 28px rgba(15,15,15,0.09);
+  transform: scale(1.03);
 }
 .about-stack__img--small{
   position:absolute;
   z-index:3;
-  width:42%;
-  top: -6%;
-  right: -6%;
+  width:44%;               /* small leggermente più grande */
+  right: -8%;
+  bottom: -10%;            /* ora in basso a destra rispetto al main */
   border-radius:10px;
-  box-shadow: 0 10px 26px rgba(15,15,15,0.08);
+  box-shadow: 0 10px 30px rgba(15,15,15,0.10);
+  transform: scale(1.06);
 }
 @media (max-width:1000px){
   /* fallback: stack verticale sui tablet/smaller */
   .about-stack__img--main,
-  .about-stack__img--small { position:relative; width:100%; bottom:0; right:0; top:0; left:0; margin-bottom:12px; }
+  .about-stack__img--small { position:relative; width:100%; bottom:0; right:0; top:0; left:0; margin-bottom:12px; transform:none; }
 }
 
 /* Contact (new layout) */
@@ -245,7 +247,7 @@ body{
 @media (max-width:1000px) {
   .contact-grid{ align-items:start; } /* mobile: torna start */
 }
-.contact-form-wrap h2{ margin-top:0; font-size:1.8rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; }
+contact-form-wrap h2{ margin-top:0; font-size:1.8rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; }
 form#contact-form{
   display:flex;flex-direction:column;gap:18px;
   width:100%;
