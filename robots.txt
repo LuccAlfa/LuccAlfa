@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://luccalfa.github.io/LuccAlfa/sitemap.xml
