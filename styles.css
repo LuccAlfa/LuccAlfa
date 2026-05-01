@@ -331,6 +331,7 @@ a { transition: color var(--transition); }
   min-height: 480px;
   max-height: 580px;
   margin-top: 72px;
+  overflow: hidden;
 }
 .split-panel__img {
   overflow: hidden;
@@ -542,7 +543,7 @@ a { transition: color var(--transition); }
 
 /* ── RECENSIONI ── */
 .reviews-section {
-  background: var(--dark);
+  background: #0c1e2d;
   padding: 96px 0;
 }
 .reviews-inner {
@@ -631,6 +632,19 @@ a { transition: color var(--transition); }
   background: var(--white);
   padding: 96px 0;
 }
+.contact-section__heading {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 28px 36px;
+}
+.contact-section__heading h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.contact-section__heading .eyebrow { margin-bottom: 8px; }
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -645,7 +659,7 @@ a { transition: color var(--transition); }
   font-size: 2rem;
   font-weight: 800;
   color: var(--text);
-  margin-bottom: 28px;
+  margin-bottom: 8px;
 }
 .contact-form-wrap .eyebrow { margin-bottom: 8px; }
 
@@ -881,7 +895,7 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
   font-size: 0.97rem;
   color: var(--muted);
   line-height: 1.65;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 }
 
 /* ── THANKS PAGE ── */
@@ -1032,3 +1046,29 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 
 /* ── Utility ── */
 h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(.4,0,.2,1), transform 0.65s cubic-bezier(.4,0,.2,1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal--delay-1 { transition-delay: 0.10s; }
+.reveal--delay-2 { transition-delay: 0.20s; }
+.reveal--delay-3 { transition-delay: 0.30s; }
+.reveal--left {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.65s cubic-bezier(.4,0,.2,1), transform 0.65s cubic-bezier(.4,0,.2,1);
+}
+.reveal--left.is-visible { opacity: 1; transform: translateX(0); }
+.reveal--right {
+  opacity: 0;
+  transform: translateX(28px);
+  transition: opacity 0.65s cubic-bezier(.4,0,.2,1), transform 0.65s cubic-bezier(.4,0,.2,1);
+}
+.reveal--right.is-visible { opacity: 1; transform: translateX(0); }
