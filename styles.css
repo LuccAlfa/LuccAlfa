@@ -11,7 +11,7 @@
   --bg:            #FAFAFA;
   --white:         #FFFFFF;
   --dark:          #111111;
-  --nav-h:         80px; /* Aumentata per ospitare comodamente un logo più grande */
+  --nav-h:         68px; /* Aumentata per ospitare comodamente un logo più grande */
   --radius:        14px;
   --shadow:        0 8px 28px rgba(0,0,0,0.08);
   --max:           1140px;
@@ -62,7 +62,7 @@ a { transition: color var(--transition); }
   gap: 20px;
 }
 .brand__link { display: flex; align-items: center; }
-.brand__symbol { height: 56px; width: auto; } /* Dimensione logo incrementata (era 46px) */
+.brand__symbol { height: 54px; width: auto; } /* Dimensione logo incrementata (era 46px) */
 
 .nav-menu {
   display: flex;
