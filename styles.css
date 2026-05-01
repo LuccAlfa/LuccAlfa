@@ -11,7 +11,7 @@
   --bg:            #FAFAFA;
   --white:         #FFFFFF;
   --dark:          #111111;
-  --nav-h:         68px;
+  --nav-h:         80px; /* Aumentata per ospitare comodamente un logo più grande */
   --radius:        14px;
   --shadow:        0 8px 28px rgba(0,0,0,0.08);
   --max:           1140px;
@@ -62,7 +62,7 @@ a { transition: color var(--transition); }
   gap: 20px;
 }
 .brand__link { display: flex; align-items: center; }
-.brand__symbol { height: 46px; width: auto; }
+.brand__symbol { height: 56px; width: auto; } /* Dimensione logo incrementata (era 46px) */
 
 .nav-menu {
   display: flex;
@@ -141,12 +141,12 @@ a { transition: color var(--transition); }
   .hamburger::after  { top:  7px; }
 
   .nav-menu {
-    position: absolute; /* Modificato in absolute per evitare bug con il backdrop-filter */
+    position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    height: calc(100vh - var(--nav-h)); /* Occupa esattamente l'altezza restante dello schermo */
-    background: #FFFFFF !important; /* Garantisce il bianco solido senza sovrapposizioni errate */
+    height: calc(100vh - var(--nav-h));
+    background: #FFFFFF !important;
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
@@ -342,7 +342,6 @@ a { transition: color var(--transition); }
 }
 .split-panel__img {
   overflow: hidden;
-  /* Reso uniforme il padding per evitare che durante lo scale(1.04) l'immagine si tagli sul bordo destro simulando una scomparsa sotto al testo */
   padding: 28px; 
 }
 .split-panel__img img {
@@ -744,7 +743,7 @@ a { transition: color var(--transition); }
   max-width: var(--max);
   margin: 0 auto;
   padding: 0 28px;
-  align-items: center; /* Cambiato a center per allineare perfettamente i blocchi su desktop */
+  align-items: flex-start; /* Ripristinato per far gestire correttamente il distacco manuale */
 }
 .contact-form-wrap h2 {
   font-family: "Montserrat", sans-serif;
@@ -838,6 +837,7 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
   padding: 28px;
   box-shadow: var(--shadow);
   transition: transform var(--transition), box-shadow var(--transition);
+  margin-top: 250px; /* Distanza calcolata per far scendere il box e centrarlo ESATTAMENTE col modulo form laterale */
 }
 .contact-info:hover {
   transform: translateY(-6px);
@@ -904,10 +904,11 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
   .contact-grid {
     grid-template-columns: 1fr;
     padding: 0 20px;
-    align-items: flex-start; /* reset per il layout mobile in colonna */
+    align-items: flex-start;
   }
   .contact-info { 
     order: -1; 
+    margin-top: 0; /* Su mobile il margine si resetta e il box torna ad allinearsi perfettamente */
   }
 }
 
