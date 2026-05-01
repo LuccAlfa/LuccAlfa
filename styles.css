@@ -543,7 +543,7 @@ a { transition: color var(--transition); }
 
 /* ── RECENSIONI ── */
 .reviews-section {
-  background: #0c1e2d;
+  background: #FAFAFA;
   padding: 96px 0;
 }
 .reviews-inner {
