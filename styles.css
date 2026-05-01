@@ -62,7 +62,7 @@ a { transition: color var(--transition); }
   gap: 20px;
 }
 .brand__link { display: flex; align-items: center; }
-.brand__symbol { height: 64px; width: auto; } /* Dimensione logo incrementata (era 46px) */
+.brand__symbol { height: 52px; width: auto; } /* Dimensione logo incrementata (era 46px) */
 
 .nav-menu {
   display: flex;
