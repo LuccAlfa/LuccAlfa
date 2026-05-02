@@ -5,5 +5,14 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- aggiungi qui altre pagine / percorsi -->
+  <url>
+    <loc>https://luccalfa.github.io/LuccAlfa/privacy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://luccalfa.github.io/LuccAlfa/cookie-policy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>
