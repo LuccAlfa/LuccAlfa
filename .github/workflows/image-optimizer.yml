@@ -29,30 +29,28 @@ jobs:
       - name: Run image generator
         run: npm run generate-images
 
-      - name: Build PR branch name
-        run: |
-          PR_BRANCH="images/optimized-$(date +'%Y%m%d-%H%M%S')"
-          echo "PR_BRANCH=${PR_BRANCH}" >> $GITHUB_ENV
-
       - name: Configure git
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
-      - name: Create branch, commit and push
+      - name: Commit and open PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          PR_BRANCH="images/optimized-$(date +'%Y%m%d-%H%M%S')"
           git checkout -b "$PR_BRANCH"
-          git add assets/optimized || true
-          git commit -m "chore: generate responsive images (webp/avif)" || echo "No image changes to commit"
+          git add assets/optimized
+          # Se non ci sono modifiche il workflow finisce senza aprire PR
+          if git diff --cached --quiet; then
+            echo "Nessuna immagine nuova da committare. Uscita."
+            exit 0
+          fi
+          git commit -m "chore: generate responsive images (webp/avif)"
           git push --set-upstream origin "$PR_BRANCH"
-
-      - name: Create Pull Request via API
-        run: |
-          TITLE="chore: add optimized images (webp/avif)"
-          BODY="Immagini responsive WebP/AVIF generate automaticamente da GitHub Actions. Da mergiare per attivare il fix LCP."
-          API="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls"
-          PAYLOAD=$(jq -n --arg t "$TITLE" --arg b "$BODY" --arg head "$PR_BRANCH" --arg base "main" '{title:$t, body:$b, head:$head, base:$base}')
-          resp=$(curl -s -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" "$API" -d "$PAYLOAD")
-          echo "$resp"
+          gh pr create \
+            --title "chore: add optimized images (webp/avif)" \
+            --body "Immagini responsive WebP/AVIF generate da GitHub Actions. Mergia per attivare il fix LCP." \
+            --base main \
+            --head "$PR_BRANCH"
