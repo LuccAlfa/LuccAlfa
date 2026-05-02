@@ -77,6 +77,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Scroll reveal (IntersectionObserver)
+  var revealEls = document.querySelectorAll('.reveal, .reveal--left, .reveal--right');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el) { revealObserver.observe(el); });
+  } else {
+    // fallback: rendi tutto visibile subito
+    revealEls.forEach(function(el) { el.classList.add('is-visible'); });
+  }
+
   // Formspree submit handler with status messages and aria-live updates
   var contactForm = document.getElementById('contact-form');
   var formStatus = document.getElementById('form-status');
