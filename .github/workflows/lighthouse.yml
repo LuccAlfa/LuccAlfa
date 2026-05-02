@@ -1,0 +1,48 @@
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *' # run nightly at 03:00 UTC
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Chromium deps and Chromium
+        run: |
+          sudo apt-get update
+          # install a stable chromium package available on runners
+          sudo apt-get install -y chromium-browser chromium-chromedriver || true
+          # ensure we have a chrome binary path exported for ChromeLauncher
+          echo "CHROME_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
+          which chromium-browser || true
+
+      - name: Install LHCI
+        run: npm i -g @lhci/cli@0.14
+
+      - name: Run Lighthouse CI against live site
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN || '' }}
+        run: |
+          lhci autorun \
+            --collect.url="https://luccalfa.github.io/LuccAlfa/" \
+            --collect.numberOfRuns=3 \
+            --upload.target=filesystem \
+            --upload.outputPath=./lhci_reports || exit_code=$? && echo "LHCI exited with $exit_code" && exit $exit_code
+
+      - name: Upload LHCI reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-reports
+          path: ./lhci_reports
+          retention-days: 30
