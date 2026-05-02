@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Fetch Google Fonts and open PR
     steps:
-      - name: Checkout (with token)
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -25,62 +24,55 @@ jobs:
         run: |
           set -euo pipefail
           # User-Agent Chrome moderno → Google Fonts risponde con woff2 invece di TTF
-          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" "$GOOGLE_FONTS_CSS" -o /tmp/gf.css
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+            "$GOOGLE_FONTS_CSS" -o /tmp/gf.css
           echo "Saved /tmp/gf.css (size: $(stat -c%s /tmp/gf.css) bytes)"
+          echo "=== Anteprima CSS scaricato ==="
+          head -30 /tmp/gf.css
 
       - name: Extract and download font files
         run: |
           set -euo pipefail
-          grep -oE "url\([^)]+\)" /tmp/gf.css | sed -E "s/url\((https?:[^)]*)\)/\1/" | sed 's/^"//' | sed "s/^'//" | sed 's/"$//' | sed "s/'$//" | sort -u > /tmp/font-urls.txt || true
-          echo "Font URLs:"
-          sed -n '1,200p' /tmp/font-urls.txt || true
+          grep -oE "url\([^)]+\)" /tmp/gf.css \
+            | sed -E "s/url\((https?:[^)]*)\)/\1/" \
+            | tr -d '"'"'" \
+            | sort -u > /tmp/font-urls.txt
+          echo "=== URL font trovati ==="
+          cat /tmp/font-urls.txt
           while IFS= read -r url; do
             [ -z "$url" ] && continue
             fname=$(basename "${url%%\?*}")
-            if [ ! -f "assets/fonts/$fname" ]; then
-              echo "Downloading $url -> assets/fonts/$fname"
-              curl -fL "$url" -o "assets/fonts/$fname"
-            else
-              echo "Already exists: assets/fonts/$fname"
-            fi
-          done < /tmp/font-urls.txt || true
+            echo "Downloading $url -> assets/fonts/$fname"
+            curl -fL "$url" -o "assets/fonts/$fname"
+          done < /tmp/font-urls.txt
 
-      - name: Generate fonts.css (local refs + font-display)
+      - name: Generate fonts.css
         run: |
           python3 scripts/selfhost_fonts.py /tmp/gf.css assets/fonts/fonts.css
-          echo "=== fonts.css head ==="
-          sed -n '1,160p' assets/fonts/fonts.css || true
+          echo "=== fonts.css generato ==="
+          cat assets/fonts/fonts.css
 
-      - name: Build PR branch name
-        run: |
-          PR_BRANCH="fonts/selfhost-$(date +'%Y%m%d-%H%M%S')"
-          echo "PR_BRANCH=${PR_BRANCH}" >> $GITHUB_ENV
-          echo "Created PR_BRANCH=${PR_BRANCH}"
-
-      - name: Configure git with token-authenticated remote
+      - name: Configure git
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          REPO="${GITHUB_REPOSITORY}"
-          echo "Setting remote to use token auth for ${REPO}"
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
-          git remote -v
 
-      - name: Create branch, commit and push
+      - name: Commit and open PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          echo "Using branch: $PR_BRANCH"
+          PR_BRANCH="fonts/selfhost-$(date +'%Y%m%d-%H%M%S')"
           git checkout -b "$PR_BRANCH"
-          git add assets/fonts || true
-          git commit -m "chore: add self-hosted fonts woff2 600/700/800 (auto-generated)" || echo "no changes to commit"
+          git add assets/fonts
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica ai font. Uscita."
+            exit 0
+          fi
+          git commit -m "chore: self-hosted fonts woff2 Montserrat 600/700/800 + Roboto 400/500"
           git push --set-upstream origin "$PR_BRANCH"
-
-      - name: Create Pull Request via API
-        run: |
-          TITLE="chore: add self-hosted fonts woff2 (auto PR)"
-          BODY="Aggiorna assets/fonts/ con file woff2 (Montserrat 600/700/800, Roboto 400/500) e fonts.css rigenerato."
-          API="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls"
-          PAYLOAD=$(jq -n --arg t "$TITLE" --arg b "$BODY" --arg head "$PR_BRANCH" --arg base "main" '{title:$t, body:$b, head:$head, base:$base}')
-          echo "Creating PR with payload: $PAYLOAD"
-          resp=$(curl -s -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" "$API" -d "$PAYLOAD")
-          echo "$resp"
+          gh pr create \
+            --title "chore: self-hosted fonts woff2 (Montserrat 600/700/800)" \
+            --body "Aggiorna assets/fonts/ con file woff2 e fonts.css rigenerato con weight 800." \
+            --base main \
+            --head "$PR_BRANCH"
