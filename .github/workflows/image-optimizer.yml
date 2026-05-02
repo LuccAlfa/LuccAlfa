@@ -1,0 +1,39 @@
+# Ottimizza immagini (genera webp/avif e varie larghezze) usando Node + sharp
+# Puoi lanciare manualmente (workflow_dispatch) o automaticamente su push su assets/
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'assets/**'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    name: Generate responsive images (webp/avif)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run image generator
+        run: npm run generate-images
+
+      - name: Commit optimized images
+        env:
+          GIT_AUTHOR_NAME: "github-actions[bot]"
+          GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+        run: |
+          git config user.name "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
+          git add assets/optimized || true
+          git commit -m "chore: generate responsive images (webp/avif) [ci]" || echo "No image changes to commit"
+          git push
