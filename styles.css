@@ -330,7 +330,6 @@ a { transition: color var(--transition); }
 }
 
 
-/* ── SPLIT PANEL: immagine sx + testo dx ── */
 .split-panel {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -339,6 +338,7 @@ a { transition: color var(--transition); }
   margin-top: 72px;
   overflow: hidden;
   scroll-margin-top: 15vh;
+  align-items: center; /* Modifica: Centra verticalmente testo e immagine */
 }
 .split-panel__img {
   overflow: hidden;
@@ -362,37 +362,8 @@ a { transition: color var(--transition); }
   justify-content: center;
   padding: 80px 72px;
   background: var(--white);
-}
-.split-panel__text h2 {
-  font-family: "Montserrat", sans-serif;
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 800;
-  line-height: 1.15;
-  color: var(--text);
-  margin-bottom: 24px;
-  letter-spacing: -0.3px;
-}
-.split-panel__text p {
-  font-size: 1.05rem;
-  color: var(--muted);
-  margin-bottom: 16px;
-  max-width: 440px;
-}
-
-@media (max-width: 860px) {
-  .split-panel {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    max-height: none;
-    margin-top: 48px;
-    scroll-margin-top: 80px;
-  }
-  .split-panel__img {
-    height: 300px;
-    padding: 0 20px;
-  }
-  .split-panel__img img { height: 100%; max-height: none; object-fit: cover; }
-  .split-panel__text { padding: 48px 28px; }
+  border-top-right-radius: 18px; /* Modifica: Bordi arrotondati a destra */
+  border-bottom-right-radius: 18px; /* Modifica: Bordi arrotondati a destra */
 }
 
 
@@ -837,7 +808,8 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
   padding: 28px;
   box-shadow: var(--shadow);
   transition: transform var(--transition), box-shadow var(--transition);
-  margin-top: 250px; /* Distanza calcolata per far scendere il box e centrarlo ESATTAMENTE col modulo form laterale */
+  align-self: center; /* Modifica: Centra verticalmente il box rispetto al form */
+  margin-top: 0;      /* Modifica: Rimosso il margine fisso */
 }
 .contact-info:hover {
   transform: translateY(-6px);
