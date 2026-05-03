@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Calendly popup (booking)
   var bookBtn = document.getElementById('bookBtn');
   if (bookBtn) {
-    var calendlyUrl = 'https://calendly.com/luccalfa-srl/incontro-telefonico';
+    var calendlyUrl = 'https://calendly.com/luccalfa-srl/sopralluogo';
     bookBtn.addEventListener('click', function(e) {
       e.preventDefault();
       // Load Calendly CSS lazily (only when user clicks, not on page load)
