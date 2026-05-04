@@ -1228,6 +1228,30 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 }
 .footer-links a:hover { color: var(--white); }
 
+/* ── FOOTER DESKTOP FIX ── */
+@media (min-width: 860px) {
+  .footer-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-social {
+    flex: 0 0 auto;      /* 🔴 evita collasso */
+    margin-bottom: 0;
+  }
+
+  .footer-copy {
+    flex: 1;             /* occupa lo spazio centrale */
+    text-align: center;
+  }
+
+  .footer-links {
+    flex: 0 0 auto;      /* 🔴 evita collasso */
+  }
+}
+
 /* ── WhatsApp FAB ── */
 .whatsapp-fab {
   position: fixed;
