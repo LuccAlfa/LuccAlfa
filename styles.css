@@ -1173,32 +1173,41 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 }
 
 
-/* ── FOOTER ICONS (Ex Social) ── */
+/* ── FOOTER ICONS (Uniformate Mobile/Desktop) ── */
 .footer-icons {
   display: flex;
-  gap: 16px;
+  gap: 24px;            /* Spazio aumentato tra le icone */
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
+  text-decoration: none; /* Rimuove eventuali sottolineature ereditate */
 }
+
 .footer-icons__link {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  width: 40px;          /* Grandezza fissa come su mobile */
   height: 40px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  color: #aaa;
-  text-decoration: none;
+  background: rgba(255,255,255,0.08); /* Sfondo scuro semitrasparente */
+  color: #aaa;          /* Colore grigio chiaro iniziale */
+  text-decoration: none; /* Fondamentale per togliere l'underscore (_) */
   transition: background var(--transition), color var(--transition), transform var(--transition);
   border: 1px solid rgba(255,255,255,0.1);
+  line-height: 0;       /* Evita che lo spazio del testo crei shift grafici */
 }
+
 .footer-icons__link:hover {
-  background: var(--orange);
-  color: #111;
+  background: var(--orange); /* Arancione LuccAlfa al passaggio del mouse */
+  color: #111;              /* Icona scura su fondo arancione */
   border-color: var(--orange);
   transform: translateY(-3px);
+}
+
+/* Rimuove esplicitamente ogni underline da eventuali spazi vuoti nei link */
+.footer-icons__link svg {
+  display: block;
 }
 
 /* ── FOOTER ── */
@@ -1230,19 +1239,17 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 /* ── FOOTER DESKTOP FIX ── */
 @media (min-width: 860px) {
   .footer-inner {
-    /* Il Grid a 3 colonne (1fr auto 1fr) garantisce che la colonna centrale 
-       sia SEMPRE perfettamente a centro pagina, indipendentemente dalla 
-       larghezza degli elementi ai lati */
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
     width: 100%;
   }
 
   .footer-icons {
     justify-content: flex-start;
     margin-bottom: 0;
+    gap: 20px;
   }
 
   .footer-copy {
@@ -1250,7 +1257,7 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
   }
 
   .footer-links {
-    justify-content: flex-end; /* Allinea a destra nel suo blocco */
+    justify-content: flex-end;
   }
 }
 
