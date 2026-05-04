@@ -1173,15 +1173,15 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 }
 
 
-/* ── FOOTER SOCIAL ICONS ── */
-.footer-social {
+/* ── FOOTER ICONS (Ex Social) ── */
+.footer-icons {
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
 }
-.footer-social__link {
+.footer-icons__link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1194,13 +1194,12 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
   transition: background var(--transition), color var(--transition), transform var(--transition);
   border: 1px solid rgba(255,255,255,0.1);
 }
-.footer-social__link:hover {
+.footer-icons__link:hover {
   background: var(--orange);
   color: #111;
   border-color: var(--orange);
   transform: translateY(-3px);
 }
-
 
 /* ── FOOTER ── */
 .site-footer {
@@ -1231,24 +1230,27 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 /* ── FOOTER DESKTOP FIX ── */
 @media (min-width: 860px) {
   .footer-inner {
-    flex-direction: row;
+    /* Il Grid a 3 colonne (1fr auto 1fr) garantisce che la colonna centrale 
+       sia SEMPRE perfettamente a centro pagina, indipendentemente dalla 
+       larghezza degli elementi ai lati */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: 24px;
+    width: 100%;
   }
 
-  .footer-social {
-    flex: 0 0 auto;      /* 🔴 evita collasso */
+  .footer-icons {
+    justify-content: flex-start;
     margin-bottom: 0;
   }
 
   .footer-copy {
-    flex: 1;             /* occupa lo spazio centrale */
     text-align: center;
   }
 
   .footer-links {
-    flex: 0 0 auto;      /* 🔴 evita collasso */
+    justify-content: flex-end; /* Allinea a destra nel suo blocco */
   }
 }
 
