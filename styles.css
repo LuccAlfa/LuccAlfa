@@ -1228,6 +1228,29 @@ textarea { min-height: 140px; resize: vertical; height: auto; }
 }
 .footer-links a:hover { color: var(--white); }
 
+/* ── FOOTER DESKTOP FIX ── */
+@media (min-width: 860px) {
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between; /* Distribuisce social, copy e links agli estremi */
+    text-align: left;
+    gap: 24px;
+  }
+
+  .footer-social {
+    margin-bottom: 0; /* Rimuove il margine di 4px usato su mobile */
+    flex-shrink: 0;   /* Protegge il contenitore social dallo schiacciamento */
+  }
+
+  .footer-copy {
+    flex-grow: 1;     /* Fa prendere al testo centrale lo spazio rimanente */
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-shrink: 0;   /* Protegge i link dal collasso */
+  }
+}
 
 /* ── WhatsApp FAB ── */
 .whatsapp-fab {
