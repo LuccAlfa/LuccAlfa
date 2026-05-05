@@ -763,28 +763,41 @@
   });
 })();
 
-/* ── VIDEO LOGIC (Sync con script.js) ── */
-// Questa parte si assicura che al click compaiano i controlli e parta il video
-document.querySelectorAll('.video-card').forEach(card => {
-  const video = card.querySelector('video');
-  const poster = card.querySelector('.video-card__poster');
-  const playBtn = card.querySelector('.play-btn');
+//* ── VIDEO LOGIC (Versione Definitiva) ── */
+(function() {
+  // Funzione unica per far partire il video
+  function playVideo(card) {
+    const video = card.querySelector('video');
+    const poster = card.querySelector('.video-card__poster');
+    
+    if (video && poster) {
+      poster.style.display = 'none'; // Nasconde la copertina
+      video.setAttribute('controls', 'true'); // Mostra i tasti play/pausa/volume
+      
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Autoplay bloccato o file non trovato:", error);
+          // Se fallisce, almeno mostriamo i controlli così l'utente può cliccare di nuovo
+          video.setAttribute('controls', 'true');
+        });
+      }
+    }
+  }
 
-  const startVideo = () => {
-    poster.style.display = 'none';
-    video.setAttribute('controls', 'true'); // Aggiunge i controlli al click
-    video.play();
-  };
-
-  if(playBtn) playBtn.addEventListener('click', startVideo);
-  if(poster) poster.addEventListener('click', startVideo);
-
-  video.addEventListener('ended', () => {
-    video.removeAttribute('controls');
-    poster.style.display = 'flex';
-    video.load(); // Resetta il video al poster
+  // Applichiamo l'evento a tutte le card
+  document.querySelectorAll('.video-card').forEach(card => {
+    // Rimuoviamo eventuali vecchi listener clonando il pulsante (opzionale ma sicuro)
+    const poster = card.querySelector('.video-card__poster');
+    
+    // Cliccando sulla copertina o sul tasto play parte il video
+    poster.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      playVideo(card);
+    }, { once: true }); // Lo esegue solo una volta per evitare loop
   });
-});
+})();
 /* ── FOOTER ANNO ── */
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
