@@ -11,31 +11,31 @@
   <link rel="stylesheet" href="styles.css">
 
   <link rel="canonical" href="https://luccalfa.it/lavori" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="I Nostri Lavori — LuccAlfa" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="I Nostri Lavori — LuccAlfa" />
   <meta property="og:description" content="Foto e video dei nostri interventi di giardinaggio, potatura e pulizie a Lucca e provincia." />
-  <meta property="og:url" content="https://luccalfa.it/lavori" />
-  <meta property="og:image" content="https://luccalfa.it/assets/hero-garden.png" />
-  <meta property="og:locale" content="it_IT" />
-  <meta property="og:site_name" content="LuccAlfa" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="theme-color" content="#FB9531" />
+  <meta property="og:url"         content="https://luccalfa.it/lavori" />
+  <meta property="og:image"       content="https://luccalfa.it/assets/hero-garden.png" />
+  <meta property="og:locale"      content="it_IT" />
+  <meta property="og:site_name"   content="LuccAlfa" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <meta name="theme-color"        content="#FB9531" />
 
-  <link rel="shortcut icon" href="https://luccalfa.it/assets/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon"     href="https://luccalfa.it/assets/favicon.ico" type="image/x-icon" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.svg" />
-  <link rel="apple-touch-icon" sizes="180x180" href="https://luccalfa.it/assets/favicon-180.png" />
+  <link rel="apple-touch-icon"  sizes="180x180"   href="https://luccalfa.it/assets/favicon-180.png" />
 
   <style>
-    /* ────────────────────────────────────────────
-       lavori.html — stili specifici della pagina
-       Tutto il resto è in styles.css
-    ──────────────────────────────────────────── */
+    /* ──────────────────────────────────────────────
+       lavori.html — stili specifici
+       Tutto il resto è ereditato da styles.css
+    ────────────────────────────────────────────── */
 
-    /* ── PAGE HEADER (mini hero, no full-screen) ── */
+    /* ── PAGE HEADER ── */
     .page-header {
-      padding-top: calc(var(--nav-h) + 64px);
-      padding-bottom: 64px;
+      padding-top: calc(var(--nav-h) + 72px);
+      padding-bottom: 72px;
       text-align: center;
       background: var(--bg);
       position: relative;
@@ -45,7 +45,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(251,149,49,0.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(251,149,49,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
     .page-header h1 {
@@ -55,16 +55,48 @@
       color: var(--text);
       letter-spacing: -0.4px;
       line-height: 1.1;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .page-header p {
       color: var(--muted);
       font-size: 1.05rem;
-      max-width: 420px;
+      max-width: 400px;
       margin: 0 auto;
     }
-    .page-header .eyebrow {
-      margin-bottom: 14px;
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 24px 56px;
+    }
+    .filter-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      background: transparent;
+      color: var(--muted);
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition),
+                  border-color var(--transition), transform var(--transition);
+    }
+    .filter-btn:hover {
+      border-color: var(--orange);
+      color: var(--text);
+    }
+    .filter-btn.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #111;
+      box-shadow: 0 4px 14px rgba(251,149,49,0.3);
     }
 
     /* ── GALLERY SECTION ── */
@@ -85,11 +117,11 @@
       letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       display: block;
     }
 
-    /* Photo grid — CSS columns masonry-like */
+    /* Masonry via CSS columns */
     .gallery-grid {
       columns: 3;
       column-gap: 14px;
@@ -105,6 +137,14 @@
       cursor: zoom-in;
       position: relative;
       display: block;
+      /* filtro nasconde con fade */
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .gallery-item.hidden-item {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute; /* toglie dallo flow */
+      visibility: hidden;
     }
     .gallery-item img {
       width: 100%;
@@ -113,6 +153,7 @@
       transition: transform 0.45s cubic-bezier(.4,0,.2,1);
     }
     .gallery-item:hover img { transform: scale(1.04); }
+
     .gallery-item__overlay {
       position: absolute;
       inset: 0;
@@ -122,9 +163,7 @@
       align-items: center;
       justify-content: center;
     }
-    .gallery-item:hover .gallery-item__overlay {
-      background: rgba(0,0,0,0.28);
-    }
+    .gallery-item:hover .gallery-item__overlay { background: rgba(0,0,0,0.26); }
     .gallery-item__overlay svg {
       opacity: 0;
       transform: scale(0.7);
@@ -135,16 +174,16 @@
       transform: scale(1);
     }
 
-    /* Tag categoria foto */
     .gallery-item__tag {
       position: absolute;
       bottom: 10px;
       left: 10px;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0,0,0,0.52);
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       color: #fff;
       font-family: "Montserrat", sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -167,9 +206,7 @@
       margin: 0 auto;
       padding: 0 28px;
     }
-    .video-header {
-      margin-bottom: 44px;
-    }
+    .video-header { margin-bottom: 44px; }
     .video-header h2 {
       font-family: "Montserrat", sans-serif;
       font-size: clamp(1.5rem, 2.5vw, 1.9rem);
@@ -177,6 +214,7 @@
       color: var(--text);
       letter-spacing: -0.2px;
     }
+
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -197,13 +235,11 @@
     }
     .video-card video,
     .video-card iframe {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
       border: 0;
     }
-    /* Overlay play per video senza controlli nativi */
     .video-card__poster {
       position: absolute;
       inset: 0;
@@ -214,12 +250,11 @@
       background: rgba(0,0,0,0.15);
       transition: background 0.3s ease;
     }
-    .video-card__poster:hover { background: rgba(0,0,0,0.25); }
+    .video-card__poster:hover { background: rgba(0,0,0,0.28); }
     .video-card__poster img {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
       z-index: 0;
@@ -227,16 +262,17 @@
     .play-btn {
       position: relative;
       z-index: 1;
-      width: 60px;
-      height: 60px;
+      width: 60px; height: 60px;
       border-radius: 50%;
       background: var(--orange);
+      border: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 8px 28px rgba(251,149,49,0.45);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       flex-shrink: 0;
+      cursor: pointer;
     }
     .video-card__poster:hover .play-btn {
       transform: scale(1.1);
@@ -257,10 +293,8 @@
       visibility: hidden;
       transition: opacity 0.28s ease, visibility 0.28s ease;
     }
-    .lightbox.open {
-      opacity: 1;
-      visibility: visible;
-    }
+    .lightbox.open { opacity: 1; visibility: visible; }
+
     .lightbox__img {
       max-width: min(90vw, 1100px);
       max-height: 88vh;
@@ -268,15 +302,17 @@
       border-radius: 10px;
       display: block;
       user-select: none;
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      -webkit-user-drag: none;
+      transition: opacity 0.15s ease;
     }
+    .lightbox__img.fade { opacity: 0; }
+
     .lb-btn {
       position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 48px;
-      height: 48px;
+      width: 48px; height: 48px;
       border-radius: 50%;
       background: rgba(255,255,255,0.12);
       border: 1.5px solid rgba(255,255,255,0.2);
@@ -284,16 +320,16 @@
       cursor: pointer;
       transition: background 0.2s ease, transform 0.2s ease;
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
-    .lb-btn:hover {
-      background: rgba(255,255,255,0.22);
-      transform: scale(1.06);
-    }
+    .lb-btn:hover { background: rgba(255,255,255,0.22); transform: scale(1.06); }
+
     #lb-close { top: 20px; right: 20px; }
-    #lb-prev  { left: 20px; top: 50%; transform: translateY(-50%); }
+    #lb-prev  { left: 20px;  top: 50%; transform: translateY(-50%); }
     #lb-next  { right: 20px; top: 50%; transform: translateY(-50%); }
     #lb-prev:hover { transform: translateY(-50%) scale(1.06); }
     #lb-next:hover { transform: translateY(-50%) scale(1.06); }
+
     .lb-counter {
       position: absolute;
       bottom: 24px;
@@ -302,12 +338,13 @@
       font-family: "Montserrat", sans-serif;
       font-size: 0.8rem;
       font-weight: 700;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.5);
       letter-spacing: 1px;
       user-select: none;
+      white-space: nowrap;
     }
 
-    /* ── CTA BOTTOM ── */
+    /* ── BOTTOM CTA ── */
     .gallery-cta {
       text-align: center;
       padding: 72px 28px 80px;
@@ -319,40 +356,43 @@
       font-size: clamp(1.6rem, 3vw, 2.2rem);
       font-weight: 800;
       color: var(--white);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: -0.2px;
     }
     .gallery-cta p {
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.58);
       font-size: 1rem;
       margin-bottom: 32px;
     }
 
+    /* ── RESPONSIVE TWEAKS ── */
     @media (max-width: 600px) {
       .gallery-inner, .video-inner { padding: 0 16px; }
       .gallery-cta { padding: 56px 20px 64px; }
       #lb-prev { left: 10px; }
       #lb-next { right: 10px; }
+      .filter-bar { padding: 0 16px 40px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR (identica a index.html, hrefs aggiornati) -->
+  <!-- NAVBAR -->
   <header class="site-nav" id="siteNav">
     <div class="nav-inner">
       <a href="./" aria-label="Home" class="brand__link">
         <img src="assets/logo.svg" alt="LuccAlfa" class="brand__symbol" />
       </a>
-      <button id="navToggle" class="nav-toggle" aria-controls="primary-navigation" aria-expanded="false" aria-label="Apri menu">
+      <button id="navToggle" class="nav-toggle" aria-controls="primary-navigation"
+              aria-expanded="false" aria-label="Apri menu">
         <span class="hamburger" aria-hidden="true"></span>
       </button>
       <nav id="primary-navigation" class="nav-menu" aria-label="Menu principale">
         <a href="./#servizi">Servizi</a>
         <a href="./#about">Chi siamo</a>
-        <a href="lavori.html" aria-current="page" style="color: var(--orange);">I nostri lavori</a>
+        <a href="lavori.html" aria-current="page" style="color:var(--orange)">I nostri lavori</a>
         <a href="./#giardinaggio" class="nav-mobile-only">Giardinaggio professionale</a>
-        <a href="./#pulizie" class="nav-mobile-only">Pulizie professionali</a>
+        <a href="./#pulizie"      class="nav-mobile-only">Pulizie professionali</a>
         <a href="./#contatti" class="nav-cta nav-cta--orange">Preventivo gratuito</a>
       </nav>
     </div>
@@ -365,6 +405,14 @@
     <p>Foto e video degli interventi reali — giardinaggio, potature, pulizie.</p>
   </div>
 
+  <!-- FILTER BAR -->
+  <div class="filter-bar" role="group" aria-label="Filtra per categoria">
+    <button class="filter-btn active" data-filter="all">Tutti</button>
+    <button class="filter-btn" data-filter="giardinaggio">Giardinaggio</button>
+    <button class="filter-btn" data-filter="potatura">Potatura</button>
+    <button class="filter-btn" data-filter="pulizie">Pulizie</button>
+  </div>
+
   <!-- PHOTO GALLERY -->
   <section class="gallery-section" aria-label="Galleria fotografica">
     <div class="gallery-inner">
@@ -373,100 +421,121 @@
 
       <div class="gallery-grid" id="galleryGrid">
 
-        <!-- FOTO 1 — sostituite con le vostre immagini reali -->
-        <!-- Formato consigliato: JPEG/WebP, ~1200×900px -->
-        <div class="gallery-item reveal" data-index="0"
-             tabindex="0" role="button" aria-label="Apri foto 1">
+        <!-- FOTO 1 -->
+        <!-- Sostituite con le vostre immagini reali — JPEG/WebP ~1200×900px -->
+        <div class="gallery-item reveal"
+             data-index="0" data-cat="giardinaggio"
+             tabindex="0" role="button" aria-label="Apri foto 1 — intervento di giardinaggio">
           <img src="assets/gallery/foto-1.jpg"
                alt="Intervento di giardinaggio — potatura siepe"
                loading="lazy" width="800" height="600" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Giardinaggio</span>
         </div>
 
         <!-- FOTO 2 -->
-        <div class="gallery-item reveal reveal--delay-1" data-index="1"
-             tabindex="0" role="button" aria-label="Apri foto 2">
+        <div class="gallery-item reveal reveal--delay-1"
+             data-index="1" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto 2 — potatura alberi ad alto fusto">
           <img src="assets/gallery/foto-2.jpg"
                alt="Potatura alberi ad alto fusto con piattaforma elevabile"
                loading="lazy" width="800" height="1050" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Potatura</span>
         </div>
 
         <!-- FOTO 3 -->
-        <div class="gallery-item reveal reveal--delay-2" data-index="2"
-             tabindex="0" role="button" aria-label="Apri foto 3">
+        <div class="gallery-item reveal reveal--delay-2"
+             data-index="2" data-cat="giardinaggio"
+             tabindex="0" role="button" aria-label="Apri foto 3 — manutenzione prato">
           <img src="assets/gallery/foto-3.jpg"
                alt="Manutenzione prato e rifinitura aiuole"
                loading="lazy" width="800" height="600" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Manutenzione</span>
         </div>
 
         <!-- FOTO 4 -->
-        <div class="gallery-item reveal" data-index="3"
-             tabindex="0" role="button" aria-label="Apri foto 4">
+        <div class="gallery-item reveal"
+             data-index="3" data-cat="giardinaggio"
+             tabindex="0" role="button" aria-label="Apri foto 4 — ripristino giardino">
           <img src="assets/gallery/foto-4.jpg"
                alt="Ripristino giardino trascurato — prima e dopo"
                loading="lazy" width="800" height="900" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Ripristino</span>
         </div>
 
         <!-- FOTO 5 -->
-        <div class="gallery-item reveal reveal--delay-1" data-index="4"
-             tabindex="0" role="button" aria-label="Apri foto 5">
+        <div class="gallery-item reveal reveal--delay-1"
+             data-index="4" data-cat="pulizie"
+             tabindex="0" role="button" aria-label="Apri foto 5 — pulizia scale condominiali">
           <img src="assets/gallery/foto-5.jpg"
                alt="Pulizia scala condominiale — parti comuni"
                loading="lazy" width="800" height="600" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Pulizie</span>
         </div>
 
         <!-- FOTO 6 -->
-        <div class="gallery-item reveal reveal--delay-2" data-index="5"
-             tabindex="0" role="button" aria-label="Apri foto 6">
+        <div class="gallery-item reveal reveal--delay-2"
+             data-index="5" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto 6 — abbattimento in tree climbing">
           <img src="assets/gallery/foto-6.jpg"
                alt="Abbattimento albero in tree climbing"
                loading="lazy" width="800" height="1100" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Tree climbing</span>
         </div>
 
         <!-- FOTO 7 -->
-        <div class="gallery-item reveal" data-index="6"
-             tabindex="0" role="button" aria-label="Apri foto 7">
+        <div class="gallery-item reveal"
+             data-index="6" data-cat="pulizie"
+             tabindex="0" role="button" aria-label="Apri foto 7 — lavaggio garage con idropulitrice">
           <img src="assets/gallery/foto-7.jpg"
                alt="Lavaggio garage e parcheggio con idropulitrice"
                loading="lazy" width="800" height="600" />
-          <div class="gallery-item__overlay">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
             </svg>
           </div>
           <span class="gallery-item__tag">Pulizie garage</span>
@@ -486,15 +555,14 @@
       <div class="video-grid">
 
         <!-- VIDEO 1 -->
-        <!-- Sostituire src con il percorso del video reale, es. assets/video/video-1.mp4 -->
-        <!-- Oppure sostituire l'intero elemento con un <iframe> YouTube/TikTok embed -->
+        <!-- Sostituire src con il percorso reale, es. assets/video/video-1.mp4  -->
+        <!-- Oppure usare un <iframe> embed di YouTube / TikTok                  -->
         <div class="video-card reveal">
           <video id="vid1"
                  src="assets/video/video-1.mp4"
                  poster="assets/gallery/foto-1.jpg"
-                 preload="none"
-                 playsinline
-                 aria-label="Video lavoro di giardinaggio"></video>
+                 preload="none" playsinline
+                 aria-label="Video — lavoro di giardinaggio"></video>
           <div class="video-card__poster" id="poster1">
             <img src="assets/gallery/foto-1.jpg" alt="" aria-hidden="true" />
             <button class="play-btn" aria-label="Riproduci video 1">
@@ -510,9 +578,8 @@
           <video id="vid2"
                  src="assets/video/video-2.mp4"
                  poster="assets/gallery/foto-3.jpg"
-                 preload="none"
-                 playsinline
-                 aria-label="Video potatura siepe"></video>
+                 preload="none" playsinline
+                 aria-label="Video — potatura siepe"></video>
           <div class="video-card__poster" id="poster2">
             <img src="assets/gallery/foto-3.jpg" alt="" aria-hidden="true" />
             <button class="play-btn" aria-label="Riproduci video 2">
@@ -528,9 +595,8 @@
           <video id="vid3"
                  src="assets/video/video-3.mp4"
                  poster="assets/gallery/foto-5.jpg"
-                 preload="none"
-                 playsinline
-                 aria-label="Video pulizie condominio"></video>
+                 preload="none" playsinline
+                 aria-label="Video — pulizie condominio"></video>
           <div class="video-card__poster" id="poster3">
             <img src="assets/gallery/foto-5.jpg" alt="" aria-hidden="true" />
             <button class="play-btn" aria-label="Riproduci video 3">
@@ -552,18 +618,33 @@
     <a href="./#contatti" class="btn-hero-primary">Preventivo gratuito →</a>
   </div>
 
-  <!-- FOOTER (identico a index.html) -->
+  <!-- FOOTER -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-icons">
-        <a href="https://www.facebook.com/luccalfa/" class="footer-icons__link" aria-label="Seguici su Facebook" target="_blank" rel="noopener noreferrer">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        <a href="https://www.facebook.com/luccalfa/"
+           class="footer-icons__link" aria-label="Seguici su Facebook"
+           target="_blank" rel="noopener noreferrer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
         </a>
-        <a href="https://www.instagram.com/luccalfa_srl/" class="footer-icons__link" aria-label="Seguici su Instagram" target="_blank" rel="noopener noreferrer">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <a href="https://www.instagram.com/luccalfa_srl/"
+           class="footer-icons__link" aria-label="Seguici su Instagram"
+           target="_blank" rel="noopener noreferrer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
         </a>
-        <a href="https://www.tiktok.com/@luccalfa" class="footer-icons__link" aria-label="Seguici su TikTok" target="_blank" rel="noopener noreferrer">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+        <a href="https://www.tiktok.com/@luccalfa"
+           class="footer-icons__link" aria-label="Seguici su TikTok"
+           target="_blank" rel="noopener noreferrer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+          </svg>
         </a>
       </div>
       <div class="footer-copy">© <span id="year"></span> LuccAlfa srls — Tutti i diritti riservati</div>
@@ -574,9 +655,11 @@
     </div>
   </footer>
 
-  <!-- WhatsApp FAB (identico a index.html) -->
-  <a href="https://wa.me/393294291402" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Contattaci su WhatsApp">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="white" aria-hidden="true">
+  <!-- WhatsApp FAB -->
+  <a href="https://wa.me/393294291402" class="whatsapp-fab"
+     target="_blank" rel="noopener noreferrer" aria-label="Contattaci su WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+         width="26" height="26" fill="white" aria-hidden="true">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
       <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.57a.75.75 0 0 0 .925.926l5.763-1.478A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.942 9.942 0 0 1-5.062-1.379l-.363-.214-3.761.965.99-3.673-.234-.376A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
     </svg>
@@ -587,92 +670,138 @@
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visualizza foto">
     <img id="lb-img" class="lightbox__img" src="" alt="Foto ingrandita" />
     <button id="lb-close" class="lb-btn" aria-label="Chiudi">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="white" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
         <path d="M18 6L6 18M6 6l12 12"/>
       </svg>
     </button>
     <button id="lb-prev" class="lb-btn" aria-label="Foto precedente">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M15 18l-6-6 6-6"/>
       </svg>
     </button>
     <button id="lb-next" class="lb-btn" aria-label="Foto successiva">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M9 18l6-6-6-6"/>
       </svg>
     </button>
     <span class="lb-counter" id="lb-counter" aria-live="polite"></span>
   </div>
 
+  <!-- Script principale del sito (navbar scroll, reveal, ecc.) -->
   <script src="script.js" defer></script>
+
   <script>
-    /* ── LIGHTBOX ── */
-    (function () {
-      const items   = document.querySelectorAll('.gallery-item');
-      const lb      = document.getElementById('lightbox');
-      const lbImg   = document.getElementById('lb-img');
-      const lbClose = document.getElementById('lb-close');
-      const lbPrev  = document.getElementById('lb-prev');
-      const lbNext  = document.getElementById('lb-next');
-      const lbCount = document.getElementById('lb-counter');
+  /* ── CATEGORY FILTER ── */
+  (function () {
+    const btns  = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.gallery-item');
 
-      const srcs  = Array.from(items).map(el => ({
-        src: el.querySelector('img').src,
-        alt: el.querySelector('img').alt
-      }));
-      let current = 0;
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-      function open(i) {
-        current = ((i % srcs.length) + srcs.length) % srcs.length;
-        lbImg.src = srcs[current].src;
-        lbImg.alt = srcs[current].alt;
-        lbCount.textContent = (current + 1) + ' / ' + srcs.length;
-        lb.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        lbClose.focus();
-      }
-      function close() {
-        lb.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-
-      items.forEach((item, i) => {
-        item.addEventListener('click', () => open(i));
-        item.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+        const filter = btn.dataset.filter;
+        items.forEach(item => {
+          const match = filter === 'all' || item.dataset.cat === filter;
+          item.classList.toggle('hidden-item', !match);
         });
       });
+    });
+  })();
 
-      lbClose.addEventListener('click', close);
-      lb.addEventListener('click', e => { if (e.target === lb || e.target === lbImg) close(); });
-      lbPrev.addEventListener('click', e => { e.stopPropagation(); open(current - 1); });
-      lbNext.addEventListener('click', e => { e.stopPropagation(); open(current + 1); });
+  /* ── LIGHTBOX ── */
+  (function () {
+    const allItems = () => Array.from(document.querySelectorAll('.gallery-item:not(.hidden-item)'));
+    const lb       = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lb-img');
+    const lbClose  = document.getElementById('lb-close');
+    const lbPrev   = document.getElementById('lb-prev');
+    const lbNext   = document.getElementById('lb-next');
+    const lbCount  = document.getElementById('lb-counter');
+    let current    = 0;
 
-      document.addEventListener('keydown', e => {
-        if (!lb.classList.contains('open')) return;
-        if (e.key === 'Escape')     close();
-        if (e.key === 'ArrowLeft')  open(current - 1);
-        if (e.key === 'ArrowRight') open(current + 1);
+    function srcOf(item) {
+      return { src: item.querySelector('img').src, alt: item.querySelector('img').alt };
+    }
+
+    function open(i) {
+      const items = allItems();
+      if (!items.length) return;
+      current = ((i % items.length) + items.length) % items.length;
+      lbImg.classList.add('fade');
+      requestAnimationFrame(() => {
+        lbImg.src = srcOf(items[current]).src;
+        lbImg.alt = srcOf(items[current]).alt;
+        lbImg.onload = () => lbImg.classList.remove('fade');
+        lbCount.textContent = (current + 1) + ' / ' + items.length;
       });
-    })();
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+    function close() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
-    /* ── VIDEO PLAY BUTTON ── */
-    (function () {
-      [1, 2, 3].forEach(n => {
-        const poster = document.getElementById('poster' + n);
-        const vid    = document.getElementById('vid' + n);
-        if (!poster || !vid) return;
-        poster.addEventListener('click', () => {
-          poster.classList.add('hidden');
-          vid.setAttribute('controls', '');
-          vid.play().catch(() => {});
-        });
+    /* click on items */
+    document.getElementById('galleryGrid').addEventListener('click', e => {
+      const item = e.target.closest('.gallery-item');
+      if (!item || item.classList.contains('hidden-item')) return;
+      open(allItems().indexOf(item));
+    });
+    document.getElementById('galleryGrid').addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const item = e.target.closest('.gallery-item');
+      if (!item) return;
+      e.preventDefault();
+      open(allItems().indexOf(item));
+    });
+
+    lbClose.addEventListener('click', close);
+    lb.addEventListener('click', e => { if (e.target === lb || e.target === lbImg) close(); });
+    lbPrev.addEventListener('click', e => { e.stopPropagation(); open(current - 1); });
+    lbNext.addEventListener('click', e => { e.stopPropagation(); open(current + 1); });
+
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); open(current - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); open(current + 1); }
+    });
+
+    /* touch swipe */
+    let touchX = null;
+    lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50) dx < 0 ? open(current + 1) : open(current - 1);
+      touchX = null;
+    });
+  })();
+
+  /* ── VIDEO PLAY BUTTON ── */
+  (function () {
+    [1, 2, 3].forEach(n => {
+      const poster = document.getElementById('poster' + n);
+      const vid    = document.getElementById('vid' + n);
+      if (!poster || !vid) return;
+      poster.addEventListener('click', () => {
+        poster.classList.add('hidden');
+        vid.setAttribute('controls', '');
+        vid.play().catch(() => {});
       });
-    })();
+    });
+  })();
 
-    /* ── FOOTER ANNO ── */
-    const y = document.getElementById('year');
-    if (y) y.textContent = new Date().getFullYear();
+  /* ── FOOTER ANNO ── */
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
