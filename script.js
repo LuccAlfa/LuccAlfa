@@ -94,24 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
     revealEls.forEach(function(el) { el.classList.add('is-visible'); });
   }
 
-  // Video cards — play on click, ripristina poster a fine video
-  document.querySelectorAll('.video-card').forEach(function(card) {
-    var video  = card.querySelector('video');
-    var poster = card.querySelector('.video-card__poster');
-    var btn    = card.querySelector('.play-btn');
-    if (!video || !poster || !btn) return;
-
-    btn.addEventListener('click', function() {
-      poster.style.display = 'none';
-      video.play();
-    });
-
-    video.addEventListener('ended', function() {
-      poster.style.display = '';
-      video.load();
-    });
-  });
-
   // Formspree submit handler with status messages and aria-live updates
   var contactForm = document.getElementById('contact-form');
   var formStatus = document.getElementById('form-status');
