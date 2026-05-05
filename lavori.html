@@ -794,15 +794,34 @@
       const vid    = document.getElementById('vid' + n);
       if (!poster || !vid) return;
 
-      // Avvia il video al click sul poster (o sul play button al suo interno)
-      poster.addEventListener('click', () => {
-        poster.classList.add('hidden');
+      poster.addEventListener('click', function () {
+        console.log('[video' + n + '] click ricevuto — avvio...');
+
+        // Feedback visivo immediato: poster si oscura mentre buferizza
+        poster.style.transition = 'opacity 0.3s';
+        poster.style.opacity    = '0.25';
         vid.setAttribute('controls', '');
-        vid.play().catch(err => console.warn('[video' + n + '] play() rifiutato:', err));
+
+        // Nasconde il poster solo quando il primo frame è davvero pronto
+        vid.addEventListener('playing', function onPlaying() {
+          console.log('[video' + n + '] primo frame pronto — nascondo poster');
+          poster.classList.add('hidden');
+          poster.style.opacity    = '';
+          poster.style.transition = '';
+          vid.removeEventListener('playing', onPlaying);
+        });
+
+        vid.play().catch(function (err) {
+          console.warn('[video' + n + '] play() rifiutato:', err);
+          // Ripristina poster se play() fallisce
+          poster.style.opacity    = '';
+          poster.style.transition = '';
+          vid.removeAttribute('controls');
+        });
       });
 
       // A fine video: ripristina il poster e ricarica
-      vid.addEventListener('ended', () => {
+      vid.addEventListener('ended', function () {
         poster.classList.remove('hidden');
         vid.removeAttribute('controls');
         vid.load();
