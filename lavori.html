@@ -754,40 +754,47 @@
   });
 })();
 
-//* ── VIDEO LOGIC (Versione Definitiva) ── */
-(function() {
-  // Funzione unica per far partire il video
-  function playVideo(card) {
+/* ── VIDEO LOGIC ── */
+(function () {
+  // Funzione per gestire l'avvio del video
+  function handleVideo(card) {
     const video = card.querySelector('video');
     const poster = card.querySelector('.video-card__poster');
     
-    if (video && poster) {
-      poster.style.display = 'none'; // Nasconde la copertina
-      video.setAttribute('controls', 'true'); // Mostra i tasti play/pausa/volume
-      
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log("Autoplay bloccato o file non trovato:", error);
-          // Se fallisce, almeno mostriamo i controlli così l'utente può cliccare di nuovo
-          video.setAttribute('controls', 'true');
-        });
-      }
+    if (!video || !poster) return;
+
+    // 1. Nascondi il poster
+    poster.style.display = 'none';
+    
+    // 2. Forza la visibilità e i controlli
+    video.setAttribute('controls', 'true');
+    video.style.display = 'block';
+    
+    // 3. Tenta l'avvio
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        console.log("Play ritardato: ", error);
+        // Se il browser blocca l'auto-play, l'utente ha ora i controlli per cliccare
+      });
     }
   }
 
-  // Applichiamo l'evento a tutte le card
-  document.querySelectorAll('.video-card').forEach(card => {
-    // Rimuoviamo eventuali vecchi listener clonando il pulsante (opzionale ma sicuro)
-    const poster = card.querySelector('.video-card__poster');
-    
-    // Cliccando sulla copertina o sul tasto play parte il video
-    poster.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      playVideo(card);
-    }, { once: true }); // Lo esegue solo una volta per evitare loop
-  });
+  // Applica il click a tutte le card video
+  // Usiamo un timeout per assicurarci che lo script esterno non interferisca
+  setTimeout(() => {
+    document.querySelectorAll('.video-card').forEach(card => {
+      const poster = card.querySelector('.video-card__poster');
+      if (poster) {
+        // Rimuoviamo eventuali eventi precedenti e aggiungiamo il nostro
+        poster.onclick = (e) => {
+          e.preventDefault();
+          handleVideo(card);
+        };
+      }
+    });
+  }, 500);
 })();
 /* ── FOOTER ANNO ── */
   const y = document.getElementById('year');
