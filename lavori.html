@@ -280,6 +280,10 @@
     }
     .video-card__poster.hidden { display: none; }
 
+    /* Impedisce al compositor layer nativo del <video> di intercettare
+       i click prima che arrivino al poster overlay */
+    .video-card video:not([controls]) { pointer-events: none; }
+
     /* ── LIGHTBOX ── */
     .lightbox {
       position: fixed;
@@ -558,7 +562,6 @@
         <div class="video-card reveal">
           <video id="vid1"
                  src="assets/videos/presentazione.mp4"
-                 poster="assets/optimized/copertina-1-1280.webp"
                  preload="none" playsinline
                  aria-label="Video — Abbattimento albero in tree-climbing"></video>
           <div class="video-card__poster" id="poster1">
@@ -575,7 +578,6 @@
         <div class="video-card reveal reveal--delay-1">
           <video id="vid2"
                  src="assets/videos/presentazione.mp4"
-                 poster="assets/optimized/copertina-2-1280.webp"
                  preload="none" playsinline
                  aria-label="Video — potatura tree-climbing"></video>
           <div class="video-card__poster" id="poster2">
@@ -592,7 +594,6 @@
         <div class="video-card reveal reveal--delay-2">
           <video id="vid3"
                  src="assets/video/video-3.mp4"
-                 poster="assets/optimized/copertina-3-1280.webp"
                  preload="none" playsinline
                  aria-label="Video — intervento con escavatore"></video>
           <div class="video-card__poster" id="poster3">
@@ -794,7 +795,7 @@
       poster.addEventListener('click', () => {
         poster.classList.add('hidden');
         vid.setAttribute('controls', '');
-        vid.play().catch(() => {});
+        vid.play().catch(err => console.warn('[video' + n + '] play() rifiutato:', err));
       });
 
       // A fine video: ripristina il poster e ricarica
