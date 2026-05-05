@@ -553,7 +553,7 @@
     </div>
     <div class="video-grid">
 
-      <!-- VIDEO SECTION -->
+     <!-- VIDEO SECTION -->
 <section class="video-section" aria-label="Video dei lavori">
   <div class="video-inner">
     <div class="video-header reveal">
@@ -564,33 +564,46 @@
 
       <!-- VIDEO 1 -->
       <div class="video-card reveal">
-        <video src="assets/videos/presentazione.mp4" preload="metadata" playsinline></video>
+        <!-- Assicurati che il percorso sia corretto: assets/video/ o assets/videos/ -->
+        <video src="assets/video/Presentazione.mp4" 
+               poster="assets/gallery/foto-1.jpg" 
+               preload="none" playsinline></video>
         <div class="video-card__poster">
-          <img src="assets/optimized/copertina-1-1280.webp" alt="Copertina video 1" />
-          <button class="play-btn" aria-label="Riproduci">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M5 3l14 9-14 9V3z"/></svg>
+          <img src="assets/gallery/foto-1.jpg" alt="" aria-hidden="true" />
+          <button class="play-btn" aria-label="Riproduci video">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
           </button>
         </div>
       </div>
 
       <!-- VIDEO 2 -->
       <div class="video-card reveal reveal--delay-1">
-        <video src="assets/videos/presentazione.mp4" preload="metadata" playsinline></video>
+        <video src="assets/video/video-2.mp4" 
+               poster="assets/gallery/foto-3.jpg" 
+               preload="none" playsinline></video>
         <div class="video-card__poster">
-          <img src="assets/optimized/copertina-1-1280.webp" alt="Copertina video 2" />
-          <button class="play-btn" aria-label="Riproduci">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M5 3l14 9-14 9V3z"/></svg>
+          <img src="assets/gallery/foto-3.jpg" alt="" aria-hidden="true" />
+          <button class="play-btn" aria-label="Riproduci video">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
           </button>
         </div>
       </div>
 
       <!-- VIDEO 3 -->
       <div class="video-card reveal reveal--delay-2">
-        <video src="assets/videos/presentazione.mp4" preload="metadata" playsinline></video>
+        <video src="assets/video/video-3.mp4" 
+               poster="assets/gallery/foto-5.jpg" 
+               preload="none" playsinline></video>
         <div class="video-card__poster">
-          <img src="assets/optimized/copertina-1-1280.webp" alt="Copertina video 3" />
-          <button class="play-btn" aria-label="Riproduci">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M5 3l14 9-14 9V3z"/></svg>
+          <img src="assets/gallery/foto-5.jpg" alt="" aria-hidden="true" />
+          <button class="play-btn" aria-label="Riproduci video">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
           </button>
         </div>
       </div>
@@ -598,7 +611,6 @@
     </div>
   </div>
 </section>
-
   <!-- BOTTOM CTA -->
   <div class="gallery-cta">
     <h2>Vuoi un lavoro come questi?</h2>
@@ -680,7 +692,7 @@
 
   <!-- Script principale del sito (navbar scroll, reveal, ecc.) -->
   <script src="script.js" defer></script>
-  <script>
+<script>
 /* ── CATEGORY FILTER ── */
 (function () {
   const btns  = document.querySelectorAll('.filter-btn');
@@ -754,48 +766,28 @@
   });
 })();
 
-/* ── VIDEO LOGIC ── */
-(function () {
-  // Funzione per gestire l'avvio del video
-  function handleVideo(card) {
-    const video = card.querySelector('video');
-    const poster = card.querySelector('.video-card__poster');
-    
-    if (!video || !poster) return;
+/* ── VIDEO LOGIC (Sync con script.js) ── */
+// Questa parte si assicura che al click compaiano i controlli e parta il video
+document.querySelectorAll('.video-card').forEach(card => {
+  const video = card.querySelector('video');
+  const poster = card.querySelector('.video-card__poster');
+  const playBtn = card.querySelector('.play-btn');
 
-    // 1. Nascondi il poster
+  const startVideo = () => {
     poster.style.display = 'none';
-    
-    // 2. Forza la visibilità e i controlli
-    video.setAttribute('controls', 'true');
-    video.style.display = 'block';
-    
-    // 3. Tenta l'avvio
-    const playPromise = video.play();
+    video.setAttribute('controls', 'true'); // Aggiunge i controlli al click
+    video.play();
+  };
 
-    if (playPromise !== undefined) {
-      playPromise.catch(error => {
-        console.log("Play ritardato: ", error);
-        // Se il browser blocca l'auto-play, l'utente ha ora i controlli per cliccare
-      });
-    }
-  }
+  if(playBtn) playBtn.addEventListener('click', startVideo);
+  if(poster) poster.addEventListener('click', startVideo);
 
-  // Applica il click a tutte le card video
-  // Usiamo un timeout per assicurarci che lo script esterno non interferisca
-  setTimeout(() => {
-    document.querySelectorAll('.video-card').forEach(card => {
-      const poster = card.querySelector('.video-card__poster');
-      if (poster) {
-        // Rimuoviamo eventuali eventi precedenti e aggiungiamo il nostro
-        poster.onclick = (e) => {
-          e.preventDefault();
-          handleVideo(card);
-        };
-      }
-    });
-  }, 500);
-})();
+  video.addEventListener('ended', () => {
+    video.removeAttribute('controls');
+    poster.style.display = 'flex';
+    video.load(); // Resetta il video al poster
+  });
+});
 /* ── FOOTER ANNO ── */
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
