@@ -555,12 +555,17 @@
 
       <!-- VIDEO 1 -->
       <div class="video-card reveal">
-        <!-- Assicurati che il percorso sia corretto: assets/video/ o assets/videos/ -->
-        <video src="assets/videos/Presentazione.mp4" 
-               poster="assets/gallery/foto-1.jpg" 
-               preload="none" playsinline></video>
-        <div class="video-card__poster">
-          <img src="assets/gallery/foto-1.jpg" alt="" aria-hidden="true" />
+        <!-- Cambiato in metadata e assicurati che il nome file sia identico al server -->
+        <video src="assets/videos/presentazione.mp4" 
+               preload="metadata" 
+               playsinline 
+               style="background: #000;"></video>
+  
+        <!-- Se non hai la foto, il div sarà comunque cliccabile grazie al colore di sfondo -->
+        <div class="video-card__poster" style="background-color: #222;">
+          <!-- Rimuovi o commenta l'img se non esiste ancora per evitare l'icona "file rotto" -->
+          <!-- <img src="assets/gallery/foto-1.jpg" alt="" aria-hidden="true" /> -->
+    
           <button class="play-btn" aria-label="Riproduci video">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
               <path d="M5 3l14 9-14 9V3z"/>
