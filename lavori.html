@@ -789,10 +789,19 @@
       const poster = document.getElementById('poster' + n);
       const vid    = document.getElementById('vid' + n);
       if (!poster || !vid) return;
+
+      // Avvia il video al click sul poster (o sul play button al suo interno)
       poster.addEventListener('click', () => {
         poster.classList.add('hidden');
         vid.setAttribute('controls', '');
         vid.play().catch(() => {});
+      });
+
+      // A fine video: ripristina il poster e ricarica
+      vid.addEventListener('ended', () => {
+        poster.classList.remove('hidden');
+        vid.removeAttribute('controls');
+        vid.load();
       });
     });
   })();
