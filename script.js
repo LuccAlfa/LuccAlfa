@@ -1,141 +1,202 @@
-// script.js - updated
-document.addEventListener('DOMContentLoaded', function() {
-  // Smooth scroll for internal anchors (also closes mobile nav when used)
-  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-    anchor.addEventListener('click', function(e) {
-      var href = this.getAttribute('href');
-      if (!href || href === '#') return;
-      var target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  // --- NAVBAR SCROLL EFFECT ---
+  const siteNav = document.getElementById("siteNav");
+  if (siteNav) {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        siteNav.classList.add("scrolled");
+      } else {
+        siteNav.classList.remove("scrolled");
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // initialize state
+  }
 
-        // close mobile nav if open
-        var nav = document.getElementById('primary-navigation');
-        if (nav && nav.classList.contains('open')) {
-          nav.classList.remove('open');
-          var t = document.getElementById('navToggle');
-          if (t) t.setAttribute('aria-expanded','false');
+  // --- MOBILE MENU TOGGLE & AUTO-CLOSE ---
+  const navToggle = document.getElementById("navToggle");
+  const primaryNav = document.getElementById("primary-navigation");
+  const navLinks = document.querySelectorAll(".nav-menu a");
+
+  if (navToggle && primaryNav) {
+    const toggleMenu = () => {
+      const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", !isExpanded);
+      primaryNav.classList.toggle("open");
+    };
+
+    navToggle.addEventListener("click", toggleMenu);
+
+    // Chiudi il menu quando si clicca un link su mobile
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (primaryNav.classList.contains("open")) {
+          toggleMenu();
         }
+      });
+    });
+  }
 
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // --- SMOOTH SCROLL & OFFSET ---
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const targetId = this.getAttribute("href");
+      if (targetId === "#") return;
+
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        const navHeight = siteNav ? siteNav.offsetHeight : 68;
+        const targetPosition =
+          targetElement.getBoundingClientRect().top +
+          window.scrollY -
+          navHeight;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth",
+        });
       }
     });
   });
 
-  // Navbar background toggle on scroll
-  var navBar = document.getElementById('siteNav');
-  function onScroll() {
-    if (!navBar) return;
-    if (window.scrollY > 40) {
-      navBar.classList.add('scrolled');
-    } else {
-      navBar.classList.remove('scrolled');
-    }
-  }
-  window.addEventListener('scroll', onScroll);
-  onScroll();
+  // --- STATS COUNTER ANIMATION ---
+  const statNumbers = document.querySelectorAll(".stat-number");
+  const statsOptions = {
+    threshold: 0.5,
+    rootMargin: "0px",
+  };
 
-  // Inject current year
-  var yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  const statsObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const target = entry.target;
+        const finalValue = parseInt(target.textContent.replace(/\D/g, ""), 10);
+        const suffix = target.textContent.replace(/[0-9]/g, "");
+        const duration = 2000; // ms
+        const frameDuration = 1000 / 60;
+        const totalFrames = Math.round(duration / frameDuration);
+        let frame = 0;
 
-  // Mobile nav toggle
-  var navToggle = document.getElementById('navToggle');
-  var primaryNav = document.getElementById('primary-navigation');
-  if (navToggle && primaryNav) {
-    navToggle.addEventListener('click', function() {
-      var expanded = this.getAttribute('aria-expanded') === 'true';
-      this.setAttribute('aria-expanded', String(!expanded));
-      primaryNav.classList.toggle('open');
-    });
-  }
+        const counter = setInterval(() => {
+          frame++;
+          const progress = frame / totalFrames;
+          const currentCount = Math.round(finalValue * progress);
+          target.textContent = currentCount + suffix;
 
-  // Calendly popup (booking)
-  var bookBtn = document.getElementById('bookBtn');
-  if (bookBtn) {
-    var calendlyUrl = 'https://calendly.com/luccalfa-srl/sopralluogo';
-    bookBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Load Calendly CSS lazily (only when user clicks, not on page load)
-      if (!document.querySelector('link[href*="calendly"]')) {
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://assets.calendly.com/assets/external/widget.css';
-        document.head.appendChild(link);
-      }
-      if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
-        Calendly.initPopupWidget({ url: calendlyUrl });
-      } else {
-        var script = document.createElement('script');
-        script.src = 'https://assets.calendly.com/assets/external/widget.js';
-        script.async = true;
-        script.onload = function() {
-          if (window.Calendly && Calendly.initPopupWidget) Calendly.initPopupWidget({ url: calendlyUrl });
-        };
-        document.head.appendChild(script);
+          if (frame === totalFrames) {
+            clearInterval(counter);
+            target.textContent = finalValue + suffix;
+          }
+        }, frameDuration);
+
+        observer.unobserve(target); // Esegui una sola volta
       }
     });
+  }, statsOptions);
+
+  statNumbers.forEach((stat) => {
+    statsObserver.observe(stat);
+  });
+
+  // --- SCROLL REVEAL ANIMATIONS ---
+  const reveals = document.querySelectorAll(".reveal");
+  const revealOptions = {
+    threshold: 0.15,
+    rootMargin: "0px 0px -50px 0px",
+  };
+
+  const revealOnScroll = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, revealOptions);
+
+  reveals.forEach((reveal) => {
+    revealOnScroll.observe(reveal);
+  });
+
+  // --- CURRENT YEAR IN FOOTER ---
+  const yearEl = document.getElementById("year");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
   }
 
-  // Scroll reveal (IntersectionObserver)
-  var revealEls = document.querySelectorAll('.reveal, .reveal--left, .reveal--right');
-  if ('IntersectionObserver' in window && revealEls.length) {
-    var revealObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(function(el) { revealObserver.observe(el); });
-  } else {
-    // fallback: rendi tutto visibile subito
-    revealEls.forEach(function(el) { el.classList.add('is-visible'); });
-  }
-
-  // Formspree submit handler with status messages and aria-live updates
-  var contactForm = document.getElementById('contact-form');
-  var formStatus = document.getElementById('form-status');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      var endpoint = contactForm.getAttribute('data-endpoint');
-      if (!endpoint || endpoint === '#') {
-        // allow default submit if no endpoint
-        return;
+  // --- FORM HANDLING ---
+  const form = document.querySelector("#contact-form");
+  const statusEl = document.querySelector("#form-status");
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (statusEl) {
+        statusEl.textContent = "Invio in corso...";
+        statusEl.className = "form-status";
       }
 
-      e.preventDefault();
-      if (formStatus) { formStatus.textContent = 'Invio in corso...'; }
+      const formData = new FormData(form);
+      const endpoint = form.getAttribute("data-endpoint") || form.action;
 
-      var formData = new FormData(contactForm);
-      var submitBtn = contactForm.querySelector('button[type="submit"]');
-      if (submitBtn) { submitBtn.disabled = true; }
-
-      fetch(endpoint, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      }).then(function(response) {
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        });
         if (response.ok) {
-          if (formStatus) { formStatus.textContent = 'Messaggio inviato, reindirizzamento...'; }
-          // small delay so user sees status, then redirect
-          setTimeout(function(){ window.location.href = './thanks.html'; }, 600);
+          statusEl.textContent =
+            "Messaggio inviato con successo! Ti risponderemo presto.";
+          statusEl.className = "form-status success";
+          form.reset();
         } else {
-          response.json().then(function(data) {
-            if (formStatus) formStatus.textContent = 'Errore durante l\'invio. Riprova.';
-            alert('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-            if (submitBtn) { submitBtn.disabled = false; }
-          }).catch(function() {
-            if (formStatus) formStatus.textContent = 'Errore durante l\'invio. Riprova.';
-            if (submitBtn) { submitBtn.disabled = false; }
-          });
+          statusEl.textContent = "Oops! Si è verificato un errore. Riprova.";
+          statusEl.className = "form-status error";
         }
-      }).catch(function(err) {
-        console.error('Network error', err);
-        if (formStatus) formStatus.textContent = 'Errore di rete. Controlla la connessione.';
-        if (submitBtn) { submitBtn.disabled = false; }
-      });
+      } catch (err) {
+        statusEl.textContent = "Errore di connessione. Riprova più tardi.";
+        statusEl.className = "form-status error";
+      }
     });
   }
+
+  // --- FAQ TOGGLE CON LOGICA ACCORDION ---
+  const faqToggleBtn = document.getElementById("faqToggleBtn");
+  const faqListContainer = document.getElementById("faq-list-container");
+  const detailsElements = document.querySelectorAll(".faq-item");
+
+  if (faqToggleBtn && faqListContainer) {
+    faqToggleBtn.addEventListener("click", () => {
+      const isExpanded = faqToggleBtn.getAttribute("aria-expanded") === "true";
+      if (isExpanded) {
+        faqListContainer.classList.remove("is-open");
+        faqToggleBtn.setAttribute("aria-expanded", "false");
+        faqToggleBtn.innerHTML = "Mostra le risposte &rarr;";
+        setTimeout(() => {
+          faqListContainer.style.display = "none";
+        }, 500);
+      } else {
+        faqListContainer.style.display = "block";
+        requestAnimationFrame(() => {
+          faqListContainer.classList.add("is-open");
+        });
+        faqToggleBtn.setAttribute("aria-expanded", "true");
+        faqToggleBtn.innerHTML = "Nascondi le risposte &uarr;";
+      }
+    });
+  }
+
+  // Auto-chiusura di una FAQ se ne viene aperta un'altra
+  detailsElements.forEach((targetDetail) => {
+    targetDetail.addEventListener("click", () => {
+      detailsElements.forEach((detail) => {
+        if (detail !== targetDetail && detail.hasAttribute("open")) {
+          detail.removeAttribute("open");
+        }
+      });
+    });
+  });
 });
