@@ -137,15 +137,21 @@
       cursor: zoom-in;
       position: relative;
       display: block;
-      /* filtro nasconde con fade */
       transition: opacity 0.35s ease, transform 0.35s ease;
     }
     .gallery-item.hidden-item {
       opacity: 0;
       pointer-events: none;
-      position: absolute; /* toglie dallo flow */
+      position: absolute;
       visibility: hidden;
     }
+
+    /* picture inside gallery: block per flow corretto */
+    .gallery-item picture {
+      display: block;
+      line-height: 0;
+    }
+
     .gallery-item img {
       width: 100%;
       height: auto;
@@ -194,6 +200,103 @@
       transition: opacity 0.3s ease;
     }
     .gallery-item:hover .gallery-item__tag { opacity: 1; }
+
+    /* ── EXTRA ITEMS (nascoste, espandibili) ── */
+    .gallery-item[data-extra] {
+      display: none;
+    }
+    .gallery-item[data-extra].extra-visible {
+      display: block;
+    }
+    /* se l'extra è visibile ma filtrata fuori, resta nel flow ma nascosta da hidden-item */
+    .gallery-item[data-extra].extra-visible.hidden-item {
+      display: block;
+    }
+
+    /* ── PLACEHOLDER CARD ── */
+    .gallery-item--placeholder {
+      cursor: default;
+      aspect-ratio: 3 / 4;
+      background: var(--bg);
+      border: 2px dashed rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: var(--radius);
+    }
+    .gallery-item--placeholder:hover img { transform: none; }
+    .gallery-item--placeholder:hover .gallery-item__overlay { background: transparent; }
+    .gallery-item--placeholder .ph-icon {
+      color: rgba(0,0,0,0.15);
+    }
+    .gallery-item--placeholder .ph-text {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.22);
+    }
+
+    /* ── EXPAND BUTTON ── */
+    .gallery-expand-wrap {
+      text-align: center;
+      margin-top: 44px;
+    }
+    .gallery-expand-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 30px;
+      border-radius: 999px;
+      border: 2px solid var(--orange);
+      background: transparent;
+      color: var(--orange);
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition),
+                  transform var(--transition), box-shadow var(--transition);
+    }
+    .gallery-expand-btn:hover {
+      background: var(--orange);
+      color: #111;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(251,149,49,0.28);
+    }
+    .gallery-expand-btn .expand-chevron {
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+      flex-shrink: 0;
+    }
+    .gallery-expand-btn.expanded .expand-chevron {
+      transform: rotate(180deg);
+    }
+    /* pill count */
+    .gallery-expand-btn .expand-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #111;
+      font-size: 0.72rem;
+      font-weight: 800;
+      transition: background var(--transition), color var(--transition);
+    }
+    .gallery-expand-btn:hover .expand-count {
+      background: #111;
+      color: #fff;
+    }
+    .gallery-expand-btn.expanded .expand-count {
+      display: none;
+    }
 
     /* ── VIDEO SECTION ── */
     .video-section {
@@ -251,7 +354,23 @@
       transition: background 0.3s ease;
     }
     .video-card__poster:hover { background: rgba(0,0,0,0.28); }
-    .video-card__poster img {
+
+    /* picture dentro il poster video */
+    .video-card__poster picture {
+      position: absolute;
+      inset: 0;
+      display: block;
+      z-index: 0;
+    }
+    .video-card__poster picture img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* fallback per img diretta (senza picture) */
+    .video-card__poster > img {
       position: absolute;
       inset: 0;
       width: 100%; height: 100%;
@@ -259,6 +378,7 @@
       display: block;
       z-index: 0;
     }
+
     .play-btn {
       position: relative;
       z-index: 1;
@@ -280,8 +400,6 @@
     }
     .video-card__poster.hidden { display: none; }
 
-    /* Impedisce al compositor layer nativo del <video> di intercettare
-       i click prima che arrivino al poster overlay */
     .video-card video:not([controls]) { pointer-events: none; }
 
     /* ── LIGHTBOX ── */
@@ -429,9 +547,13 @@
         <div class="gallery-item reveal"
              data-index="0" data-cat="giardinaggio"
              tabindex="0" role="button" aria-label="Apri foto 1 — intervento di giardinaggio">
-          <img src="assets/optimized/giardino-a-lavoro-cc-1280.webp"
-               alt="Intervento di giardinaggio — potatura siepe"
-               loading="lazy" width="800" height="600" />
+          <picture>
+            <source srcset="assets/optimized/giardino-a-lavoro-cc-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/giardino-a-lavoro-cc-1280.webp" type="image/webp">
+            <img src="assets/optimized/giardino-a-lavoro-cc-1280.webp"
+                 alt="Intervento di giardinaggio — potatura siepe"
+                 loading="lazy" width="800" height="600" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -446,9 +568,13 @@
         <div class="gallery-item reveal reveal--delay-1"
              data-index="1" data-cat="potatura"
              tabindex="0" role="button" aria-label="Apri foto 2 — potatura ulivo in campagna">
-          <img src="assets/optimized/ulivo-mm-1280.webp"
-               alt="Potatura ulivo in campagna"
-               loading="lazy" width="800" height="1050" />
+          <picture>
+            <source srcset="assets/optimized/ulivo-mm-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/ulivo-mm-1280.webp" type="image/webp">
+            <img src="assets/optimized/ulivo-mm-1280.webp"
+                 alt="Potatura ulivo in campagna"
+                 loading="lazy" width="800" height="1050" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -463,9 +589,13 @@
         <div class="gallery-item reveal reveal--delay-2"
              data-index="2" data-cat="giardinaggio"
              tabindex="0" role="button" aria-label="Apri foto 3 — manutenzione prato">
-          <img src="assets/optimized/siepe-aiuola-1280.webp"
-               alt="Manutenzione prato e rifinitura aiuole"
-               loading="lazy" width="800" height="600" />
+          <picture>
+            <source srcset="assets/optimized/siepe-aiuola-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/siepe-aiuola-1280.webp" type="image/webp">
+            <img src="assets/optimized/siepe-aiuola-1280.webp"
+                 alt="Manutenzione prato e rifinitura aiuole"
+                 loading="lazy" width="800" height="600" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -480,9 +610,13 @@
         <div class="gallery-item reveal"
              data-index="3" data-cat="giardinaggio"
              tabindex="0" role="button" aria-label="Apri foto 4 — ripristino giardino">
-          <img src="assets/optimized/giardino-1-1280.webp"
-               alt="Ripristino giardino trascurato"
-               loading="lazy" width="800" height="900" />
+          <picture>
+            <source srcset="assets/optimized/giardino-1-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/giardino-1-1280.webp" type="image/webp">
+            <img src="assets/optimized/giardino-1-1280.webp"
+                 alt="Ripristino giardino trascurato"
+                 loading="lazy" width="800" height="900" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -497,9 +631,13 @@
         <div class="gallery-item reveal reveal--delay-1"
              data-index="4" data-cat="pulizie"
              tabindex="0" role="button" aria-label="Apri foto 5 — pulizia scale condominiali">
-          <img src="assets/optimized/scale-cc-1280.avif"
-               alt="Pulizia scala condominiale — parti comuni"
-               loading="lazy" width="800" height="600" />
+          <picture>
+            <source srcset="assets/optimized/scale-cc-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/scale-cc-1280.webp" type="image/webp">
+            <img src="assets/optimized/scale-cc-1280.avif"
+                 alt="Pulizia scala condominiale — parti comuni"
+                 loading="lazy" width="800" height="600" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -514,9 +652,13 @@
         <div class="gallery-item reveal reveal--delay-2"
              data-index="5" data-cat="potatura"
              tabindex="0" role="button" aria-label="Apri foto 6 — abbattimento in tree climbing">
-          <img src="assets/optimized/tree-climbing-1280.webp"
-               alt="Abbattimento albero in tree climbing"
-               loading="lazy" width="800" height="1100" />
+          <picture>
+            <source srcset="assets/optimized/tree-climbing-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/tree-climbing-1280.webp" type="image/webp">
+            <img src="assets/optimized/tree-climbing-1280.webp"
+                 alt="Abbattimento albero in tree climbing"
+                 loading="lazy" width="800" height="1100" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -531,9 +673,13 @@
         <div class="gallery-item reveal"
              data-index="6" data-cat="pulizie"
              tabindex="0" role="button" aria-label="Apri foto 7 — lavaggio garage con idropulitrice">
-          <img src="assets/optimized/garage-c2-1280.webp"
-               alt="Lavaggio garage e parcheggio con idropulitrice"
-               loading="lazy" width="800" height="600" />
+          <picture>
+            <source srcset="assets/optimized/garage-c2-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/garage-c2-1280.webp" type="image/webp">
+            <img src="assets/optimized/garage-c2-1280.webp"
+                 alt="Lavaggio garage e parcheggio con idropulitrice"
+                 loading="lazy" width="800" height="600" />
+          </picture>
           <div class="gallery-item__overlay" aria-hidden="true">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -544,7 +690,175 @@
           <span class="gallery-item__tag">Pulizie garage</span>
         </div>
 
+        <!-- ═══════════════════════════════════════════
+             FOTO EXTRA — visibili solo dopo "Mostra tutto"
+        ══════════════════════════════════════════════ -->
+
+        <!-- FOTO 8 — Potatura ulivo -->
+        <div class="gallery-item reveal" data-extra
+             data-index="7" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto — potatura ulivo">
+          <picture>
+            <source srcset="assets/optimized/ulivo-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/ulivo-1280.webp" type="image/webp">
+            <img src="assets/optimized/ulivo-1280.webp"
+                 alt="Potatura professionale di ulivo secolare"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <span class="gallery-item__tag">Potatura ulivo</span>
+        </div>
+
+        <!-- FOTO 9 — Cipresso potatura 1 -->
+        <div class="gallery-item reveal reveal--delay-1" data-extra
+             data-index="8" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto — potatura cipresso">
+          <picture>
+            <source srcset="assets/optimized/cipresso-a-lavoro-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/cipresso-a-lavoro-1280.webp" type="image/webp">
+            <img src="assets/optimized/cipresso-a-lavoro-1280.webp"
+                 alt="Potatura cipresso — sagomatura e riduzione chioma"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <span class="gallery-item__tag">Potatura cipresso</span>
+        </div>
+
+        <!-- FOTO 10 — Cipresso potatura 2 -->
+        <div class="gallery-item reveal reveal--delay-2" data-extra
+             data-index="9" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto — potatura cipresso">
+          <picture>
+            <source srcset="assets/optimized/cipresso-a-lavoro-2-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/cipresso-a-lavoro-2-1280.webp" type="image/webp">
+            <img src="assets/optimized/cipresso-a-lavoro-2-1280.webp"
+                 alt="Potatura cipresso in altezza — in corso"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <span class="gallery-item__tag">Potatura cipresso</span>
+        </div>
+
+        <!-- FOTO 11 — Catasta rami post-potatura -->
+        <div class="gallery-item reveal" data-extra
+             data-index="10" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto — smaltimento rami post-potatura">
+          <picture>
+            <source srcset="assets/optimized/sfalci-alberi-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/sfalci-alberi-1280.webp" type="image/webp">
+            <img src="assets/optimized/sfalci-alberi-1280.webp"
+                 alt="Catasta di rami accatastati dopo potatura di albero ad alto fusto"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <span class="gallery-item__tag">Post-potatura</span>
+        </div>
+
+        <!-- FOTO 12 — Tree climbing su pino -->
+        <div class="gallery-item reveal reveal--delay-1" data-extra
+             data-index="11" data-cat="potatura"
+             tabindex="0" role="button" aria-label="Apri foto — tree climbing su pino">
+          <picture>
+            <source srcset="assets/optimized/pino-treeclimbing-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/pino-treeclimbing-1280.webp" type="image/webp">
+            <img src="assets/optimized/pino-treeclimbing-1280.webp"
+                 alt="Operatore in tree climbing su pino — intervento in quota"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <span class="gallery-item__tag">Tree climbing</span>
+        </div>
+
+        <!-- FOTO 13 — Dettaglio giardiniere -->
+        <div class="gallery-item reveal reveal--delay-2" data-extra
+             data-index="12" data-cat="giardinaggio"
+             tabindex="0" role="button" aria-label="Apri foto — dettaglio giardiniere al lavoro">
+          <picture>
+            <source srcset="assets/optimized/treeclimbing-zoom-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/treeclimbing-zoom-1280.webp" type="image/webp">
+            <img src="assets/optimized/treeclimbing-zoom-1280.webp"
+                 alt="Zoom sul giardiniere LuccAlfa al lavoro — cura del dettaglio"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <div class="gallery-item__overlay" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <span class="gallery-item__tag">Giardinaggio</span>
+        </div>
+
+        <!-- PLACEHOLDER A — slot futuro -->
+        <div class="gallery-item gallery-item--placeholder reveal" data-extra
+             data-cat="futuro" tabindex="-1" aria-hidden="true">
+          <svg class="ph-icon" width="36" height="36" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <span class="ph-text">Prossimamente</span>
+        </div>
+
+        <!-- PLACEHOLDER B — slot futuro -->
+        <div class="gallery-item gallery-item--placeholder reveal reveal--delay-1" data-extra
+             data-cat="futuro" tabindex="-1" aria-hidden="true">
+          <svg class="ph-icon" width="36" height="36" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <span class="ph-text">Prossimamente</span>
+        </div>
+
       </div><!-- /.gallery-grid -->
+
+      <!-- EXPAND BUTTON -->
+      <div class="gallery-expand-wrap">
+        <button class="gallery-expand-btn" id="galleryExpandBtn" aria-expanded="false">
+          <svg class="expand-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+          <span class="expand-label">Mostra tutte le foto</span>
+          <span class="expand-count" aria-hidden="true">6</span>
+        </button>
+      </div>
+
     </div>
   </section>
 
@@ -565,7 +879,11 @@
             <source src="assets/Presentazione.mp4" type="video/mp4">
           </video>
           <div class="video-card__poster" id="poster1">
-            <img src="assets/optimized/copertina-1-1280.webp" alt="" aria-hidden="true" />
+            <picture>
+              <source srcset="assets/optimized/copertina-1-1280.avif" type="image/avif">
+              <source srcset="assets/optimized/copertina-1-1280.webp" type="image/webp">
+              <img src="assets/optimized/copertina-1-1280.webp" alt="" aria-hidden="true" />
+            </picture>
             <button class="play-btn" aria-label="Riproduci video 1">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
                 <path d="M5 3l14 9-14 9V3z"/>
@@ -582,7 +900,11 @@
             <source src="assets/Timeline 1.mp4" type="video/mp4">
           </video>
           <div class="video-card__poster" id="poster2">
-            <img src="assets/optimized/copertina2bis-1280.webp" alt="" aria-hidden="true" />
+            <picture>
+              <source srcset="assets/optimized/copertina2bis-1280.avif" type="image/avif">
+              <source srcset="assets/optimized/copertina2bis-1280.webp" type="image/webp">
+              <img src="assets/optimized/copertina2bis-1280.webp" alt="" aria-hidden="true" />
+            </picture>
             <button class="play-btn" aria-label="Riproduci video 2">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
                 <path d="M5 3l14 9-14 9V3z"/>
@@ -599,7 +921,11 @@
             <source src="assets/escavatore.mp4" type="video/mp4">
           </video>
           <div class="video-card__poster" id="poster3">
-            <img src="assets/optimized/copertina-3-1280.webp" alt="" aria-hidden="true" />
+            <picture>
+              <source srcset="assets/optimized/copertina-3-1280.avif" type="image/avif">
+              <source srcset="assets/optimized/copertina-3-1280.webp" type="image/webp">
+              <img src="assets/optimized/copertina-3-1280.webp" alt="" aria-hidden="true" />
+            </picture>
             <button class="play-btn" aria-label="Riproduci video 3">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#111" aria-hidden="true">
                 <path d="M5 3l14 9-14 9V3z"/>
@@ -714,19 +1040,55 @@
     });
   })();
 
+  /* ── EXPAND PORTFOLIO ── */
+  (function () {
+    const btn    = document.getElementById('galleryExpandBtn');
+    const extras = document.querySelectorAll('.gallery-item[data-extra]');
+    const label  = btn ? btn.querySelector('.expand-label') : null;
+    if (!btn || !extras.length) return;
+
+    let expanded = false;
+
+    btn.addEventListener('click', function () {
+      expanded = !expanded;
+
+      extras.forEach(el => {
+        el.classList.toggle('extra-visible', expanded);
+        // gli item extra placeholder non sono interattivi
+        if (!el.classList.contains('gallery-item--placeholder')) {
+          el.setAttribute('tabindex', expanded ? '0' : '-1');
+        }
+      });
+
+      btn.classList.toggle('expanded', expanded);
+      btn.setAttribute('aria-expanded', String(expanded));
+      if (label) label.textContent = expanded ? 'Mostra meno' : 'Mostra tutte le foto';
+
+      if (!expanded) {
+        // torna su alla gallery quando si richiude
+        document.querySelector('.gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  })();
+
   /* ── LIGHTBOX ── */
   (function () {
-    const allItems = () => Array.from(document.querySelectorAll('.gallery-item:not(.hidden-item)'));
-    const lb       = document.getElementById('lightbox');
-    const lbImg    = document.getElementById('lb-img');
-    const lbClose  = document.getElementById('lb-close');
-    const lbPrev   = document.getElementById('lb-prev');
-    const lbNext   = document.getElementById('lb-next');
-    const lbCount  = document.getElementById('lb-counter');
-    let current    = 0;
+    // esclude item con hidden-item E item extra non espansi (non visibili)
+    const allItems = () => Array.from(
+      document.querySelectorAll('.gallery-item:not(.hidden-item):not(.gallery-item--placeholder)')
+    ).filter(el => !el.hasAttribute('data-extra') || el.classList.contains('extra-visible'));
+
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lb-img');
+    const lbClose = document.getElementById('lb-close');
+    const lbPrev  = document.getElementById('lb-prev');
+    const lbNext  = document.getElementById('lb-next');
+    const lbCount = document.getElementById('lb-counter');
+    let current   = 0;
 
     function srcOf(item) {
-      return { src: item.querySelector('img').src, alt: item.querySelector('img').alt };
+      const img = item.querySelector('img');
+      return { src: img.currentSrc || img.src, alt: img.alt };
     }
 
     function open(i) {
@@ -735,8 +1097,9 @@
       current = ((i % items.length) + items.length) % items.length;
       lbImg.classList.add('fade');
       requestAnimationFrame(() => {
-        lbImg.src = srcOf(items[current]).src;
-        lbImg.alt = srcOf(items[current]).alt;
+        const { src, alt } = srcOf(items[current]);
+        lbImg.src = src;
+        lbImg.alt = alt;
         lbImg.onload = () => lbImg.classList.remove('fade');
         lbCount.textContent = (current + 1) + ' / ' + items.length;
       });
@@ -753,12 +1116,13 @@
     document.getElementById('galleryGrid').addEventListener('click', e => {
       const item = e.target.closest('.gallery-item');
       if (!item || item.classList.contains('hidden-item')) return;
+      if (item.classList.contains('gallery-item--placeholder')) return;
       open(allItems().indexOf(item));
     });
     document.getElementById('galleryGrid').addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       const item = e.target.closest('.gallery-item');
-      if (!item) return;
+      if (!item || item.classList.contains('gallery-item--placeholder')) return;
       e.preventDefault();
       open(allItems().indexOf(item));
     });
@@ -795,13 +1159,10 @@
 
       poster.addEventListener('click', function () {
         console.log('[video' + n + '] click ricevuto — avvio...');
-
-        // Feedback visivo immediato: poster si oscura mentre buferizza
         poster.style.transition = 'opacity 0.3s';
         poster.style.opacity    = '0.25';
         vid.setAttribute('controls', '');
 
-        // Nasconde il poster solo quando il primo frame è davvero pronto
         vid.addEventListener('playing', function onPlaying() {
           console.log('[video' + n + '] primo frame pronto — nascondo poster');
           poster.classList.add('hidden');
@@ -812,14 +1173,12 @@
 
         vid.play().catch(function (err) {
           console.warn('[video' + n + '] play() rifiutato:', err);
-          // Ripristina poster se play() fallisce
           poster.style.opacity    = '';
           poster.style.transition = '';
           vid.removeAttribute('controls');
         });
       });
 
-      // A fine video: ripristina il poster e ricarica
       vid.addEventListener('ended', function () {
         poster.classList.remove('hidden');
         vid.removeAttribute('controls');
