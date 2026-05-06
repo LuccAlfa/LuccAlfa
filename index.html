@@ -722,6 +722,17 @@
         padding: 40px 52px 64px;
         position: relative;
         z-index: 2;
+        box-shadow: none;
+      }
+      .contact-form-col form,
+      .contact-form-col label input,
+      .contact-form-col label textarea {
+        box-shadow: none;
+      }
+      .contact-form-col label input,
+      .contact-form-col label textarea {
+        background: #fff;
+        border: 1.5px solid #ddd;
       }
 
       /* Colonna immagine */
@@ -773,25 +784,21 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: 14px;
+        align-items: flex-start;
+        gap: 18px;
         height: 100%;
         box-sizing: border-box;
       }
 
-      /* Card singola contatto */
+      /* Riga contatto (senza card scura) */
       .ci-card {
         display: flex;
         align-items: center;
-        gap: 16px;
-        background: rgba(0, 0, 0, 0.42);
-        border-radius: 14px;
-        padding: 16px 20px;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
+        gap: 14px;
       }
       .ci-card__icon {
-        width: 46px;
-        height: 46px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         background: #FB9531;
         display: flex;
@@ -803,14 +810,16 @@
         display: block;
         font-family: "Montserrat", sans-serif;
         font-weight: 700;
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         color: #fff;
-        margin-bottom: 3px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        margin-bottom: 2px;
       }
       .ci-card__text span,
       .ci-card__text a {
-        font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.82);
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.88);
+        text-shadow: 0 1px 3px rgba(0,0,0,0.4);
         text-decoration: none;
       }
       .ci-card__text a:hover { color: #FB9531; }
@@ -820,16 +829,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 8px;
         background: #FB9531;
         color: #fff;
         font-family: "Montserrat", sans-serif;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 0.9rem;
         border-radius: 50px;
-        padding: 17px 28px;
+        padding: 13px 28px;
         text-decoration: none;
-        margin-top: 6px;
+        margin-top: 4px;
         transition: background 0.2s, transform 0.15s;
       }
       .btn-chiama:hover {
@@ -900,14 +909,14 @@
 
         <!-- Immagine di sfondo -->
         <picture class="contact-img-bg" aria-hidden="true">
-          <source type="image/avif" srcset="assets/optimized/contact-garden-1280.avif">
-          <source type="image/webp" srcset="assets/optimized/contact-garden-1280.webp">
+          <source type="image/avif" srcset="assets/optimized/contact-garden.avif">
+          <source type="image/webp" srcset="assets/optimized/contact-garden.webp">
           <img src="assets/optimized/contact-garden.webp" alt="" loading="lazy">
         </picture>
 
         <!-- Onda bianca di raccordo -->
         <svg class="contact-wave" viewBox="0 0 90 420" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M0 0 L0 420 L90 420 Q28 315 48 210 Q68 105 90 0 Z" fill="#ffffff"/>
+          <path d="M0 0 L0 420 L45 420 Q0 315 45 210 Q90 105 45 0 L0 0 Z" fill="#ffffff"/>
         </svg>
 
         <!-- Info contatti sovrapposti all'immagine -->
