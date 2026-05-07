@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- FAQ TOGGLE CON LOGICA ACCORDION ---
   const faqToggleBtn = document.getElementById("faqToggleBtn");
   const faqListContainer = document.getElementById("faq-list-container");
-  const detailsElements = document.querySelectorAll(".faq-item");
 
   if (faqToggleBtn && faqListContainer) {
     faqToggleBtn.addEventListener("click", () => {
@@ -190,13 +189,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Auto-chiusura di una FAQ se ne viene aperta un'altra
-  detailsElements.forEach((targetDetail) => {
-    targetDetail.addEventListener("click", () => {
-      detailsElements.forEach((detail) => {
-        if (detail !== targetDetail && detail.hasAttribute("open")) {
-          detail.removeAttribute("open");
-        }
+  const categoryDetails = document.querySelectorAll(".faq-category-item");
+  const faqDetails = document.querySelectorAll(".faq-item");
+
+  categoryDetails.forEach((targetDetail) => {
+    const summary = targetDetail.querySelector("summary");
+    if (summary) {
+      summary.addEventListener("click", () => {
+        categoryDetails.forEach((detail) => {
+          if (detail !== targetDetail && detail.hasAttribute("open")) {
+            detail.removeAttribute("open");
+          }
+        });
       });
-    });
+    }
+  });
+
+  faqDetails.forEach((targetDetail) => {
+    const summary = targetDetail.querySelector("summary");
+    if (summary) {
+      summary.addEventListener("click", () => {
+        const parentCategory = targetDetail.closest(".faq-category-item__body");
+        const siblings = parentCategory 
+          ? parentCategory.querySelectorAll(".faq-item") 
+          : faqDetails;
+          
+        siblings.forEach((detail) => {
+          if (detail !== targetDetail && detail.hasAttribute("open")) {
+            detail.removeAttribute("open");
+          }
+        });
+      });
+    }
   });
 });
