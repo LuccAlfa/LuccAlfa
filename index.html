@@ -36,6 +36,8 @@
 
     <link rel="stylesheet" href="assets/fonts/fonts.css" />
     <link rel="stylesheet" href="styles.css" />
+    <!-- Calendly widget CSS -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet"/>
 
     <link rel="canonical" href="https://luccalfa.it/" />
     <meta property="og:type" content="website" />
@@ -918,9 +920,12 @@
           Sopralluogo, preventivo o consulenza: parla direttamente con Marco
           Modena.
         </p>
-        <a href="https://calendly.com/luccalfa-srl/sopralluogo" id="bookBtn" class="btn-hero-primary"
-          >Scegli giorno e ora →</a
+        <button
+          onclick="Calendly.initPopupWidget({url:'https://calendly.com/luccalfa-srl/sopralluogo'});return false;"
+          class="btn-hero-primary"
         >
+          Scegli giorno e ora →
+        </button>
       </div>
     </section>
 
@@ -1369,6 +1374,8 @@
       <span class="whatsapp-fab__label">WhatsApp</span>
     </a>
 
+    <!-- Calendly widget JS -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
     <script src="script.js" defer></script>
   </body>
 </html>
