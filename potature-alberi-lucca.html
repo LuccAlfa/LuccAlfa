@@ -36,14 +36,28 @@
       "@type": "Service",
       "name": "Potatura Alberi a Lucca",
       "serviceType": "Potatura Alberi e Tree Climbing",
-      "description": "LuccAlfa esegue potature professionali di alberi, siepi, cipressi e olivi a Lucca e provincia con tree climbing, piattaforme elevabili e abbattimento controllato.",
+      "description": "LuccAlfa esegue potature professionali di alberi, siepi, cipressi e olivi a Lucca e provincia con tree climbing, piattaforme elevabili (PLE) e abbattimento controllato. Sopralluogo gratuito, smaltimento ramaglie incluso.",
       "url": "https://luccalfa.it/potature-alberi-lucca.html",
+      "image": "https://luccalfa.it/assets/hero-garden.png",
       "provider": {
         "@type": "LocalBusiness",
         "@id": "https://luccalfa.it/#business",
         "name": "LuccAlfa",
         "telephone": "+393294291402",
-        "url": "https://luccalfa.it"
+        "url": "https://luccalfa.it",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via di Villa Altieri",
+          "addressLocality": "Lucca",
+          "postalCode": "55100",
+          "addressRegion": "LU",
+          "addressCountry": "IT"
+        },
+        "sameAs": [
+          "https://www.facebook.com/luccalfa/",
+          "https://www.instagram.com/luccalfa_srl/",
+          "https://www.tiktok.com/@luccalfa"
+        ]
       },
       "areaServed": [
         { "@type": "City", "name": "Lucca" },
@@ -58,12 +72,20 @@
         "@type": "OfferCatalog",
         "name": "Servizi di Potatura",
         "itemListElement": [
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura alberi con tree climbing" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Abbattimento alberi pericolosi" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura siepi e arbusti" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura olivi a Lucca" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Interventi con piattaforma elevabile PLE" } }
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura alberi con tree climbing", "description": "Tecnica acrobatica con funi e imbracature certificate, ideale per spazi stretti e contesti storici." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Abbattimento alberi pericolosi", "description": "Abbattimento controllato con smontaggio settoriale e gestione sicura in prossimità di strutture." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura siepi e arbusti", "description": "Potatura estetica e di contenimento di siepi ornamentali, arbusti e cipressi." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura olivi a Lucca", "description": "Potatura produttiva e di riforma degli olivi, eseguita nel periodo ottimale febbraio–aprile." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Interventi con piattaforma elevabile PLE", "description": "Accesso in quota su alberi ad alto fusto con PLE per spazi accessibili a mezzi meccanici." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Smaltimento ramaglie", "description": "Conferimento di ramaglie e residui vegetali presso centri autorizzati della provincia di Lucca." } }
         ]
+      },
+      "offers": {
+        "@type": "Offer",
+        "name": "Sopralluogo e preventivo gratuito",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "description": "Sopralluogo gratuito e senza impegno per la valutazione degli interventi di potatura."
       }
     }
     </script>
