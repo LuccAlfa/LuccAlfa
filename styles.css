@@ -1960,3 +1960,33 @@ h6 {
     animation: none;
   }
 }
+
+/* --- Modifica Didascalie Mobile --- */
+@media (max-width: 768px) {
+  figure {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  figure figcaption {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7); /* Sfondo scuro per leggibilità */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
+
+  /* Quando la figura ha la classe is-tapped, mostra la didascalia */
+  figure.is-tapped figcaption {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
