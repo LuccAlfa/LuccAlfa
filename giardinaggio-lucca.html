@@ -203,13 +203,17 @@
       display: flex; flex-direction: column; gap: 10px;
     }
     .gd-row__text ul li {
-      display: flex; align-items: flex-start; gap: 10px;
+      position: relative;
+      padding-left: 17px;
       font-size: 0.97rem; color: var(--muted); line-height: 1.6;
     }
     .gd-row__text ul li::before {
-      content: ""; display: inline-block;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: calc(0.97rem * 1.6 / 2 - 3.5px);
       width: 7px; height: 7px; border-radius: 50%;
-      background: var(--orange); flex-shrink: 0; margin-top: 8px;
+      background: var(--orange);
     }
     .gd-row__text ul li strong { color: var(--text); }
 
