@@ -221,53 +221,68 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- MOBILE TOUCH LOGIC PER CARD SERVIZI ---
-  // Rileva se il dispositivo supporta il touch
+  // --- MOBILE TOUCH LOGIC PER CARD SERVIZI (VERSIONE AGGIORNATA) ---
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   if (isTouchDevice) {
-    const scards = document.querySelectorAll('.scard');
-    const multiCard = document.querySelector('.scard--multi');
-    const linkCard = document.querySelector('.scard--link-card');
+    // 1. TRASFORMAZIONE DINAMICA CARD PULIZIE
+    const pulizieCard = document.querySelector('.scard--link-card');
+    
+    if (pulizieCard) {
+      // Recuperiamo l'URL originale dal link desktop
+      const fullLink = pulizieCard.querySelector('.scard__full-link');
+      const linkHref = fullLink ? fullLink.getAttribute('href') : 'ditta-pulizie-lucca.html';
 
-    // Funzione helper per resettare le card aperte
+      // Nascondiamo gli elementi della versione desktop
+      if (fullLink) fullLink.style.display = 'none';
+      const badge = pulizieCard.querySelector('.scard__cta-badge');
+      if (badge) badge.style.display = 'none';
+
+      // Iniettiamo il pannello identico a Giardinaggio con l'etichetta richiesta
+      const panelHTML = `
+        <div class="scard__hover-panel" aria-hidden="true">
+          <span class="scard__hover-label">Scopri di più</span>
+          <div class="scard__hover-links">
+            <a href="${linkHref}">
+              🧼 Pulizie
+              <span class="link-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      `;
+      pulizieCard.insertAdjacentHTML('beforeend', panelHTML);
+
+      // Cambiamo la classe per farle ereditare lo stile "Giardinaggio"
+      pulizieCard.classList.remove('scard--link-card');
+      pulizieCard.classList.add('scard--multi');
+    }
+
+    // 2. GESTIONE TOCCO (Valida per entrambe le card ora)
+    const expandableCards = document.querySelectorAll('.scard--multi');
+
     const closeAllCards = () => {
-      scards.forEach(card => card.classList.remove('is-active'));
+      expandableCards.forEach(card => card.classList.remove('is-active'));
     };
 
-    // 1. Logica Card Giardinaggio (Espandibile con link interni)
-    if (multiCard) {
-      multiCard.addEventListener('click', (e) => {
-        // Se la card è attiva e l'utente tocca un link interno valido, lascia fluire il click nativo
-        if (multiCard.classList.contains('is-active') && e.target.closest('a')) {
-          return;
+    expandableCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Se tocca il link interno quando la card è già aperta, naviga
+        if (card.classList.contains('is-active') && e.target.closest('a')) {
+          return; 
         }
 
-        // Se la card NON è attiva (Primo tap)
-        if (!multiCard.classList.contains('is-active')) {
-          e.preventDefault(); // Previene navigazioni accidentali al primo tocco
+        // Primo tap: apri questa card e chiudi le altre
+        if (!card.classList.contains('is-active')) {
+          e.preventDefault(); 
           closeAllCards();
-          multiCard.classList.add('is-active');
+          card.classList.add('is-active');
         }
       });
-    }
+    });
 
-    // 2. Logica Card Pulizie (Intera card cliccabile)
-    if (linkCard) {
-      linkCard.addEventListener('click', (e) => {
-        // Se la card NON è attiva (Primo tap: espansione visiva)
-        if (!linkCard.classList.contains('is-active')) {
-          e.preventDefault(); // Blocca l'apertura del link
-          closeAllCards();
-          linkCard.classList.add('is-active');
-        }
-        // Al secondo tap, la card avrà già '.is-active', ignorando l'if e procedendo col redirect
-      });
-    }
-
-    // 3. Chiusura delle card al tap su qualsiasi altra parte dello schermo
+    // 3. Chiudi se si tocca fuori dalle card
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.scard')) {
+      if (!e.target.closest('.scard--multi')) {
         closeAllCards();
       }
     });
