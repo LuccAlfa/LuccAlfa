@@ -148,10 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         });
         if (response.ok) {
-          statusEl.textContent =
-            "Messaggio inviato con successo! Ti risponderemo presto.";
-          statusEl.className = "form-status success";
-          form.reset();
+          // Reindirizza l'utente alla pagina di ringraziamento
+          window.location.href = "thanks.html"; 
         } else {
           statusEl.textContent = "Oops! Si è verificato un errore. Riprova.";
           statusEl.className = "form-status error";
