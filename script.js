@@ -287,4 +287,28 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // --- GESTIONE DIDASCALIE SU MOBILE ---
+  const figures = document.querySelectorAll('figure');
+
+  figures.forEach(fig => {
+    fig.addEventListener('click', (e) => {
+      // Impedisce la chiusura immediata se si clicca sulla figura stessa
+      e.stopPropagation();
+      
+      // Se è già aperta, la chiudiamo, altrimenti chiudiamo le altre e apriamo questa
+      const isAlreadyOpen = fig.classList.contains('is-tapped');
+      
+      figures.forEach(f => f.classList.remove('is-tapped'));
+      
+      if (!isAlreadyOpen) {
+        fig.classList.add('is-tapped');
+      }
+    });
+  });
+
+  // Chiude la didascalia se si clicca in qualsiasi altra parte dello schermo
+  document.addEventListener('click', () => {
+    figures.forEach(f => f.classList.remove('is-tapped'));
+  });
 });
