@@ -48,7 +48,7 @@
         "addressCountry": "IT"
       }
     },
-    "areaServed": [
+    "areaServed":[
       { "@type": "City", "name": "Lucca" },
       { "@type": "AdministrativeArea", "name": "Centro Storico di Lucca" },
       { "@type": "AdministrativeArea", "name": "Sant'Anna, Lucca" },
@@ -62,7 +62,7 @@
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Servizi di Pulizia Professionale",
-      "itemListElement": [
+      "itemListElement":[
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pulizie condominiali aree comuni" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sanificazione uffici e studi professionali" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pulizie per negozi e attività commerciali" } },
@@ -78,7 +78,7 @@
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": [
+    "itemListElement":[
       { "@type": "ListItem", "position": 1, "name": "Home",     "item": "https://luccalfa.it/" },
       { "@type": "ListItem", "position": 2, "name": "Pulizie",  "item": "https://luccalfa.it/#pulizie" },
       { "@type": "ListItem", "position": 3, "name": "Pulizie Professionali Lucca", "item": "https://luccalfa.it/ditta-pulizie-lucca.html" }
@@ -90,7 +90,7 @@
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
+    "mainEntity":[
       {
         "@type": "Question",
         "name": "Potete pulire l'ufficio fuori dall'orario di lavoro?",
@@ -271,7 +271,7 @@
       display: flex;
       flex-direction: column;
     }
-    .content-figure picture { flex: 1; display: block; }
+    .content-figure picture { flex: 1; display: block; min-height: 0; }
     .content-figure img {
       width: 100%;
       height: 100%;
@@ -281,6 +281,7 @@
     }
     .content-figure:hover img { transform: scale(1.04); }
     .content-figure figcaption {
+      flex-shrink: 0;
       font-size: 0.81rem;
       color: var(--muted);
       padding: 10px 14px 12px;
@@ -621,7 +622,7 @@
             Gestiamo la pulizia programmata delle aree comuni — scale, androni, ascensori, pianerottoli, corrimano e vetrate d'ingresso — con interventi calibrati sulla frequenza di passaggio e sulla tipologia di materiali del palazzo. Sanifichiamo anche pulsantiere, maniglie e tutti i punti di contatto frequente.
           </p>
           <p>
-            Per i garage, i corselli e le aree ecologiche utilizziamo lavasciuga industriali che rimuovono sporco e residui accumulati. Gestiamo anche la sostituzione dei sacchi nei contenitori comuni: un dettaglio che gli amministratori apprezzano immediatamente.
+            Per i garage, i corselli e le aree ecologiche utilizziamo lavasciuga industriali che rimuovono sporco e residui accumulati. Gestiamo anche la sostituzione dei sacchi nei contenitori comuni: un dettaglio che gli amministrator apprezzano immediatamente.
           </p>
           <ul>
             <li><strong>Scale e androni</strong> — pulizia con detergenti professionali specifici per ogni superficie</li>
