@@ -1887,3 +1887,76 @@ h6 {
   opacity: 1;
   transform: translateX(0);
 }
+
+/* ────────────────────────────────────────────────
+   MOBILE TOUCH INTERACTION PER SCARD (SERVIZI)
+──────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  /* 1. Disabilitiamo l'hover nativo per evitare conflitti su touch */
+  .scard--multi:not(.is-active) .scard__hover-panel {
+    opacity: 0 !important;
+    transform: translateY(12px) !important;
+    pointer-events: none !important;
+  }
+  .scard--link-card:not(.is-active) .scard__cta-badge {
+    opacity: 0 !important;
+    transform: translateY(8px) scale(0.92) !important;
+    pointer-events: none !important;
+  }
+  .scard--link-card:not(.is-active) {
+    border-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* 2. Stili di stato attivati via JavaScript (Primo Tap) */
+  .scard--multi.is-active .scard__hover-panel {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+  }
+  .scard--link-card.is-active .scard__cta-badge {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+  }
+  .scard--link-card.is-active {
+    border-color: rgba(251, 149, 49, 0.4) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-4px);
+  }
+
+  /* 3. Indizio visivo discreto (micro-freccia) per le card interattive */
+  .scard--multi::after,
+  .scard--link-card::after {
+    content: "";
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 32px;
+    height: 32px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FB9531' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/18px no-repeat;
+    background-color: rgba(251, 149, 49, 0.08);
+    border-radius: 50%;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Micro-animazione elegante per attirare l'occhio sul fatto che sia un elemento interattivo */
+  @keyframes subtlePulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(251, 149, 49, 0.3); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(251, 149, 49, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(251, 149, 49, 0); }
+  }
+  .scard--multi:not(.is-active)::after,
+  .scard--link-card:not(.is-active)::after {
+    animation: subtlePulse 2.5s infinite;
+  }
+
+  /* 4. Nascondi l'indizio visivo quando la card è espansa/attiva */
+  .scard--multi.is-active::after,
+  .scard--link-card.is-active::after {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+    animation: none;
+  }
+}
