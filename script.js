@@ -220,4 +220,56 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  // --- MOBILE TOUCH LOGIC PER CARD SERVIZI ---
+  // Rileva se il dispositivo supporta il touch
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  if (isTouchDevice) {
+    const scards = document.querySelectorAll('.scard');
+    const multiCard = document.querySelector('.scard--multi');
+    const linkCard = document.querySelector('.scard--link-card');
+
+    // Funzione helper per resettare le card aperte
+    const closeAllCards = () => {
+      scards.forEach(card => card.classList.remove('is-active'));
+    };
+
+    // 1. Logica Card Giardinaggio (Espandibile con link interni)
+    if (multiCard) {
+      multiCard.addEventListener('click', (e) => {
+        // Se la card è attiva e l'utente tocca un link interno valido, lascia fluire il click nativo
+        if (multiCard.classList.contains('is-active') && e.target.closest('a')) {
+          return;
+        }
+
+        // Se la card NON è attiva (Primo tap)
+        if (!multiCard.classList.contains('is-active')) {
+          e.preventDefault(); // Previene navigazioni accidentali al primo tocco
+          closeAllCards();
+          multiCard.classList.add('is-active');
+        }
+      });
+    }
+
+    // 2. Logica Card Pulizie (Intera card cliccabile)
+    if (linkCard) {
+      linkCard.addEventListener('click', (e) => {
+        // Se la card NON è attiva (Primo tap: espansione visiva)
+        if (!linkCard.classList.contains('is-active')) {
+          e.preventDefault(); // Blocca l'apertura del link
+          closeAllCards();
+          linkCard.classList.add('is-active');
+        }
+        // Al secondo tap, la card avrà già '.is-active', ignorando l'if e procedendo col redirect
+      });
+    }
+
+    // 3. Chiusura delle card al tap su qualsiasi altra parte dello schermo
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.scard')) {
+        closeAllCards();
+      }
+    });
+  }
 });
