@@ -59,133 +59,231 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#FB9531" />
 
+    <!-- ═══════════════════════════════════════════════════════════
+         SCHEMA.ORG — BLOCCO 1: LocalBusiness + ProfessionalService
+         Arricchito per GEO: descrizioni sotto-servizi, subjectOf WebSite
+    ═══════════════════════════════════════════════════════════════ -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": ["LocalBusiness", "ProfessionalService"],
-        "@id": "https://luccalfa.it/#business",
-        "name": "LuccAlfa",
-        "description": "Giardinaggio professionale, potatura siepi e alberi, abbattimento in tree climbing, pulizie civili, condomini e garage a Lucca e provincia. Interventi rapidi per privati, aziende e condomini.",
-        "url": "https://luccalfa.it/",
-        "telephone": "+393294291402",
-        "email": "luccalfa.srl@gmail.com",
-        "image": "https://luccalfa.it/assets/hero-garden.png",
-        "logo": "https://luccalfa.it/assets/logo.svg",
-        "vatID": "IT07079510488",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Via di Villa Altieri",
-          "addressLocality": "Lucca",
-          "postalCode": "55100",
-          "addressRegion": "LU",
-          "addressCountry": "IT"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 43.843,
-          "longitude": 10.508
-        },
-        "areaServed":[
-          { "@type": "City", "name": "Lucca" },
-          { "@type": "City", "name": "Capannori" },
-          { "@type": "City", "name": "Porcari" },
-          { "@type": "City", "name": "Altopascio" },
-          { "@type": "City", "name": "Montecarlo" },
-          { "@type": "City", "name": "Viareggio" },
-          { "@type": "AdministrativeArea", "name": "Provincia di Lucca" }
-        ],
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Servizi LuccAlfa",
-          "itemListElement":[
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Giardinaggio e manutenzione verde",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Potatura siepi e alberi",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Abbattimento alberi in tree climbing",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Pulizie condomini e parti comuni",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Pulizie civili e straordinarie",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Pulizia garage e parcheggi",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Giardiniere a Lucca",
-                "description": "Servizi di giardinaggio professionale per privati, aziende e condomini nella provincia di Lucca.",
-                "areaServed": "Provincia di Lucca"
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Ditta di pulizie a Lucca",
-                "description": "Pulizie professionali per civili, condomini, garage e parti comuni nella provincia di Lucca.",
-                "areaServed": "Provincia di Lucca"
+    {
+      "@context": "https://schema.org",
+      "@type": ["LocalBusiness", "ProfessionalService"],
+      "@id": "https://luccalfa.it/#business",
+      "name": "LuccAlfa",
+      "legalName": "LuccAlfa Srls",
+      "description": "Giardinaggio professionale, potatura siepi e alberi, abbattimento in tree climbing, pulizie civili, condomini e garage a Lucca e provincia. Interventi rapidi per privati, aziende e condomini.",
+      "url": "https://luccalfa.it/",
+      "telephone": "+393294291402",
+      "email": "luccalfa.srl@gmail.com",
+      "image": "https://luccalfa.it/assets/hero-garden.png",
+      "logo": "https://luccalfa.it/assets/logo.svg",
+      "vatID": "IT07079510488",
+      "foundingDate": "2021",
+      "priceRange": "€€",
+      "openingHours": "Mo-Sa 08:00-19:00",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Via di Villa Altieri",
+        "addressLocality": "Lucca",
+        "postalCode": "55100",
+        "addressRegion": "LU",
+        "addressCountry": "IT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 43.843,
+        "longitude": 10.508
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Lucca" },
+        { "@type": "City", "name": "Capannori" },
+        { "@type": "City", "name": "Porcari" },
+        { "@type": "City", "name": "Altopascio" },
+        { "@type": "City", "name": "Montecarlo" },
+        { "@type": "City", "name": "Viareggio" },
+        { "@type": "AdministrativeArea", "name": "Provincia di Lucca" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servizi LuccAlfa",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Giardinaggio e manutenzione verde",
+              "url": "https://luccalfa.it/giardinaggio-lucca.html",
+              "description": "Manutenzione professionale di giardini a Lucca e provincia: sfalcio prato con mulching, arieggiatura, carotatura, sabbiatura, concimazioni stagionali, trattamenti fitosanitari biologici e ripristino aree verdi degradate.",
+              "areaServed": "Provincia di Lucca",
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sfalcio prato e mulching" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Arieggiatura, carotatura e sabbiatura" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concimazioni stagionali" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Rigenerazione e risemina prato" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Trattamenti fitosanitari biologici" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Progettazione e ripristino aree verdi" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Manutenzione verde condominiale" } }
+                ]
               }
             }
-          ]
-        },
-        "foundingDate": "2021",
-        "priceRange": "€€",
-        "openingHours": "Mo-Sa 08:00-19:00",
-        "sameAs":[
-          "https://www.google.com/maps/place/LuccAlfa/@43.8434792,10.4596785,12z/data=!3m1!4b1!4m6!3m5!1s0x67e922fc7430bc59:0xdb0ec07866cb526!8m2!3d43.8433849!4d10.5420788!16s%2Fg%2F11nh_03315",
-          "https://www.tiktok.com/@luccalfa",
-          "https://www.instagram.com/luccalfa_srl/",
-          "https://www.paginegialle.it/luccalfa-lucca",
-          "https://aziende.virgilio.it/giardinaggio/lucca-lu/luccalfa-lucca",
-          "https://www.facebook.com/luccalfa/"
-        ],
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+393294291402",
-          "contactType": "customer service",
-          "availableLanguage": "Italian"
-        }
-      }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Potatura siepi e alberi",
+              "url": "https://luccalfa.it/potature-alberi-lucca.html",
+              "description": "Potatura professionale di alberi, siepi, cipressi e olivi a Lucca e provincia. Interventi con tree climbing, piattaforma elevabile (PLE) e abbattimento controllato. Smaltimento ramaglie incluso.",
+              "areaServed": "Provincia di Lucca",
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura alberi con tree climbing", "description": "Tecnica acrobatica con funi e imbracature certificate, ideale per spazi stretti e contesti storici." } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Abbattimento alberi pericolosi", "description": "Abbattimento controllato con smontaggio settoriale e gestione sicura in prossimità di strutture." } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura siepi e arbusti" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Potatura olivi a Lucca", "description": "Potatura produttiva e di riforma degli olivi, eseguita nel periodo ottimale febbraio–aprile." } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Interventi con piattaforma elevabile PLE" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Smaltimento ramaglie e residui vegetali" } }
+                ]
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Abbattimento alberi in tree climbing",
+              "areaServed": "Provincia di Lucca",
+              "description": "Abbattimento controllato di alberi ad alto fusto con tecniche di tree climbing, anche in spazi stretti, cortili interni e contesti storici vincolati."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pulizie condomini e parti comuni",
+              "url": "https://luccalfa.it/ditta-pulizie-lucca.html",
+              "description": "Pulizie professionali di scale, androni, corselli, aree comuni condominiali e parti esterne a Lucca e provincia. Contratti programmati e interventi straordinari.",
+              "areaServed": "Provincia di Lucca",
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pulizie condominiali aree comuni" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sanificazione uffici e studi professionali" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pulizie per negozi e attività commerciali" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Trattamento pavimenti in cotto e marmo" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pulizia garage e spazi esterni" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sostituzione sacchi e gestione aree ecologiche" } }
+                ]
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pulizie civili e straordinarie",
+              "areaServed": "Provincia di Lucca",
+              "description": "Pulizie straordinarie per appartamenti, ville, immobili a fine cantiere o post-trasloco."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pulizia garage e parcheggi",
+              "areaServed": "Provincia di Lucca",
+              "description": "Pulizie di garage, parcheggi condominiali e corselli con attrezzature professionali."
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.google.com/maps/place/LuccAlfa/@43.8434792,10.4596785,12z/data=!3m1!4b1!4m6!3m5!1s0x67e922fc7430bc59:0xdb0ec07866cb526!8m2!3d43.8433849!4d10.5420788!16s%2Fg%2F11nh_03315",
+        "https://www.tiktok.com/@luccalfa",
+        "https://www.instagram.com/luccalfa_srl/",
+        "https://www.paginegialle.it/luccalfa-lucca",
+        "https://aziende.virgilio.it/giardinaggio/lucca-lu/luccalfa-lucca",
+        "https://www.facebook.com/luccalfa/"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+393294291402",
+        "contactType": "customer service",
+        "availableLanguage": "Italian"
+      },
+      "subjectOf": { "@id": "https://luccalfa.it/#website" }
+    }
     </script>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         SCHEMA.ORG — BLOCCO 2: WebSite + hasPart (NUOVO)
+         Segnala ai crawler AI la struttura completa del sito
+         e il contenuto di ogni pagina figlia
+    ═══════════════════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://luccalfa.it/#website",
+      "name": "LuccAlfa",
+      "url": "https://luccalfa.it/",
+      "inLanguage": "it",
+      "publisher": { "@id": "https://luccalfa.it/#business" },
+      "hasPart": [
+        {
+          "@type": "WebPage",
+          "@id": "https://luccalfa.it/",
+          "name": "Home – LuccAlfa Giardinaggio e Pulizie a Lucca",
+          "url": "https://luccalfa.it/",
+          "description": "Pagina principale di LuccAlfa Srls: giardinaggio, potatura alberi e siepi, abbattimento in tree climbing, pulizie civili e condominiali a Lucca e provincia. Attiva dal 2021.",
+          "isPartOf": { "@id": "https://luccalfa.it/#website" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://luccalfa.it/giardinaggio-lucca.html",
+          "name": "Manutenzione Giardini a Lucca – LuccAlfa",
+          "url": "https://luccalfa.it/giardinaggio-lucca.html",
+          "description": "Servizi di giardinaggio professionale a Lucca: sfalcio prato, arieggiatura, carotatura, concimazioni stagionali, trattamenti biologici con olio di neem e Bacillus thuringiensis, ripristino e progettazione aree verdi. Gestione verde condominiale con contratti programmati.",
+          "isPartOf": { "@id": "https://luccalfa.it/#website" },
+          "about": { "@id": "https://luccalfa.it/#business" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://luccalfa.it/potature-alberi-lucca.html",
+          "name": "Potatura Alberi e Tree Climbing a Lucca – LuccAlfa",
+          "url": "https://luccalfa.it/potature-alberi-lucca.html",
+          "description": "Potatura professionale di alberi, siepi, cipressi e olivi a Lucca con tree climbing e piattaforma elevabile (PLE). Abbattimento controllato di alberi pericolosi, anche nel centro storico dentro le mura. Smaltimento ramaglie presso centri autorizzati.",
+          "isPartOf": { "@id": "https://luccalfa.it/#website" },
+          "about": { "@id": "https://luccalfa.it/#business" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://luccalfa.it/ditta-pulizie-lucca.html",
+          "name": "Impresa di Pulizie a Lucca – LuccAlfa",
+          "url": "https://luccalfa.it/ditta-pulizie-lucca.html",
+          "description": "Pulizie professionali a Lucca per condomini, uffici, studi professionali, negozi e attività commerciali. Sanificazioni, trattamento pavimenti storici in cotto e marmo, pulizia garage e corselli. Interventi fuori orario lavorativo, copertura RC verso terzi.",
+          "isPartOf": { "@id": "https://luccalfa.it/#website" },
+          "about": { "@id": "https://luccalfa.it/#business" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://luccalfa.it/lavori.html",
+          "name": "Portfolio Lavori – LuccAlfa",
+          "url": "https://luccalfa.it/lavori.html",
+          "description": "Galleria fotografica e video dei lavori eseguiti da LuccAlfa: potature di cipressi e alberi ad alto fusto, giardinaggio, pulizie condominiali e interventi speciali a Lucca e provincia.",
+          "isPartOf": { "@id": "https://luccalfa.it/#website" },
+          "about": { "@id": "https://luccalfa.it/#business" }
+        }
+      ]
+    }
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SCHEMA.ORG — BLOCCO 3: FAQPage
+         Invariato rispetto alla versione precedente
+    ═══════════════════════════════════════════════════════════════ -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -204,7 +302,7 @@
             "name": "Quanto costa abbattere un albero a Lucca?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Il prezzo per l’abbattimento di un albero varia in base ad altezza, posizione, difficoltà tecnica e necessità di tree climbing o piattaforma elevabile. Operiamo in tutta la provincia di Lucca con interventi sicuri e assicurati."
+              "text": "Il prezzo per l'abbattimento di un albero varia in base ad altezza, posizione, difficoltà tecnica e necessità di tree climbing o piattaforma elevabile. Operiamo in tutta la provincia di Lucca con interventi sicuri e assicurati."
             }
           },
           {
@@ -228,7 +326,7 @@
             "name": "Smaltite ramaglie, tronchi ed erba dopo i lavori?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Sì. Ci occupiamo del completo smaltimento del materiale verde presso centri autorizzati, lasciando l’area pulita e ordinata al termine dell’intervento."
+              "text": "Sì. Ci occupiamo del completo smaltimento del materiale verde presso centri autorizzati, lasciando l'area pulita e ordinata al termine dell'intervento."
             }
           },
           {
@@ -260,7 +358,7 @@
             "name": "Ogni quanto va effettuata la manutenzione di un giardino?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Dipende dalla tipologia del verde e dalla stagione. In genere consigliamo manutenzioni periodiche mensili o bimestrali per mantenere giardini e siepi ordinati tutto l’anno."
+              "text": "Dipende dalla tipologia del verde e dalla stagione. In genere consigliamo manutenzioni periodiche mensili o bimestrali per mantenere giardini e siepi ordinati tutto l'anno."
             }
           },
           {
@@ -275,25 +373,12 @@
       }
     </script>
 
-    <link rel="icon" href="assets/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon-32.svg" />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="48x48"
-      href="assets/favicon-48.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/favicon-32.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/favicon-180.png"
-    />
+
+    <link rel="icon" type="image/svg+xml" href="assets/favicon-48.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.svg" />
+    <link rel="icon" href="assets/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png" />
   </head>
   <body>
     <!-- NAVBAR -->
