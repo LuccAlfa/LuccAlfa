@@ -311,4 +311,48 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('click', () => {
     figures.forEach(f => f.classList.remove('is-tapped'));
   });
+
+  // --- CONTEGGIO AUTOMATICO FOTO EXTRA ---
+  const expandBtn = document.getElementById("galleryExpandBtn");
+  const countSpan = expandBtn ? expandBtn.querySelector(".expand-count") : null;
+  const expandWrap = document.querySelector(".gallery-expand-wrap");
+
+  // Funzione che calcola e aggiorna il numero
+  function aggiornaContatoreExtra(categoria = 'tutti') {
+    if (!countSpan) return;
+
+    // Trova tutte le foto extra reali (escludendo i placeholder "Prossimamente")
+    const extraPhotos = document.querySelectorAll('.gallery-item[data-extra]:not(.gallery-item--placeholder)');
+    let count = 0;
+
+    // Conta quante foto extra corrispondono alla categoria attiva
+    extraPhotos.forEach(photo => {
+      const cat = photo.getAttribute('data-cat');
+      if (categoria === 'tutti' || categoria === 'all' || cat === categoria) {
+        count++;
+      }
+    });
+
+    // Aggiorna il numerino nel pulsante HTML
+    countSpan.textContent = count;
+
+    // Nasconde l'intero pulsante se per questa categoria non ci sono foto extra
+    if (expandWrap) {
+      expandWrap.style.display = count > 0 ? 'flex' : 'none'; 
+    }
+  }
+
+  // 1. Inizializza il contatore al primo caricamento della pagina
+  aggiornaContatoreExtra('tutti');
+
+  // 2. Sincronizzazione con i pulsanti di filtro
+  // Assumiamo che i tuoi pulsanti di filtro usino un attributo "data-filter" 
+  // es: <button data-filter="giardinaggio">Giardinaggio</button>
+  const filterButtons = document.querySelectorAll('[data-filter]');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const cat = e.currentTarget.getAttribute('data-filter');
+      aggiornaContatoreExtra(cat); // Aggiorna il numero in base al filtro scelto
+    });
+  });
 });
