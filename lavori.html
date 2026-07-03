@@ -1145,35 +1145,96 @@
     });
   })();
 
-  /* ── EXPAND PORTFOLIO ── */
+/* ── GALLERY LOGIC (FILTER + EXPAND + COUNT) ── */
   (function () {
-    const btn    = document.getElementById('galleryExpandBtn');
-    const extras = document.querySelectorAll('.gallery-item[data-extra]');
-    const label  = btn ? btn.querySelector('.expand-label') : null;
-    if (!btn || !extras.length) return;
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const allItems = document.querySelectorAll('.gallery-item');
+    const expandBtn = document.getElementById('galleryExpandBtn');
+    const expandWrap = document.querySelector('.gallery-expand-wrap');
+    const expandCountSpan = expandBtn ? expandBtn.querySelector('.expand-count') : null;
+    const expandLabel = expandBtn ? expandBtn.querySelector('.expand-label') : null;
+    
+    // Seleziona tutti gli item contrassegnati come extra
+    const extraItems = document.querySelectorAll('.gallery-item[data-extra]');
 
     let expanded = false;
+    let currentFilter = 'all';
 
-    btn.addEventListener('click', function () {
-      expanded = !expanded;
+    // Funzione che calcola e aggiorna il numeretto
+    function updateCount() {
+      if (!expandCountSpan || !expandWrap) return;
 
-      extras.forEach(el => {
-        el.classList.toggle('extra-visible', expanded);
-        // gli item extra placeholder non sono interattivi
-        if (!el.classList.contains('gallery-item--placeholder')) {
-          el.setAttribute('tabindex', expanded ? '0' : '-1');
+      let count = 0;
+      extraItems.forEach(item => {
+        // Ignoriamo i placeholder (Prossimamente) nel conteggio
+        if (!item.classList.contains('gallery-item--placeholder')) {
+          // Contiamo solo se il filtro è 'all' o se la categoria matcha
+          if (currentFilter === 'all' || item.dataset.cat === currentFilter) {
+            count++;
+          }
         }
       });
 
-      btn.classList.toggle('expanded', expanded);
-      btn.setAttribute('aria-expanded', String(expanded));
-      if (label) label.textContent = expanded ? 'Mostra meno' : 'Mostra tutte le foto';
+      // Aggiorna il testo nel pallino
+      expandCountSpan.textContent = count;
 
-      if (!expanded) {
-        // torna su alla gallery quando si richiude
-        document.querySelector('.gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Se non ci sono foto extra per questo filtro, nascondi l'intero bottone
+      if (count === 0 && !expanded) {
+        expandWrap.style.display = 'none';
+      } else {
+        expandWrap.style.display = ''; // Torna alla visualizzazione di default del CSS
       }
+    }
+
+    // --- Logica Filtri ---
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Selettore visivo del bottone filtro
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+
+        // Se la galleria era espansa ("Mostra meno"), la richiudiamo prima di filtrare
+        if (expanded && expandBtn) {
+          expandBtn.click();
+        }
+
+        // Mostra/Nascondi gli elementi nella griglia
+        allItems.forEach(item => {
+          const match = currentFilter === 'all' || item.dataset.cat === currentFilter;
+          item.classList.toggle('hidden-item', !match);
+        });
+
+        // Aggiorna il numero nel bottone "Mostra tutte"
+        updateCount();
+      });
     });
+
+    // --- Logica Espansione (Mostra tutto/meno) ---
+    if (expandBtn && extraItems.length) {
+      expandBtn.addEventListener('click', function () {
+        expanded = !expanded;
+
+        extraItems.forEach(el => {
+          el.classList.toggle('extra-visible', expanded);
+          if (!el.classList.contains('gallery-item--placeholder')) {
+            el.setAttribute('tabindex', expanded ? '0' : '-1');
+          }
+        });
+
+        expandBtn.classList.toggle('expanded', expanded);
+        expandBtn.setAttribute('aria-expanded', String(expanded));
+        if (expandLabel) expandLabel.textContent = expanded ? 'Mostra meno' : 'Mostra tutte le foto';
+
+        if (!expanded) {
+          // Torna su alla galleria quando si richiude
+          document.querySelector('.gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Inizializza il contatore appena la pagina si carica
+    updateCount();
   })();
 
   /* ── LIGHTBOX ── */
