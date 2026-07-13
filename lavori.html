@@ -535,6 +535,18 @@
     <button class="filter-btn" data-filter="pulizie">Pulizie</button>
   </div>
 
+  /* ── FIX LAYOUT & FOOTER (Spazio bianco a fine pagina) ── */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* Spinge la CTA e il footer in fondo se il contenuto intermedio è corto */
+    .gallery-cta {
+      margin-top: auto;
+    }
+
   <!-- PHOTO GALLERY -->
   <section class="gallery-section" aria-label="Galleria fotografica">
     <div class="gallery-inner">
