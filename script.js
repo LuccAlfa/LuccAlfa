@@ -311,4 +311,93 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('click', () => {
     figures.forEach(f => f.classList.remove('is-tapped'));
   });
+
+  // --- DINAMICA GALLERY ESPANSIONE E FILTRI AUTOMATICI (max 6 foto) ---
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item:not(.gallery-item--placeholder)');
+  const expandBtn = document.querySelector('.gallery-expand-btn');
+  const galleryExpandWrap = document.querySelector('.gallery-expand-wrap');
+
+  // 6 è il numero perfetto per formare un blocco rettangolare sia a 3 che a 2 colonne
+  const VISIBLE_LIMIT = 6; 
+
+  const applyFilter = (filterValue) => {
+    let visibleCount = 0;
+
+    galleryItems.forEach(item => {
+      // Resetta gli stati precedenti
+      item.removeAttribute('data-extra');
+      item.classList.remove('extra-visible', 'hidden-item');
+
+      // Verifica se l'elemento corrisponde al filtro
+      const isMatch = filterValue === 'all' || item.getAttribute('data-cat') === filterValue;
+
+      if (isMatch) {
+        visibleCount++;
+        if (visibleCount > VISIBLE_LIMIT) {
+          // Oltre la sesta foto, l'elemento viene contrassegnato per essere nascosto
+          item.setAttribute('data-extra', 'true');
+        }
+      } else {
+        // Nasconde completamente gli elementi che non c'entrano con la categoria
+        item.classList.add('hidden-item');
+      }
+    });
+
+    // Gestione visibilità del pulsante Espandi
+    if (expandBtn && galleryExpandWrap) {
+      const hiddenExtras = document.querySelectorAll('.gallery-item[data-extra="true"]');
+      if (hiddenExtras.length > 0) {
+        galleryExpandWrap.style.display = 'block';
+        expandBtn.classList.remove('expanded');
+        // Aggiorna il numerino nel pulsante (se presente)
+        const countBadge = expandBtn.querySelector('.expand-count');
+        if(countBadge) countBadge.textContent = hiddenExtras.length;
+      } else {
+        // Nascondi il pulsante se le foto sono 6 o meno
+        galleryExpandWrap.style.display = 'none';
+      }
+    }
+  };
+
+  // Inizializza gli eventi per i bottoni dei filtri
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.getAttribute('data-filter'));
+    });
+  });
+
+  // Inizializza l'evento per il pulsante Espandi / Riduci
+  if (expandBtn) {
+    expandBtn.addEventListener('click', () => {
+      const isExpanded = expandBtn.classList.contains('expanded');
+      const extras = document.querySelectorAll('.gallery-item[data-extra="true"]');
+
+      if (!isExpanded) {
+        // Mostra le foto extra
+        extras.forEach(item => item.classList.add('extra-visible'));
+        expandBtn.classList.add('expanded');
+      } else {
+        // Nascondi le foto extra
+        extras.forEach(item => item.classList.remove('extra-visible'));
+        expandBtn.classList.remove('expanded');
+        
+        // Riporta l'utente all'inizio della galleria per non lasciarlo nel vuoto
+        const gallerySection = document.querySelector('.gallery-section');
+        if (gallerySection) {
+          const navHeight = siteNav ? siteNav.offsetHeight : 68;
+          window.scrollTo({
+            top: gallerySection.offsetTop - navHeight - 20,
+            behavior: 'smooth'
+          });
+        }
+      }
+    });
+  }
+
+  // Esegue il calcolo all'avvio usando il filtro attualmente attivo ("Tutti")
+  const activeFilterBtn = document.querySelector('.filter-btn.active') || filterBtns[0];
+  if (activeFilterBtn) applyFilter(activeFilterBtn.getAttribute('data-filter'));
 });
