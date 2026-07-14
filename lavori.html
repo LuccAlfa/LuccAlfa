@@ -121,17 +121,19 @@
       display: block;
     }
 
-    /* Masonry via CSS columns */
+    /* Griglia foto — CSS Grid a celle uniformi (niente masonry a colonne):
+       questo garantisce sempre un rettangolo pulito, indipendentemente
+       da quante foto sono visibili. */
     .gallery-grid {
-      columns: 3;
-      column-gap: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
-    @media (max-width: 860px) { .gallery-grid { columns: 2; } }
-    @media (max-width: 480px) { .gallery-grid { columns: 1; } }
+    @media (max-width: 860px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .gallery-grid { grid-template-columns: 1fr; } }
 
     .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 14px;
+      aspect-ratio: 1 / 1;
       border-radius: var(--radius);
       overflow: hidden;
       cursor: zoom-in;
@@ -139,22 +141,25 @@
       display: block;
       transition: opacity 0.35s ease, transform 0.35s ease;
     }
-    .gallery-item.hidden-item {
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      visibility: hidden;
+    /* Elementi nascosti (per filtro categoria o perché non ancora espansi):
+       display:none li toglie completamente dal flusso e dall'altezza della
+       pagina, evitando lo spazio vuoto residuo sotto il footer. */
+    .gallery-item.is-hidden {
+      display: none !important;
     }
 
-    /* picture inside gallery: block per flow corretto */
+    /* picture inside gallery: riempie la cella quadrata con object-fit cover */
     .gallery-item picture {
+      position: absolute;
+      inset: 0;
       display: block;
       line-height: 0;
     }
 
     .gallery-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
       display: block;
       transition: transform 0.45s cubic-bezier(.4,0,.2,1);
     }
@@ -201,22 +206,9 @@
     }
     .gallery-item:hover .gallery-item__tag { opacity: 1; }
 
-    /* ── EXTRA ITEMS (nascoste, espandibili) ── */
-    .gallery-item[data-extra] {
-      display: none;
-    }
-    .gallery-item[data-extra].extra-visible {
-      display: block;
-    }
-    /* se l'extra è visibile ma filtrata fuori, resta nel flow ma nascosta da hidden-item */
-    .gallery-item[data-extra].extra-visible.hidden-item {
-      display: block;
-    }
-
     /* ── PLACEHOLDER CARD ── */
     .gallery-item--placeholder {
       cursor: default;
-      aspect-ratio: 3 / 4;
       background: var(--bg);
       border: 2px dashed rgba(0,0,0,0.10);
       display: flex;
@@ -1192,123 +1184,99 @@
   <script src="script.js" defer></script>
 
   <script>
-  /* ── CATEGORY FILTER ── */
+  /* ── GALLERY LOGIC (FILTRO + PREVIEW A 6 + ESPANSIONE) ──
+     Calcola dinamicamente, in base al filtro attivo, quali foto mostrare:
+     - prima del click su "Mostra tutte le foto" vengono mostrate al massimo
+       PREVIEW_COUNT foto che soddisfano il filtro corrente, cosi la griglia
+       (CSS Grid a celle quadrate) forma sempre un rettangolo pulito;
+     - le foto nascoste usano `display:none` (classe .is-hidden) invece di
+       position:absolute, cosi non lasciano piu' spazio vuoto nel flusso
+       della pagina (il footer torna a chiudere correttamente il layout);
+     - i segnaposto "Prossimamente" restano visibili solo con filtro "Tutti"
+       e galleria espansa, come in origine.
+  ── */
   (function () {
-    const btns  = document.querySelectorAll('.filter-btn');
-    const items = document.querySelectorAll('.gallery-item');
+    const PREVIEW_COUNT = 6;
 
-    btns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        btns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const filter = btn.dataset.filter;
-        items.forEach(item => {
-          const match = filter === 'all' || item.dataset.cat === filter;
-          item.classList.toggle('hidden-item', !match);
-        });
-      });
-    });
-  })();
-
-/* ── GALLERY LOGIC (FILTER + EXPAND + COUNT) ── */
-  (function () {
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const allItems = document.querySelectorAll('.gallery-item');
+    const grid = document.getElementById('galleryGrid');
     const expandBtn = document.getElementById('galleryExpandBtn');
     const expandWrap = document.querySelector('.gallery-expand-wrap');
     const expandCountSpan = expandBtn ? expandBtn.querySelector('.expand-count') : null;
     const expandLabel = expandBtn ? expandBtn.querySelector('.expand-label') : null;
-    
-    // Seleziona tutti gli item contrassegnati come extra
-    const extraItems = document.querySelectorAll('.gallery-item[data-extra]');
+
+    if (!grid) return;
+
+    const photoItems = Array.from(grid.querySelectorAll('.gallery-item:not(.gallery-item--placeholder)'));
+    const placeholders = Array.from(grid.querySelectorAll('.gallery-item--placeholder'));
 
     let expanded = false;
     let currentFilter = 'all';
 
-    // Funzione che calcola e aggiorna il numeretto
-    function updateCount() {
-      if (!expandCountSpan || !expandWrap) return;
+    function render() {
+      const matching = photoItems.filter(item => currentFilter === 'all' || item.dataset.cat === currentFilter);
 
-      let count = 0;
-      extraItems.forEach(item => {
-        // Ignoriamo i placeholder (Prossimamente) nel conteggio
-        if (!item.classList.contains('gallery-item--placeholder')) {
-          // Contiamo solo se il filtro è 'all' o se la categoria matcha
-          if (currentFilter === 'all' || item.dataset.cat === currentFilter) {
-            count++;
-          }
-        }
+      photoItems.forEach(item => {
+        const isMatch = matching.includes(item);
+        const idx = matching.indexOf(item);
+        const visible = isMatch && (expanded || idx < PREVIEW_COUNT);
+        item.classList.toggle('is-hidden', !visible);
+        item.setAttribute('tabindex', visible ? '0' : '-1');
       });
 
-      // Aggiorna il testo nel pallino
-      expandCountSpan.textContent = count;
+      placeholders.forEach(ph => {
+        const visible = currentFilter === 'all' && expanded;
+        ph.classList.toggle('is-hidden', !visible);
+      });
 
-      // Se non ci sono foto extra per questo filtro, nascondi l'intero bottone
-      if (count === 0 && !expanded) {
-        expandWrap.style.display = 'none';
-      } else {
-        expandWrap.style.display = ''; // Torna alla visualizzazione di default del CSS
-      }
+      const extraCount = Math.max(0, matching.length - PREVIEW_COUNT);
+      if (expandCountSpan) expandCountSpan.textContent = extraCount;
+      if (expandWrap) expandWrap.style.display = (extraCount === 0 && !expanded) ? 'none' : '';
     }
 
-    // --- Logica Filtri ---
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        // Selettore visivo del bottone filtro
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.filter;
 
-        // Se la galleria era espansa ("Mostra meno"), la richiudiamo prima di filtrare
-        if (expanded && expandBtn) {
-          expandBtn.click();
+        // richiudi la galleria espansa quando si cambia filtro
+        if (expanded) {
+          expanded = false;
+          if (expandBtn) {
+            expandBtn.classList.remove('expanded');
+            expandBtn.setAttribute('aria-expanded', 'false');
+          }
+          if (expandLabel) expandLabel.textContent = 'Mostra tutte le foto';
         }
 
-        // Mostra/Nascondi gli elementi nella griglia
-        allItems.forEach(item => {
-          const match = currentFilter === 'all' || item.dataset.cat === currentFilter;
-          item.classList.toggle('hidden-item', !match);
-        });
-
-        // Aggiorna il numero nel bottone "Mostra tutte"
-        updateCount();
+        render();
       });
     });
 
-    // --- Logica Espansione (Mostra tutto/meno) ---
-    if (expandBtn && extraItems.length) {
+    if (expandBtn) {
       expandBtn.addEventListener('click', function () {
         expanded = !expanded;
-
-        extraItems.forEach(el => {
-          el.classList.toggle('extra-visible', expanded);
-          if (!el.classList.contains('gallery-item--placeholder')) {
-            el.setAttribute('tabindex', expanded ? '0' : '-1');
-          }
-        });
-
         expandBtn.classList.toggle('expanded', expanded);
         expandBtn.setAttribute('aria-expanded', String(expanded));
         if (expandLabel) expandLabel.textContent = expanded ? 'Mostra meno' : 'Mostra tutte le foto';
 
+        render();
+
         if (!expanded) {
-          // Torna su alla galleria quando si richiude
           document.querySelector('.gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     }
 
-    // Inizializza il contatore appena la pagina si carica
-    updateCount();
+    render();
   })();
 
   /* ── LIGHTBOX ── */
   (function () {
-    // esclude item con hidden-item E item extra non espansi (non visibili)
     const allItems = () => Array.from(
-      document.querySelectorAll('.gallery-item:not(.hidden-item):not(.gallery-item--placeholder)')
-    ).filter(el => !el.hasAttribute('data-extra') || el.classList.contains('extra-visible'));
+      document.querySelectorAll('.gallery-item:not(.is-hidden):not(.gallery-item--placeholder)')
+    );
 
     const lb      = document.getElementById('lightbox');
     const lbImg   = document.getElementById('lb-img');
@@ -1347,7 +1315,7 @@
     /* click on items */
     document.getElementById('galleryGrid').addEventListener('click', e => {
       const item = e.target.closest('.gallery-item');
-      if (!item || item.classList.contains('hidden-item')) return;
+      if (!item || item.classList.contains('is-hidden')) return;
       if (item.classList.contains('gallery-item--placeholder')) return;
       open(allItems().indexOf(item));
     });
