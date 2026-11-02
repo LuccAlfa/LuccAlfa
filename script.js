@@ -311,4 +311,23 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('click', () => {
     figures.forEach(f => f.classList.remove('is-tapped'));
   });
+
+  // --- CALENDLY: si carica solo quando l'utente clicca "Scegli giorno e ora" ---
+  // Così chi visita il sito senza prenotare non invia nessun dato a Calendly.
+  document.querySelectorAll("[data-calendly]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const open = () => window.Calendly.initPopupWidget({ url: btn.dataset.calendly });
+      if (window.Calendly) return open();
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "https://assets.calendly.com/assets/external/widget.css";
+      document.head.appendChild(css);
+      const s = document.createElement("script");
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.onload = open;
+      s.onerror = () => { window.location.href = btn.dataset.calendly; };
+      document.head.appendChild(s);
+    });
+  });
 });

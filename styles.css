@@ -1990,3 +1990,13 @@ h6 {
     pointer-events: auto;
   }
 }
+
+/* --- INFORMATIVA BREVE SOTTO IL MODULO --- */
+.form-privacy {
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.form-privacy a {
+  color: inherit;
+}
