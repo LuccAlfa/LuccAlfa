@@ -232,6 +232,81 @@
       color: rgba(0,0,0,0.22);
     }
 
+    /* ── PRIMA / DOPO (slider di confronto) ──
+       Visibili solo col filtro "Prima e dopo": la griglia passa a celle
+       piu' grandi (max 2 per riga, 1 su mobile) in formato verticale 3:4. */
+    .gallery-grid--ba {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 535px));
+      justify-content: center;
+      gap: 24px;
+    }
+    .gallery-item--ba {
+      aspect-ratio: 3 / 4;
+      cursor: ew-resize;
+      box-shadow: var(--shadow);
+      --pos: 50%;
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+      outline: none;
+    }
+    .gallery-item--ba:focus-visible {
+      box-shadow: 0 0 0 3px var(--orange), var(--shadow);
+    }
+    .gallery-item--ba:hover img { transform: none; }
+    .gallery-item--ba img { -webkit-user-drag: none; pointer-events: none; }
+    .ba-layer { position: absolute; inset: 0; }
+    .ba-layer--before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+
+    .ba-divider {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: var(--pos);
+      width: 3px;
+      margin-left: -1.5px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
+    .ba-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 48px; height: 48px;
+      margin: -24px 0 0 -24px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 3px solid #fff;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+      transition: transform 0.2s ease;
+    }
+    .gallery-item--ba:hover .ba-knob,
+    .gallery-item--ba.is-dragging .ba-knob { transform: scale(1.08); }
+
+    .ba-label {
+      position: absolute;
+      top: 12px;
+      background: rgba(0,0,0,0.52);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .ba-label--before { left: 12px; }
+    .ba-label--after  { right: 12px; background: var(--orange); color: #111; }
+    .gallery-item--ba .gallery-item__tag { opacity: 1; }
+
     /* ── EXPAND BUTTON ── */
     .gallery-expand-wrap {
       text-align: center;
@@ -525,6 +600,7 @@
     <button class="filter-btn" data-filter="giardinaggio">Giardinaggio</button>
     <button class="filter-btn" data-filter="potatura">Potatura</button>
     <button class="filter-btn" data-filter="pulizie">Pulizie</button>
+    <button class="filter-btn" data-filter="prima-dopo">Prima e dopo</button>
   </div>
 
   <!-- PHOTO GALLERY -->
@@ -1043,6 +1119,42 @@
           <span class="gallery-item__tag">Terreno sistemato con aiuola e siepe</span>
         </div>
 
+        <!-- ══ PRIMA E DOPO ══
+             Visibili solo col filtro "Prima e dopo" (esclusi da "Tutti").
+             Per aggiungerne uno: copia il blocco e cambia le due immagini
+             (ba-layer--after = DOPO = foto "b", ba-layer--before = PRIMA = foto "a") e i testi. -->
+
+        <!-- PRIMA/DOPO 1 — Preparazione terreno per il prato -->
+        <div class="gallery-item gallery-item--ba reveal" data-cat="prima-dopo"
+             tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+             aria-label="Confronto prima e dopo — preparazione del terreno per il prato">
+          <picture class="ba-layer ba-layer--after">
+            <source srcset="assets/optimized/prima-dopo-1b-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/prima-dopo-1b-1280.webp" type="image/webp">
+            <img src="assets/optimized/prima-dopo-1b-1280.webp"
+                 alt="Dopo: terreno livellato e pronto per la semina del prato"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <picture class="ba-layer ba-layer--before">
+            <source srcset="assets/optimized/prima-dopo-1a-1280.avif" type="image/avif">
+            <source srcset="assets/optimized/prima-dopo-1a-1280.webp" type="image/webp">
+            <img src="assets/optimized/prima-dopo-1a-1280.webp"
+                 alt="Prima: area con erba secca e terreno da sistemare"
+                 loading="lazy" width="960" height="1280" />
+          </picture>
+          <span class="ba-label ba-label--before" aria-hidden="true">Prima</span>
+          <span class="ba-label ba-label--after" aria-hidden="true">Dopo</span>
+          <div class="ba-divider" aria-hidden="true">
+            <span class="ba-knob">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/>
+              </svg>
+            </span>
+          </div>
+          <span class="gallery-item__tag">Preparazione del terreno per il prato</span>
+        </div>
+
       </div><!-- /.gallery-grid -->
 
       <!-- EXPAND BUTTON -->
@@ -1251,7 +1363,11 @@
     let currentFilter = 'all';
 
     function render() {
-      const matching = photoItems.filter(item => currentFilter === 'all' || item.dataset.cat === currentFilter);
+      // "Tutti" mostra tutto tranne i confronti prima/dopo, che hanno un tag dedicato
+      const matching = photoItems.filter(item => currentFilter === 'all'
+        ? item.dataset.cat !== 'prima-dopo'
+        : item.dataset.cat === currentFilter);
+      grid.classList.toggle('gallery-grid--ba', currentFilter === 'prima-dopo');
 
       photoItems.forEach(item => {
         const isMatch = matching.includes(item);
@@ -1312,7 +1428,7 @@
   /* ── LIGHTBOX ── */
   (function () {
     const allItems = () => Array.from(
-      document.querySelectorAll('.gallery-item:not(.is-hidden):not(.gallery-item--placeholder)')
+      document.querySelectorAll('.gallery-item:not(.is-hidden):not(.gallery-item--placeholder):not(.gallery-item--ba)')
     );
 
     const lb      = document.getElementById('lightbox');
@@ -1354,12 +1470,14 @@
       const item = e.target.closest('.gallery-item');
       if (!item || item.classList.contains('is-hidden')) return;
       if (item.classList.contains('gallery-item--placeholder')) return;
+      if (item.classList.contains('gallery-item--ba')) return;
       open(allItems().indexOf(item));
     });
     document.getElementById('galleryGrid').addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       const item = e.target.closest('.gallery-item');
       if (!item || item.classList.contains('gallery-item--placeholder')) return;
+      if (item.classList.contains('gallery-item--ba')) return;
       e.preventDefault();
       open(allItems().indexOf(item));
     });
@@ -1384,6 +1502,83 @@
       const dx = e.changedTouches[0].clientX - touchX;
       if (Math.abs(dx) > 50) dx < 0 ? open(current + 1) : open(current - 1);
       touchX = null;
+    });
+  })();
+
+  /* ── SLIDER PRIMA / DOPO ──
+     - trascinamento con mouse/dito (lo scroll verticale su mobile resta libero)
+     - frecce/Home/End da tastiera
+     - finche' l'utente non lo tocca, una breve oscillazione periodica fa capire
+       che si puo' scorrere; alla prima interazione si ferma (fino al refresh).
+       Disattivata con "riduci movimento" del sistema operativo. */
+  (function () {
+    const sliders = document.querySelectorAll('.gallery-item--ba');
+    if (!sliders.length) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ciclo hint: oscillazione di ~1.6s seguita da ~2s di pausa
+    const HINT_MOVE = 1600, HINT_PAUSE = 2000, HINT_AMP = 12;
+
+    sliders.forEach(el => {
+      let pos = 50;
+      let touched = false;
+      let visible = false;
+      let raf = null;
+      let t0 = null;
+
+      function set(p) {
+        pos = Math.max(0, Math.min(100, p));
+        el.style.setProperty('--pos', pos + '%');
+        el.setAttribute('aria-valuenow', Math.round(pos));
+      }
+
+      function stopHint() {
+        touched = true;
+        if (raf) cancelAnimationFrame(raf);
+        raf = null;
+      }
+
+      function hint(ts) {
+        if (touched || !visible) { raf = null; return; }
+        if (t0 === null) t0 = ts;
+        const t = (ts - t0) % (HINT_MOVE + HINT_PAUSE);
+        const k = t < HINT_MOVE ? Math.sin((t / HINT_MOVE) * Math.PI * 2) : 0;
+        set(50 + HINT_AMP * k * (1 - t / HINT_MOVE * 0.4));
+        raf = requestAnimationFrame(hint);
+      }
+
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        new IntersectionObserver(entries => {
+          visible = entries[0].isIntersecting;
+          if (visible && !touched && !raf) { t0 = null; raf = requestAnimationFrame(hint); }
+        }, { threshold: 0.3 }).observe(el);
+      }
+
+      function fromEvent(e) {
+        const r = el.getBoundingClientRect();
+        set(((e.clientX - r.left) / r.width) * 100);
+      }
+
+      el.addEventListener('pointerdown', e => {
+        stopHint();
+        el.setPointerCapture(e.pointerId);
+        el.classList.add('is-dragging');
+        fromEvent(e);
+      });
+      el.addEventListener('pointermove', e => {
+        if (el.hasPointerCapture(e.pointerId)) fromEvent(e);
+      });
+      ['pointerup', 'pointercancel'].forEach(t =>
+        el.addEventListener(t, () => el.classList.remove('is-dragging')));
+
+      el.addEventListener('keydown', e => {
+        const step = e.shiftKey ? 10 : 2;
+        const map = { ArrowLeft: pos - step, ArrowRight: pos + step, Home: 0, End: 100 };
+        if (!(e.key in map)) return;
+        e.preventDefault();
+        stopHint();
+        set(map[e.key]);
+      });
     });
   })();
 
